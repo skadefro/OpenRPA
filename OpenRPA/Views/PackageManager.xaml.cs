@@ -16,6 +16,7 @@ using System.Windows.Media;
 using System.Windows.Media.Imaging;
 using System.Windows.Navigation;
 using System.Windows.Shapes;
+using OpenRPA.Core;
 
 namespace OpenRPA.Views
 {
@@ -172,7 +173,7 @@ namespace OpenRPA.Views
 
                         // per project or joined ?
                         // string TargetFolder = System.IO.Path.Combine(project.Path, "extensions");
-                        string TargetFolder = System.IO.Path.Combine(Interfaces.Extensions.ProjectsDirectory, "extensions");
+                        string TargetFolder = System.IO.Path.Combine(Core.Extensions.ProjectsDirectory, "extensions");
 
                         BusyContent = "Uninstalling " + _identity.ToString();
                         NuGetPackageManager.Instance.UninstallPackage(TargetFolder, _identity);
@@ -231,7 +232,7 @@ namespace OpenRPA.Views
 
                     // per project or joined ?
                     // string TargetFolder = System.IO.Path.Combine(project.Path, "extensions");
-                    string TargetFolder = System.IO.Path.Combine(Interfaces.Extensions.ProjectsDirectory, "extensions");
+                    string TargetFolder = System.IO.Path.Combine(Core.Extensions.ProjectsDirectory, "extensions");
 
                     BusyContent = "Uninstalling package";
                     NuGetPackageManager.Instance.UninstallPackage(TargetFolder, identity);

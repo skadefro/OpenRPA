@@ -13,6 +13,7 @@ using NuGet.Packaging.Core;
 using NuGet.Frameworks;
 using NuGet.Resolver;
 using NuGet.Protocol;
+using OpenRPA.Core;
 
 namespace OpenRPA
 {
@@ -209,7 +210,7 @@ namespace OpenRPA
                     {
                         // per project or joined ?
                         // string TargetFolder = System.IO.Path.Combine(project.Path, "extensions");
-                        string TargetFolder = System.IO.Path.Combine(Interfaces.Extensions.ProjectsDirectory, "extensions");
+                        string TargetFolder = System.IO.Path.Combine(Core.Extensions.ProjectsDirectory, "extensions");
 
                         PackageReaderBase packageReader;
                         packageReader = new PackageFolderReader(installedPath);
@@ -325,7 +326,7 @@ namespace OpenRPA
                     }
                     // per project or joined ?
                     // string TargetFolder = System.IO.Path.Combine(project.Path, "extensions");
-                    string TargetFolder = System.IO.Path.Combine(Interfaces.Extensions.ProjectsDirectory, "extensions");
+                    string TargetFolder = System.IO.Path.Combine(Core.Extensions.ProjectsDirectory, "extensions");
                    
                     InstallPackage(TargetFolder, packageToInstall, LoadDlls);
                 }

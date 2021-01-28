@@ -1,6 +1,8 @@
 ﻿using Newtonsoft.Json;
 using Newtonsoft.Json.Linq;
 using NuGet.Versioning;
+using OpenRPA.Core;
+using OpenRPA.Core.entity;
 using OpenRPA.Interfaces;
 using OpenRPA.Interfaces.entity;
 using System;
@@ -212,7 +214,7 @@ namespace OpenRPA
                     await NuGetPackageManager.Instance.DownloadAndInstall(this, new NuGet.Packaging.Core.PackageIdentity(jp.Name, target_ver), LoadDlls);
                 }
             }
-            // Plugins.LoadPlugins(RobotInstance.instance, Interfaces.Extensions.ProjectsDirectory);
+            // Plugins.LoadPlugins(RobotInstance.instance, Core.Extensions.ProjectsDirectory);
             Plugins.LoadPlugins(RobotInstance.instance);
         }
     }

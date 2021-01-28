@@ -6,6 +6,7 @@ using Microsoft.CodeAnalysis;
 using Microsoft.CodeAnalysis.Completion;
 using Microsoft.CodeAnalysis.Host.Mef;
 using Microsoft.CodeAnalysis.Text;
+using OpenRPA.Core;
 using OpenRPA.Interfaces;
 using System;
 using System.Collections.Generic;

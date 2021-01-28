@@ -1,5 +1,7 @@
-﻿using OpenRPA.Interfaces;
-using OpenRPA.Interfaces.entity;
+﻿using OpenRPA.Core;
+using OpenRPA.Core.entity;
+using OpenRPA.Interfaces;
+using OpenRPA.Core.entity;
 using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
@@ -41,7 +43,7 @@ namespace OpenRPA.Views
             vm.Source.Clear();
             foreach (var ace in vm.item._acl)
             {
-                vm.Source.Add(ace);
+                vm.Source.Add((ace)ace);
             }
         }
         private void cmdNew(object sender, System.Windows.Input.ExecutedRoutedEventArgs e)
@@ -91,19 +93,16 @@ namespace OpenRPA.Views
             vm.item._acl = acl.ToArray();
             reload();
         }
-
     }
-
     public class BitConverter : DependencyObject, IValueConverter
     {
         public static DependencyProperty SourceValueProperty =
        DependencyProperty.Register("SourceValue",
-                                   typeof(ace_right),
+                                   typeof(Interfaces.entity.ace_right),
                                    typeof(BitConverter));
-
-        public ace_right SourceValue
+        public Interfaces.entity.ace_right SourceValue
         {
-            get { return (ace_right)GetValue(SourceValueProperty); }
+            get { return (Interfaces.entity.ace_right)GetValue(SourceValueProperty); }
             set { SetValue(SourceValueProperty, value); }
         }
 
@@ -113,7 +112,7 @@ namespace OpenRPA.Views
             var t = parameter as string;
             if (a == null || string.IsNullOrEmpty(t)) return false;
 
-            ace_right bit;
+            Interfaces.entity.ace_right bit;
             Enum.TryParse(t, true, out bit);
             return a.getBit((decimal)bit);
         }
@@ -124,7 +123,6 @@ namespace OpenRPA.Views
             return null;
         }
     }
-
     public class wfPermissionsModel
     {
         public PermissionsWindow window;
@@ -132,7 +130,6 @@ namespace OpenRPA.Views
 
         public ace SelectedItem { get; set; }
         public apibase item { get; set; }
-
         public wfPermissionsModel(PermissionsWindow window, apibase item)
         {
             this.window = window;
@@ -140,5 +137,4 @@ namespace OpenRPA.Views
             Source = new ObservableCollection<ace>();
         }
     }
-    
 }

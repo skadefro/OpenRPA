@@ -1,5 +1,4 @@
-﻿using OpenRPA.Interfaces.entity;
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.Linq;
@@ -11,8 +10,8 @@ namespace OpenRPA.Interfaces
     public delegate void DetectorDelegate(IDetectorPlugin plugin, IDetectorEvent detector, EventArgs e);
     public interface IDetectorPlugin : INotifyPropertyChanged, IPlugin
     {
-        void Initialize(IOpenRPAClient client, Detector Entity);
-        Detector Entity { get; set;  }
+        void Initialize(IOpenRPAClient client, entity.IDetector Entity);
+        entity.IDetector Entity { get; set;  }
         event DetectorDelegate OnDetector;
         void Start();
         void Stop();

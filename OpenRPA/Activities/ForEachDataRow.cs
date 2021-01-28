@@ -8,6 +8,7 @@ using System.Diagnostics;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using OpenRPA.Core;
 
 namespace OpenRPA.Activities
 {
@@ -59,8 +60,8 @@ namespace OpenRPA.Activities
         protected override void CacheMetadata(NativeActivityMetadata metadata)
         {
             metadata.AddDelegate(Body);
-            Interfaces.Extensions.AddCacheArgument(metadata, "DataTable", DataTable);
-            Interfaces.Extensions.AddCacheArgument(metadata, "DataView", DataView);
+            Core.Extensions.AddCacheArgument(metadata, "DataTable", DataTable);
+            Core.Extensions.AddCacheArgument(metadata, "DataView", DataView);
             metadata.AddImplementationVariable(_elements);
             base.CacheMetadata(metadata);
         }

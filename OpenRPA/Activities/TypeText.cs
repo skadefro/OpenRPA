@@ -1,4 +1,5 @@
-﻿using System;
+﻿using OpenRPA.Core;
+using System;
 using System.Activities;
 using OpenRPA.Interfaces;
 using System.Activities.Presentation.PropertyEditing;
@@ -8,7 +9,7 @@ using System.Diagnostics;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
-using OpenRPA.Interfaces.Input;
+using OpenRPA.Core.Input;
 
 namespace OpenRPA.Activities
 {

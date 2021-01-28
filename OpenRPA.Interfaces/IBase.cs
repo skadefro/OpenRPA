@@ -4,7 +4,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace OpenRPA.Interfaces
+namespace OpenRPA.Interfaces.entity
 {
     public interface IBase
     {
@@ -17,13 +17,13 @@ namespace OpenRPA.Interfaces
         DateTime _created { get; set; }
         string _createdby { get; set; }
         string _createdbyid { get; set; }
-        entity.ace[] _acl { get; set; }
+        Iace[] _acl { get; set; }
         string[] _encrypt { get; set; }
         long _version { get; set; }
-        bool hasRight(entity.apiuser user, entity.ace_right bit);
-        bool hasRight(entity.TokenUser user, entity.ace_right bit);
-        void AddRight(entity.TokenUser user, entity.ace_right[] rights);
-        void AddRight(string _id, string name, entity.ace_right[] rights);
+        bool hasRight(Iapiuser user, ace_right bit);
+        bool hasRight(ITokenUser user, ace_right bit);
+        void AddRight(ITokenUser user, ace_right[] rights);
+        void AddRight(string _id, string name, ace_right[] rights);
 
     }
 }

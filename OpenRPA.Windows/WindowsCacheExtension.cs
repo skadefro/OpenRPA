@@ -1,4 +1,5 @@
 ﻿using FlaUI.Core;
+using OpenRPA.Core;
 using OpenRPA.Interfaces;
 using System;
 using System.Collections.Generic;

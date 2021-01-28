@@ -1,0 +1,134 @@
+﻿<Project Sdk="Microsoft.NET.Sdk">
+  <PropertyGroup>
+    <TargetFramework>net462</TargetFramework>
+  </PropertyGroup>
+  <ItemGroup>
+    <None Include="Resources\open_rpa128.png" Pack="true" PackagePath="\" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Remove="Resources\Selector\Button.png" />
+    <None Remove="Resources\Selector\Calendar.png" />
+    <None Remove="Resources\Selector\CheckBox.png" />
+    <None Remove="Resources\Selector\ComboBox.png" />
+    <None Remove="Resources\Selector\Custom.png" />
+    <None Remove="Resources\Selector\DataGrid.png" />
+    <None Remove="Resources\Selector\Document.png" />
+    <None Remove="Resources\Selector\Edit.png" />
+    <None Remove="Resources\Selector\Group.png" />
+    <None Remove="Resources\Selector\Header.png" />
+    <None Remove="Resources\Selector\HeaderItem.png" />
+    <None Remove="Resources\Selector\HyperLink.png" />
+    <None Remove="Resources\Selector\Image.png" />
+    <None Remove="Resources\Selector\Item.png" />
+    <None Remove="Resources\Selector\List.png" />
+    <None Remove="Resources\Selector\Menu.png" />
+    <None Remove="Resources\Selector\MenuItem.png" />
+    <None Remove="Resources\Selector\Pane.png" />
+    <None Remove="Resources\Selector\ProgressBar.png" />
+    <None Remove="Resources\Selector\RadioButton.png" />
+    <None Remove="Resources\Selector\ScrollBar.png" />
+    <None Remove="Resources\Selector\Slider.png" />
+    <None Remove="Resources\Selector\Spinner.png" />
+    <None Remove="Resources\Selector\SplitButton.png" />
+    <None Remove="Resources\Selector\StatusBar.png" />
+    <None Remove="Resources\Selector\Tab.png" />
+    <None Remove="Resources\Selector\Text.png" />
+    <None Remove="Resources\Selector\Thumb.png" />
+    <None Remove="Resources\Selector\TitleBar.png" />
+    <None Remove="Resources\Selector\ToolBar.png" />
+    <None Remove="Resources\Selector\ToolTip.png" />
+    <None Remove="Resources\Selector\Tree.png" />
+    <None Remove="Resources\Selector\Window.png" />
+    <None Remove="Selector\SelectorWindow.xaml" />
+    <None Remove="Views\KeyboardDetectorView.xaml" />
+    <None Remove="Views\KeyboardSeqWindow.xaml" />
+  </ItemGroup>
+  <ItemGroup>
+    <PackageReference Include="FlaUI.UIA3" Version="3.2.0" />
+    <PackageReference Include="NLog" Version="4.6.8" />
+  </ItemGroup>
+  <ItemGroup>
+    <Page Include="Selector\SelectorWindow.xaml">
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Views\KeyboardDetectorView.xaml">
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Views\KeyboardSeqWindow.xaml">
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\OpenRPA.Interfaces\OpenRPA.Interfaces.csproj" />
+    <ProjectReference Include="..\OpenRPA.NamedPipeWrapper\OpenRPA.NamedPipeWrapper.csproj" />
+  </ItemGroup>
+  <ItemGroup>
+    <Reference Include="System.Activities" />
+    <Reference Include="System.Activities.Presentation" />
+    <Reference Include="System.Configuration.Install" />
+    <Reference Include="System.DirectoryServices" />
+    <Reference Include="System.Runtime.Remoting" />
+    <Reference Include="System.Security" />
+    <Reference Include="System.ServiceProcess" />
+    <Reference Include="System.Xaml" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Resources\Selector\Button.png" />
+    <Resource Include="Resources\Selector\Calendar.png" />
+    <Resource Include="Resources\Selector\CheckBox.png" />
+    <Resource Include="Resources\Selector\ComboBox.png" />
+    <Resource Include="Resources\Selector\Custom.png" />
+    <Resource Include="Resources\Selector\DataGrid.png" />
+    <Resource Include="Resources\Selector\Document.png" />
+    <Resource Include="Resources\Selector\Edit.png" />
+    <Resource Include="Resources\Selector\Group.png" />
+    <Resource Include="Resources\Selector\Header.png" />
+    <Resource Include="Resources\Selector\HeaderItem.png" />
+    <Resource Include="Resources\Selector\HyperLink.png" />
+    <Resource Include="Resources\Selector\Image.png" />
+    <Resource Include="Resources\Selector\Item.png" />
+    <Resource Include="Resources\Selector\List.png" />
+    <Resource Include="Resources\Selector\Menu.png" />
+    <Resource Include="Resources\Selector\MenuItem.png" />
+    <Resource Include="Resources\Selector\Pane.png" />
+    <Resource Include="Resources\Selector\ProgressBar.png" />
+    <Resource Include="Resources\Selector\RadioButton.png" />
+    <Resource Include="Resources\Selector\ScrollBar.png" />
+    <Resource Include="Resources\Selector\Slider.png" />
+    <Resource Include="Resources\Selector\Spinner.png" />
+    <Resource Include="Resources\Selector\SplitButton.png" />
+    <Resource Include="Resources\Selector\StatusBar.png" />
+    <Resource Include="Resources\Selector\Tab.png" />
+    <Resource Include="Resources\Selector\Text.png" />
+    <Resource Include="Resources\Selector\Thumb.png" />
+    <Resource Include="Resources\Selector\TitleBar.png" />
+    <Resource Include="Resources\Selector\ToolBar.png" />
+    <Resource Include="Resources\Selector\ToolTip.png" />
+    <Resource Include="Resources\Selector\Tree.png" />
+    <Resource Include="Resources\Selector\Window.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Update="Overlay\NotificationWindow.cs" />
+    <Compile Update="Overlay\OverlayWindow.cs" />
+    <Compile Update="Overlay\TooltipWindow.cs" />
+    <Compile Update="Resources\strings.Designer.cs">
+      <DependentUpon>strings.resx</DependentUpon>
+      <DesignTime>True</DesignTime>
+      <AutoGen>True</AutoGen>
+    </Compile>
+  </ItemGroup>
+  <ItemGroup>
+    <EmbeddedResource Update="Resources\strings.resx">
+      <LastGenOutput>strings.Designer.cs</LastGenOutput>
+      <Generator>PublicResXFileCodeGenerator</Generator>
+    </EmbeddedResource>
+    <EmbeddedResource Update="Resources\strings.ro.resx">
+      <LastGenOutput>strings.Designer.cs</LastGenOutput>
+      <Generator>PublicResXFileCodeGenerator</Generator>
+    </EmbeddedResource>
+    <EmbeddedResource Update="Resources\strings.ru.resx">
+      <LastGenOutput>strings.Designer.cs</LastGenOutput>
+      <Generator>PublicResXFileCodeGenerator</Generator>
+    </EmbeddedResource>
+  </ItemGroup>
+</Project>

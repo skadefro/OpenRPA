@@ -1,6 +1,6 @@
 ﻿using Microsoft.VisualBasic.Activities;
+using OpenRPA.Core.entity;
 using OpenRPA.Interfaces;
-using OpenRPA.Interfaces.entity;
 using System;
 using System.Activities;
 using System.Activities.Expressions;
@@ -13,7 +13,7 @@ using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Media;
 using System.Windows.Media.Imaging;
-
+using OpenRPA.Core;
 namespace OpenRPA.Activities
 {
     public partial class InvokeOpenFlowDesigner : INotifyPropertyChanged

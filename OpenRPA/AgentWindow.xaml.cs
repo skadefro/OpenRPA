@@ -1,4 +1,5 @@
 ﻿using Newtonsoft.Json.Linq;
+using OpenRPA.Core;
 using OpenRPA.Input;
 using OpenRPA.Interfaces;
 using System;
@@ -282,7 +283,7 @@ namespace OpenRPA
                     {
                         foreach (var b in wi.Bookmarks)
                         {
-                            var _id = (plugin.Entity as Interfaces.entity.Detector)._id;
+                            var _id = (plugin.Entity as Core.entity.Detector)._id;
                             Log.Debug(b.Key + " -> " + "detector_" + _id);
                             if (b.Key == "detector_" + _id)
                             {
@@ -292,10 +293,10 @@ namespace OpenRPA
                     }
                 }
                 if (!global.isConnected) return;
-                Interfaces.mq.RobotCommand command = new Interfaces.mq.RobotCommand();
+                Core.mq.RobotCommand command = new Core.mq.RobotCommand();
                 // detector.user = global.webSocketClient.user;
                 var data = JObject.FromObject(detector);
-                var Entity = (plugin.Entity as Interfaces.entity.Detector);
+                var Entity = (plugin.Entity as Core.entity.Detector);
                 command.command = "detector";
                 command.detectorid = Entity._id;
                 if (string.IsNullOrEmpty(Entity._id)) return;
@@ -337,7 +338,7 @@ namespace OpenRPA
                 if (!string.IsNullOrEmpty(instance.queuename) && !string.IsNullOrEmpty(instance.correlationId))
                 {
                     isRemote = true;
-                    Interfaces.mq.RobotCommand command = new Interfaces.mq.RobotCommand();
+                    Core.mq.RobotCommand command = new Core.mq.RobotCommand();
                     var data = JObject.FromObject(instance.Parameters);
                     command.command = "invoke" + instance.state;
                     command.workflowid = instance.WorkflowId;

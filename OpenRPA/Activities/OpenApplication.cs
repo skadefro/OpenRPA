@@ -8,6 +8,7 @@ using System.Diagnostics;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using OpenRPA.Core;
 
 namespace OpenRPA.Activities
 {
@@ -49,8 +50,8 @@ namespace OpenRPA.Activities
         protected override void Execute(NativeActivityContext context)
         {
             var selectorstring = Selector.Get(context);
-            selectorstring = OpenRPA.Interfaces.Selector.Selector.ReplaceVariables(selectorstring, context.DataContext);
-            var selector = new Interfaces.Selector.Selector(selectorstring);
+            selectorstring = Core.Selector.Selector.ReplaceVariables(selectorstring, context.DataContext);
+            var selector = new Core.Selector.Selector(selectorstring);
             var checkrunning = CheckRunning.Get(context);
             checkrunning = true;
             var pluginname = selector.First().Selector;
@@ -116,9 +117,9 @@ namespace OpenRPA.Activities
         protected override void CacheMetadata(NativeActivityMetadata metadata)
         {
             metadata.AddDelegate(Body);
-            Interfaces.Extensions.AddCacheArgument(metadata, "Selector", Selector);
-            Interfaces.Extensions.AddCacheArgument(metadata, "Timeout", Timeout);
-            Interfaces.Extensions.AddCacheArgument(metadata, "Result", Result);
+            Core.Extensions.AddCacheArgument(metadata, "Selector", Selector);
+            Core.Extensions.AddCacheArgument(metadata, "Timeout", Timeout);
+            Core.Extensions.AddCacheArgument(metadata, "Result", Result);
 
             metadata.AddImplementationVariable(_element);
             base.CacheMetadata(metadata);

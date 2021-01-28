@@ -13,6 +13,7 @@ using System.Windows.Input;
 using System.Windows.Media;
 using System.Windows.Media.Imaging;
 using System.Windows.Shapes;
+using OpenRPA.Core;
 
 namespace OpenRPA.Views
 {
@@ -88,12 +89,12 @@ namespace OpenRPA.Views
             try
             {
                 // if (downkeys == 0) typeText._keys.Clear();
-                typeText.AddKey(new Interfaces.Input.vKey((FlaUI.Core.WindowsAPI.VirtualKeyShort)e.Key, false), null);
+                typeText.AddKey(new Core.Input.vKey((FlaUI.Core.WindowsAPI.VirtualKeyShort)e.Key, false), null);
                 Text = typeText.result;
                 NotifyPropertyChanged("Text");
                 if (oneKeyOnly)
                 {
-                    typeText.AddKey(new Interfaces.Input.vKey((FlaUI.Core.WindowsAPI.VirtualKeyShort)e.Key, true), null);
+                    typeText.AddKey(new Core.Input.vKey((FlaUI.Core.WindowsAPI.VirtualKeyShort)e.Key, true), null);
                     InputDriver.Instance.OnKeyDown -= OnKeyDown;
                     InputDriver.Instance.OnKeyUp -= OnKeyUp;
                     Text = typeText.result;
@@ -112,7 +113,7 @@ namespace OpenRPA.Views
             Log.FunctionIndent("KeyboardSeqWindow", "OnKeyUp");
             try
             {
-                typeText.AddKey(new Interfaces.Input.vKey((FlaUI.Core.WindowsAPI.VirtualKeyShort)e.Key, true), null);
+                typeText.AddKey(new Core.Input.vKey((FlaUI.Core.WindowsAPI.VirtualKeyShort)e.Key, true), null);
                 Text = typeText.result;
                 NotifyPropertyChanged("Text");
                 if (typeText.keysdown == 0 && typeText._keys.Count > 0)

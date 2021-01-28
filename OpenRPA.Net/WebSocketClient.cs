@@ -1,4 +1,5 @@
-﻿using Newtonsoft.Json;
+﻿using OpenRPA.Core;
+using Newtonsoft.Json;
 using Newtonsoft.Json.Linq;
 using OpenRPA.Interfaces;
 using OpenRPA.Interfaces.entity;
@@ -28,7 +29,7 @@ namespace OpenRPA.Net
         public event Action OnOpen;
         public event Action<string> OnClose;
         public event QueueMessageDelegate OnQueueMessage;
-        public TokenUser user { get; private set; }
+        public ITokenUser user { get; private set; }
         public string jwt { get; private set; }
         public bool isConnected
         {
@@ -421,7 +422,7 @@ namespace OpenRPA.Net
             }
             return qm.reply as Message;
         }
-        public async Task<TokenUser> Signin(string username, SecureString password, string clientagent = "", string clientversion = "")
+        public async Task<ITokenUser> Signin(string username, SecureString password, string clientagent = "", string clientversion = "")
         {
             var asm = System.Reflection.Assembly.GetEntryAssembly();
             if (asm == null) asm = System.Reflection.Assembly.GetExecutingAssembly();
@@ -438,7 +439,7 @@ namespace OpenRPA.Net
             }
             return signin.user;
         }
-        public async Task<TokenUser> Signin(string jwt, string clientagent = "", string clientversion = "")
+        public async Task<ITokenUser> Signin(string jwt, string clientagent = "", string clientversion = "")
         {
             var asm = System.Reflection.Assembly.GetEntryAssembly();
             if (asm == null) asm = System.Reflection.Assembly.GetExecutingAssembly();
@@ -455,7 +456,7 @@ namespace OpenRPA.Net
             }
             return signin.user;
         }
-        public async Task<TokenUser> Signin(SecureString jwt, string clientagent = "", string clientversion = "")
+        public async Task<ITokenUser> Signin(SecureString jwt, string clientagent = "", string clientversion = "")
         {
             var asm = System.Reflection.Assembly.GetEntryAssembly();
             if (asm == null) asm = System.Reflection.Assembly.GetExecutingAssembly();
@@ -558,7 +559,7 @@ namespace OpenRPA.Net
             q = await q.SendMessage<DeleteOneMessage>(this);
             if (!string.IsNullOrEmpty(q.error)) throw new Exception(q.error);
         }
-        public async Task<string> UploadFile(string filepath, string path, metadata metadata)
+        public async Task<string> UploadFile(string filepath, string path, Imetadata metadata)
         {
             if (string.IsNullOrEmpty(path)) path = "";
             byte[] bytes = System.IO.File.ReadAllBytes(filepath);
@@ -568,7 +569,7 @@ namespace OpenRPA.Net
             q.mimeType = MimeTypeHelper.GetMimeType(System.IO.Path.GetExtension(filepath));
             q.file = base64;
             q.metadata = metadata;
-            if(q.metadata == null) q.metadata = new metadata();
+            if(q.metadata == null) q.metadata = new Core.entity.metadata();
             q.metadata.name = System.IO.Path.GetFileName(filepath);
             q.metadata.filename = q.filename;
             q.metadata.path = path;

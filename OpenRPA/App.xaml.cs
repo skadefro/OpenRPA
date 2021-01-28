@@ -11,6 +11,7 @@ using System.Runtime.CompilerServices;
 using System.Threading;
 using System.Threading.Tasks;
 using System.Windows;
+using OpenRPA.Core;
 
 namespace OpenRPA
 {
@@ -205,11 +206,11 @@ namespace OpenRPA
                 assemblyPath = System.IO.Path.Combine(folderPath, new AssemblyName(args.Name).Name + ".dll");
                 if (System.IO.File.Exists(assemblyPath)) return Assembly.LoadFrom(assemblyPath);
 
-                folderPath = Interfaces.Extensions.PluginsDirectory;
+                folderPath = Core.Extensions.PluginsDirectory;
                 assemblyPath = System.IO.Path.Combine(folderPath, new AssemblyName(args.Name).Name + ".dll");
                 if (System.IO.File.Exists(assemblyPath)) return Assembly.LoadFrom(assemblyPath);
 
-                folderPath = Interfaces.Extensions.ProjectsDirectory;
+                folderPath = Core.Extensions.ProjectsDirectory;
                 assemblyPath = System.IO.Path.Combine(folderPath, new AssemblyName(args.Name).Name + ".dll");
                 if (System.IO.File.Exists(assemblyPath)) return Assembly.LoadFrom(assemblyPath);
             }
@@ -224,7 +225,7 @@ namespace OpenRPA
         {
             MainWindow.Visibility = Visibility.Visible;
             // notifyIcon.Visible = false;
-            Interfaces.GenericTools.Restore();
+            Core.GenericTools.Restore();
         }
         private void Application_Exit(object sender, ExitEventArgs e)
         {
@@ -288,8 +289,8 @@ namespace OpenRPA
                 try
                 {
                     if (Config.local.showloadingscreen) splash.BusyContent = "loading plugins";
-                    // Plugins.LoadPlugins(RobotInstance.instance, Interfaces.Extensions.ProjectsDirectory);
-                    Plugins.LoadPlugins(RobotInstance.instance, Interfaces.Extensions.PluginsDirectory, false);
+                    // Plugins.LoadPlugins(RobotInstance.instance, Core.Extensions.ProjectsDirectory);
+                    Plugins.LoadPlugins(RobotInstance.instance, Core.Extensions.PluginsDirectory, false);
                     if (Config.local.showloadingscreen) splash.BusyContent = "Initialize main window";
                     await RobotInstance.instance.init();
                 }

@@ -1,4 +1,5 @@
 ﻿using Microsoft.CodeAnalysis;
+using OpenRPA.Core;
 using OpenRPA.Interfaces;
 using System;
 using System.Collections.Immutable;

@@ -110,7 +110,7 @@
     </Page>
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\OpenRPA.Interfaces\OpenRPA.Interfaces.csproj" />
+    <ProjectReference Include="..\OpenRPA.Core\OpenRPA.Core.csproj" />
   </ItemGroup>
   <ItemGroup>
     <Reference Include="PresentationCore" />

@@ -23,8 +23,6 @@ namespace OpenRPA
             System.Windows.DependencyProperty.Register("Data", typeof(object),
             typeof(BindingProxy), new System.Windows.UIPropertyMetadata(null));
     }
-
-
     public class RelayCommand<T> : System.Windows.Input.ICommand
     {
         #region Fields

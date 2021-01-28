@@ -11,6 +11,8 @@ using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Media;
 using System.Windows.Media.Imaging;
+using OpenRPA.Core;
+using OpenRPA.Core.Selector;
 
 namespace OpenRPA.Activities
 {
@@ -27,14 +29,14 @@ namespace OpenRPA.Activities
             int maxresult = 1;
 
             if (string.IsNullOrEmpty(SelectorString)) SelectorString = "[{Selector: 'Windows'}]";
-            var selector = new Interfaces.Selector.Selector(SelectorString);
+            var selector = new Core.Selector.Selector(SelectorString);
             var pluginname = selector.First().Selector;
-            var selectors = new Interfaces.Selector.SelectorWindow(pluginname, selector, maxresult);
+            var selectors = new Core.Selector.SelectorWindow(pluginname, selector, maxresult);
             // selectors.Owner = GenericTools.MainWindow;  -- Locks up and never returns ?
             if (selectors.ShowDialog() == true)
             {
                 ModelItem.Properties["Selector"].SetValue(new InArgument<string>() { Expression = new Literal<string>(selectors.vm.json) });
-                var Plugin = Interfaces.Plugins.recordPlugins.Where(x => x.Name == pluginname).First();
+                var Plugin = Core.Plugins.recordPlugins.Where(x => x.Name == pluginname).First();
                 var _base = Plugin.GetElementsWithSelector(selector, null, 10);
                 if (_base == null || _base.Length == 0) return;
                 var ele = _base[0];
@@ -75,28 +77,28 @@ namespace OpenRPA.Activities
         {
             string SelectorString = ModelItem.GetValue<string>("Selector");
             int maxresults = 1;
-            var selector = new Interfaces.Selector.Selector(SelectorString);
+            var selector = new Core.Selector.Selector(SelectorString);
 
             var pluginname = selector.First().Selector;
-            var Plugin = Interfaces.Plugins.recordPlugins.Where(x => x.Name == pluginname).First();
+            var Plugin = Core.Plugins.recordPlugins.Where(x => x.Name == pluginname).First();
 
             var elements = Plugin.GetElementsWithSelector(selector, null, maxresults);
             foreach (var ele in elements) await ele.Highlight(false, System.Drawing.Color.Red, TimeSpan.FromSeconds(1));
         }
         private void Select_Click(object sender, RoutedEventArgs e)
         {
-            Interfaces.GenericTools.Minimize();
+            Core.GenericTools.Minimize();
             StartRecordPlugins();
         }
         private void StartRecordPlugins()
         {
-            var p = Interfaces.Plugins.recordPlugins.Where(x => x.Name == "Windows").First();
+            var p = Core.Plugins.recordPlugins.Where(x => x.Name == "Windows").First();
             p.OnUserAction += OnUserAction;
             p.Start();
         }
         private void StopRecordPlugins()
         {
-            var p = Interfaces.Plugins.recordPlugins.Where(x => x.Name == "Windows").First();
+            var p = Core.Plugins.recordPlugins.Where(x => x.Name == "Windows").First();
             p.OnUserAction -= OnUserAction;
             p.Stop();
         }
@@ -105,15 +107,16 @@ namespace OpenRPA.Activities
             StopRecordPlugins();
             AutomationHelper.syncContext.Post(o =>
             {
-                Interfaces.GenericTools.Restore();
-                foreach (var p in Interfaces.Plugins.recordPlugins)
+                GenericTools.Restore();
+                foreach (var p in Plugins.recordPlugins)
                 {
                     if (p.Name != sender.Name)
                     {
                         if (p.ParseUserAction(ref e)) continue;
                     }
                 }
-                e.Selector.RemoveRange(2, e.Selector.Count - 2);
+                var sel = e.Selector as Selector;
+                sel.RemoveRange(2, sel.Count - 2);
                 ModelItem.Properties["Selector"].SetValue(new InArgument<string>() { Expression = new Literal<string>(e.Selector.ToString() ) });
                 var ele = e.Element;
                 if (ele != null && !(ele is UIElement))

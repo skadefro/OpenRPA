@@ -5,7 +5,6 @@ using System.ComponentModel;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
-using OpenRPA.Interfaces.Selector;
 
 namespace OpenRPA.Interfaces
 {
@@ -18,11 +17,17 @@ namespace OpenRPA.Interfaces
         event Action<IRecordPlugin, IRecordEvent> OnMouseMove;
         bool ParseUserAction(ref IRecordEvent e);
         bool ParseMouseMoveAction(ref IRecordEvent e);
-        Selector.treeelement[] GetRootElements(Selector.Selector anchor);
-        Selector.Selector GetSelector(Selector.Selector anchor, Selector.treeelement item);
-        IElement[] GetElementsWithSelector(Selector.Selector selector, IElement fromElement = null, int maxresults = 1);
-        IElement LaunchBySelector(Selector.Selector selector, bool CheckRunning, TimeSpan timeout);
-        void CloseBySelector(Selector.Selector selector, TimeSpan timeout, bool Force);
-        bool Match(SelectorItem item, IElement m);
+        // Selector.Itreeelement[] GetRootElements(Selector.ISelector anchor);
+        object[] GetRootElements(object anchor);
+        // Selector.ISelector GetSelector(Selector.ISelector anchor, Selector.Itreeelement item);
+        object GetSelector(object anchor, object item);
+        // IElement[] GetElementsWithSelector(Selector.ISelector selector, IElement fromElement = null, int maxresults = 1);
+        IElement[] GetElementsWithSelector(object selector, IElement fromElement = null, int maxresults = 1);
+        // bool Match(Selector.ISelectorItem item, IElement m);
+        bool Match(object item, IElement m);
+        // IElement LaunchBySelector(Selector.ISelector selector, bool CheckRunning, TimeSpan timeout);
+        IElement LaunchBySelector(object selector, bool CheckRunning, TimeSpan timeout);
+        // void CloseBySelector(Selector.ISelector selector, TimeSpan timeout, bool Force);
+        void CloseBySelector(object selector, TimeSpan timeout, bool Force);
     }
 }

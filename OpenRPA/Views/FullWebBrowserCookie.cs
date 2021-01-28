@@ -15,6 +15,7 @@ namespace OpenRPA.Views
     using System.Security.Permissions;
     using System.Text;
     using System.Windows.Forms;
+    using OpenRPA.Core;
     /// <SUMMARY></SUMMARY>   
     /// WebBrowserCookie?   
     /// webBrowser1.Document.CookieHttpOnlyCookie   

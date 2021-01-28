@@ -1,4 +1,5 @@
-﻿using System;
+﻿using OpenRPA.Interfaces.entity;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -7,7 +8,7 @@ using System.Threading.Tasks;
 namespace OpenRPA.Interfaces
 {
     public delegate void StatusEventHandler(string message);
-    public delegate void SignedinEventHandler(entity.TokenUser user);
+    public delegate void SignedinEventHandler(ITokenUser user);
     public delegate void DisconnectedEventHandler();
     public delegate void ConnectedEventHandler();
     public delegate void ReadyForActionEventHandler();
@@ -25,6 +26,5 @@ namespace OpenRPA.Interfaces
         IWorkflowInstance GetWorkflowInstanceByInstanceId(string InstanceId);
         List<IWorkflowInstance> WorkflowInstances { get; }
         void ParseCommandLineArgs(IList<string> args);
-
     }
 }

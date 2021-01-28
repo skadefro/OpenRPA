@@ -1,8 +1,9 @@
-﻿using Microsoft.VisualBasic.Activities;
+﻿using OpenRPA.Core;
+using Microsoft.VisualBasic.Activities;
 using Newtonsoft.Json.Linq;
 using OpenRPA.Input;
 using OpenRPA.Interfaces;
-using OpenRPA.Interfaces.entity;
+using OpenRPA.Core.entity;
 using OpenRPA.Net;
 using OpenRPA.Views;
 using System;
@@ -27,6 +28,7 @@ using System.Windows.Media.Imaging;
 using System.Windows.Navigation;
 using System.Windows.Shapes;
 using Xceed.Wpf.AvalonDock.Layout;
+using OpenRPA.Interfaces.entity;
 
 namespace OpenRPA
 {
@@ -44,7 +46,7 @@ namespace OpenRPA
             InitializeComponent();
             try
             {
-                if (System.IO.File.Exists(System.IO.Path.Combine(Interfaces.Extensions.ProjectsDirectory, "Snippets.dll"))) System.IO.File.Delete(System.IO.Path.Combine(Interfaces.Extensions.ProjectsDirectory, "Snippets.dll"));
+                if (System.IO.File.Exists(System.IO.Path.Combine(Core.Extensions.ProjectsDirectory, "Snippets.dll"))) System.IO.File.Delete(System.IO.Path.Combine(Core.Extensions.ProjectsDirectory, "Snippets.dll"));
                 if (System.IO.File.Exists("Snippets.dll")) System.IO.File.Delete("Snippets.dll");
             }
             catch (Exception)
@@ -126,7 +128,7 @@ namespace OpenRPA
                         string Name = "New Project";
                         try
                         {
-                            Project project = await Project.Create(Interfaces.Extensions.ProjectsDirectory, Name, true);
+                            Project project = await Project.Create(Core.Extensions.ProjectsDirectory, Name, true);
                             IWorkflow workflow = project.Workflows.First();
                             workflow.Project = project;
                             RobotInstance.instance.Projects.Add(project);
@@ -215,7 +217,7 @@ namespace OpenRPA
             {
                 if (_uilocals.Count == 0)
                 {
-                    var cultures = Interfaces.Extensions.GetAvailableCultures(typeof(OpenRPA.Resources.strings));
+                    var cultures = Core.Extensions.GetAvailableCultures(typeof(OpenRPA.Resources.strings));
                     _uilocals.Add(new uilocal("English (English [en])", "en"));
                     foreach (System.Globalization.CultureInfo culture in cultures)
                         _uilocals.Add(new uilocal(culture.NativeName + " (" + culture.EnglishName + " [" + culture.TwoLetterISOLanguageName + "])", culture.TwoLetterISOLanguageName));
@@ -273,9 +275,9 @@ namespace OpenRPA
                     Config.Save();
                     try
                     {
-                        if (System.IO.File.Exists(System.IO.Path.Combine(Interfaces.Extensions.ProjectsDirectory, "layout.config")))
+                        if (System.IO.File.Exists(System.IO.Path.Combine(Core.Extensions.ProjectsDirectory, "layout.config")))
                         {
-                            System.IO.File.Delete(System.IO.Path.Combine(Interfaces.Extensions.ProjectsDirectory, "layout.config"));
+                            System.IO.File.Delete(System.IO.Path.Combine(Core.Extensions.ProjectsDirectory, "layout.config"));
                         }
                         SkipLayoutSaving = true;
                         //System.Threading.Thread.CurrentThread.CurrentUICulture = System.Globalization.CultureInfo.GetCultureInfo(Config.local.culture);
@@ -769,16 +771,16 @@ namespace OpenRPA
         {
             get
             {
-                return Interfaces.win32.ChildSession.IsChildSessionsEnabled();
+                return Core.win32.ChildSession.IsChildSessionsEnabled();
             }
             set
             {
                 var state = (bool)value;
                 try
                 {
-                    if (Interfaces.win32.ChildSession.IsChildSessionsEnabled())
+                    if (Core.win32.ChildSession.IsChildSessionsEnabled())
                     {
-                        if (state == false) Interfaces.win32.ChildSession.DisableChildSessions();
+                        if (state == false) Core.win32.ChildSession.DisableChildSessions();
                     }
                     else
                     {
@@ -787,7 +789,7 @@ namespace OpenRPA
                             var messageBoxResult = MessageBox.Show("Enable ChildSessions ?\nYou will be prompted for username and password until you have restarted your computer\nYou can only enabled child session if you ran the robot with administrator rights!", "Enable ChildSessions", MessageBoxButton.YesNo);
                             if (messageBoxResult == MessageBoxResult.Yes)
                             {
-                                Interfaces.win32.ChildSession.EnableChildSessions();
+                                Core.win32.ChildSession.EnableChildSessions();
                                 MessageBox.Show("Child sessions enabled, you may need to reboot for this to work.\nIf you do not reboot now, you may be prompted for username and password\n the first time you start the child session");
                             }
                         }
@@ -1196,12 +1198,12 @@ namespace OpenRPA
             if (DetectorsView != null)
             {
                 if (!(DetectorsView.lidtDetectors.SelectedItem is IDetectorPlugin detector)) return;
-                result = detector.Entity;
+                result = detector.Entity as apibase;
             }
             List<ace> orgAcl = new List<ace>();
             try
             {
-                result._acl.ForEach((a) => { if (a != null) orgAcl.Add(new ace(a)); });
+                result._acl.ForEach((a) => { if (a != null) orgAcl.Add(new ace(a as ace)); });
                 Log.Function("MainWindow", "OnPermissions", "Create and show Views.PermissionsWindow");
                 var pw = new Views.PermissionsWindow(result);
                 Hide();
@@ -1301,14 +1303,14 @@ namespace OpenRPA
                 {
                     Project project = Newtonsoft.Json.JsonConvert.DeserializeObject<Project>(System.IO.File.ReadAllText(filename));
                     var sourcepath = System.IO.Path.GetDirectoryName(filename);
-                    var projectpath = Interfaces.Extensions.ProjectsDirectory + "\\" + project.name;
+                    var projectpath = Core.Extensions.ProjectsDirectory + "\\" + project.name;
                     int index = 1;
                     string name = project.name;
                     while (System.IO.Directory.Exists(projectpath))
                     {
                         index++;
                         name = project.name + index.ToString();
-                        projectpath = Interfaces.Extensions.ProjectsDirectory + "\\" + name;
+                        projectpath = Core.Extensions.ProjectsDirectory + "\\" + name;
                     }
                     System.IO.Directory.CreateDirectory(projectpath);
                     System.IO.File.Copy(filename, System.IO.Path.Combine(projectpath, name + ".rpaproj"));
@@ -1551,7 +1553,7 @@ namespace OpenRPA
             try
             {
                 var filename = "settings.json";
-                var path = Interfaces.Extensions.ProjectsDirectory;
+                var path = Core.Extensions.ProjectsDirectory;
                 string settingsFile = System.IO.Path.Combine(path, filename);
                 var process = new System.Diagnostics.Process
                 {
@@ -1963,7 +1965,7 @@ namespace OpenRPA
                 try
                 {
                     var serializer = new Xceed.Wpf.AvalonDock.Layout.Serialization.XmlLayoutSerializer(DManager);
-                    using (var stream = new System.IO.StreamWriter(System.IO.Path.Combine(Interfaces.Extensions.ProjectsDirectory, "layout.config")))
+                    using (var stream = new System.IO.StreamWriter(System.IO.Path.Combine(Core.Extensions.ProjectsDirectory, "layout.config")))
                         serializer.Serialize(stream);
                 }
                 catch (Exception)
@@ -1989,11 +1991,11 @@ namespace OpenRPA
                     var fi = new System.IO.FileInfo("layout.config");
                     var di = fi.Directory;
 
-                    if (System.IO.File.Exists(System.IO.Path.Combine(Interfaces.Extensions.ProjectsDirectory, "layout.config")))
+                    if (System.IO.File.Exists(System.IO.Path.Combine(Core.Extensions.ProjectsDirectory, "layout.config")))
                     {
                         var ds = DManager.Layout.Descendents();
                         var serializer = new Xceed.Wpf.AvalonDock.Layout.Serialization.XmlLayoutSerializer(DManager);
-                        using (var stream = new System.IO.StreamReader(System.IO.Path.Combine(Interfaces.Extensions.ProjectsDirectory, "layout.config")))
+                        using (var stream = new System.IO.StreamReader(System.IO.Path.Combine(Core.Extensions.ProjectsDirectory, "layout.config")))
                             serializer.Deserialize(stream);
                         ds = DManager.Layout.Descendents();
                     }
@@ -2265,7 +2267,7 @@ namespace OpenRPA
                     return;
                 }
                 //string Name = "New project";
-                Project project = await Project.Create(Interfaces.Extensions.ProjectsDirectory, Name, true);
+                Project project = await Project.Create(Core.Extensions.ProjectsDirectory, Name, true);
                 IWorkflow workflow = project.Workflows.First();
                 workflow.Project = project;
                 RobotInstance.instance.Projects.Add(project);
@@ -2821,14 +2823,14 @@ namespace OpenRPA
                     {
                         Log.Debug("re-use existing TypeText");
                         var item = (Activities.TypeText)view.Lastinserted;
-                        item.AddKey(new Interfaces.Input.vKey((FlaUI.Core.WindowsAPI.VirtualKeyShort)e.Key, false), view.Lastinsertedmodel);
+                        item.AddKey(new Core.Input.vKey((FlaUI.Core.WindowsAPI.VirtualKeyShort)e.Key, false), view.Lastinsertedmodel);
                     }
                     else
                     {
                         Log.Debug("Add new TypeText");
                         var rme = new Activities.TypeText();
                         view.Lastinsertedmodel = view.AddRecordingActivity(rme, null);
-                        rme.AddKey(new Interfaces.Input.vKey((FlaUI.Core.WindowsAPI.VirtualKeyShort)e.Key, false), view.Lastinsertedmodel);
+                        rme.AddKey(new Core.Input.vKey((FlaUI.Core.WindowsAPI.VirtualKeyShort)e.Key, false), view.Lastinsertedmodel);
                         view.Lastinserted = rme;
                     }
                     view.ReadOnly = true;
@@ -2865,7 +2867,7 @@ namespace OpenRPA
                         Log.Debug("re-use existing TypeText");
                         view.ReadOnly = false;
                         var item = (Activities.TypeText)view.Lastinserted;
-                        item.AddKey(new Interfaces.Input.vKey((FlaUI.Core.WindowsAPI.VirtualKeyShort)e.Key, true), view.Lastinsertedmodel);
+                        item.AddKey(new Core.Input.vKey((FlaUI.Core.WindowsAPI.VirtualKeyShort)e.Key, true), view.Lastinsertedmodel);
                         view.ReadOnly = true;
                     }
                 }
@@ -2902,7 +2904,7 @@ namespace OpenRPA
             }
             Log.FunctionOutdent("MainWindow", "StopDetectorPlugins");
         }
-        Interfaces.Overlay.OverlayWindow _overlayWindow = null;
+        Core.Overlay.OverlayWindow _overlayWindow = null;
         private void StartRecordPlugins(bool all)
         {
             Log.FunctionIndent("MainWindow", "StartRecordPlugins");
@@ -2915,7 +2917,7 @@ namespace OpenRPA
                 p.Start();
                 if (_overlayWindow == null && Config.local.record_overlay)
                 {
-                    _overlayWindow = new Interfaces.Overlay.OverlayWindow(true)
+                    _overlayWindow = new Core.Overlay.OverlayWindow(true)
                     {
                         BackColor = System.Drawing.Color.PaleGreen,
                         Visible = true,
@@ -3199,10 +3201,11 @@ namespace OpenRPA
                     Log.FunctionOutdent("MainWindow", "OnDetector", "isConnected is false");
                     return;
                 }
-                Interfaces.mq.RobotCommand command = new Interfaces.mq.RobotCommand();
+                Core.mq.RobotCommand command = new Core.mq.RobotCommand();
                 // detector.user = global.webSocketClient.user;
                 var data = JObject.FromObject(detector);
-                var Entity = (plugin.Entity as Detector);
+                // var Entity = (plugin.Entity as Detector);
+                var Entity = plugin.Entity;
                 command.command = "detector";
                 command.detectorid = Entity._id;
                 if (string.IsNullOrEmpty(Entity._id))
@@ -3254,7 +3257,7 @@ namespace OpenRPA
                 if (!string.IsNullOrEmpty(instance.queuename) && !string.IsNullOrEmpty(instance.correlationId))
                 {
                     isRemote = true;
-                    Interfaces.mq.RobotCommand command = new Interfaces.mq.RobotCommand();
+                    Core.mq.RobotCommand command = new Core.mq.RobotCommand();
                     var data = JObject.FromObject(instance.Parameters);
                     command.command = "invoke" + instance.state;
                     command.workflowid = instance.WorkflowId;
@@ -3356,7 +3359,7 @@ namespace OpenRPA
         private void TesseractLang_Click(object sender, RoutedEventArgs e)
         {
             Log.FunctionIndent("MainWindow", "TesseractLang_Click");
-            string path = System.IO.Path.Combine(Interfaces.Extensions.ProjectsDirectory, "tessdata");
+            string path = System.IO.Path.Combine(Core.Extensions.ProjectsDirectory, "tessdata");
             TesseractDownloadLangFile(path, Config.local.ocrlanguage);
             System.Windows.MessageBox.Show("Download complete");
             Log.FunctionOutdent("MainWindow", "TesseractLang_Click");
@@ -3642,11 +3645,11 @@ namespace OpenRPA
         internal Views.ChildSession childSession;
         private bool CanPlayInChild(object _item)
         {
-            if (Interfaces.IPCService.OpenRPAServiceUtil.RemoteInstance == null) return false;
-            if (!Interfaces.IPCService.OpenRPAServiceUtil._ChildSession) return false;
+            if (Core.IPCService.OpenRPAServiceUtil.RemoteInstance == null) return false;
+            if (!Core.IPCService.OpenRPAServiceUtil._ChildSession) return false;
             try
             {
-                Interfaces.IPCService.OpenRPAServiceUtil.RemoteInstance.Ping();
+                Core.IPCService.OpenRPAServiceUtil.RemoteInstance.Ping();
                 return CanPlay(_item);
             }
             catch (Exception)
@@ -3675,7 +3678,7 @@ namespace OpenRPA
                 {
                     if (this.Minimize) GenericTools.Minimize();
                     var param = new Dictionary<string, object>();
-                    await Task.Run(() => Interfaces.IPCService.OpenRPAServiceUtil.RemoteInstance.RunWorkflowByIDOrRelativeFilename(workflow.IDOrRelativeFilename, true, param));
+                    await Task.Run(() => Core.IPCService.OpenRPAServiceUtil.RemoteInstance.RunWorkflowByIDOrRelativeFilename(workflow.IDOrRelativeFilename, true, param));
                 }
                 catch (Exception ex)
                 {
@@ -3705,7 +3708,7 @@ namespace OpenRPA
                 var designer = (Views.WFDesigner)SelectedContent;
                 if (designer.HasChanged) { await designer.SaveAsync(); }
                 var param = new Dictionary<string, object>();
-                await Task.Run(() => Interfaces.IPCService.OpenRPAServiceUtil.RemoteInstance.RunWorkflowByIDOrRelativeFilename(designer.Workflow.IDOrRelativeFilename, true, param));
+                await Task.Run(() => Core.IPCService.OpenRPAServiceUtil.RemoteInstance.RunWorkflowByIDOrRelativeFilename(designer.Workflow.IDOrRelativeFilename, true, param));
             }
             catch (Exception ex)
             {
@@ -3730,14 +3733,14 @@ namespace OpenRPA
             {
                 childSession = new ChildSession();
             }
-            uint SessionId = Interfaces.win32.ChildSession.GetChildSessionId();
+            uint SessionId = Core.win32.ChildSession.GetChildSessionId();
             if (SessionId > 0)
             {
                 var winstation = UserLogins.QuerySessionInformation((int)SessionId, UserLogins.WTS_INFO_CLASS.WTSWinStationName);
                 if (!string.IsNullOrEmpty(winstation))
                 {
                     // Interfaces.win32.ChildSession.LogOffChildSession();
-                    Interfaces.win32.ChildSession.DisconnectChildSession();
+                    Core.win32.ChildSession.DisconnectChildSession();
                 }
             }
             childSession.Show();

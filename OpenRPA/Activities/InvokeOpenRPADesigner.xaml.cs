@@ -1,6 +1,6 @@
 ﻿using Microsoft.VisualBasic.Activities;
 using OpenRPA.Interfaces;
-using OpenRPA.Interfaces.entity;
+using OpenRPA.Core.entity;
 using System;
 using System.Activities;
 using System.Activities.Expressions;
@@ -14,6 +14,7 @@ using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Media;
 using System.Windows.Media.Imaging;
+using OpenRPA.Core;
 
 namespace OpenRPA.Activities
 {
@@ -92,7 +93,7 @@ namespace OpenRPA.Activities
                 if(!exists)
                 {
 
-                    Type t = OpenRPA.Interfaces.Extensions.FindType(p.type);
+                    Type t = Core.Extensions.FindType(p.type);
                     if (p.type == "System.Data.DataTable") t = typeof(System.Data.DataTable);
                     if (t == null) throw new ArgumentException("Failed resolving type '" + p.type + "'");
 

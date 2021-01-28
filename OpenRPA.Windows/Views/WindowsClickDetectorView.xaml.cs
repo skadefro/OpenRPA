@@ -1,4 +1,5 @@
-﻿using OpenRPA.Interfaces;
+﻿using OpenRPA.Core.entity;
+using OpenRPA.Interfaces;
 using OpenRPA.Interfaces.entity;
 using System;
 using System.Collections.Generic;
@@ -32,7 +33,7 @@ namespace OpenRPA.Windows.Views
         {
             InitializeComponent();
             this.plugin = plugin;
-            HighlightImage.Source = Interfaces.Extensions.GetImageSourceFromResource("search.png");
+            HighlightImage.Source = Core.Extensions.GetImageSourceFromResource("search.png");
             DataContext = this;
         }
         private IDetectorPlugin plugin;
@@ -74,16 +75,16 @@ namespace OpenRPA.Windows.Views
         private void Open_Selector_Click(object sender, RoutedEventArgs e)
         {
             string SelectorString = Selector;
-            Interfaces.Selector.SelectorWindow selectors;
+            Core.Selector.SelectorWindow selectors;
             if (!string.IsNullOrEmpty(SelectorString))
             {
                 var selector = new WindowsSelector(SelectorString);
-                selectors = new Interfaces.Selector.SelectorWindow("Windows", selector, null, 10);
+                selectors = new Core.Selector.SelectorWindow("Windows", selector, null, 10);
             }
             else
             {
                 var selector = new WindowsSelector("[{Selector: 'Windows'}]");
-                selectors = new Interfaces.Selector.SelectorWindow("Windows", selector, null, 10);
+                selectors = new Core.Selector.SelectorWindow("Windows", selector, null, 10);
             }
             // selectors.Owner = GenericTools.MainWindow;  -- Locks up and never returns ?
             if (selectors.ShowDialog() == true)
@@ -95,30 +96,30 @@ namespace OpenRPA.Windows.Views
         }
         private void Highlight_Click(object sender, RoutedEventArgs e)
         {
-            HighlightImage.Source = Interfaces.Extensions.GetImageSourceFromResource(".x.png");
+            HighlightImage.Source = Core.Extensions.GetImageSourceFromResource(".x.png");
             string SelectorString = Selector;
             var selector = new WindowsSelector(SelectorString);
             var elements = WindowsSelector.GetElementsWithuiSelector(selector, null, 10, null);
             if (elements.Count() > 0)
             {
-                HighlightImage.Source = Interfaces.Extensions.GetImageSourceFromResource("check.png");
+                HighlightImage.Source = Core.Extensions.GetImageSourceFromResource("check.png");
             }
             foreach (var ele in elements) ele.Highlight(false, System.Drawing.Color.Red, TimeSpan.FromSeconds(1));
         }
         private void Select_Click(object sender, RoutedEventArgs e)
         {
-            Interfaces.GenericTools.Minimize();
+            Core.GenericTools.Minimize();
             StartRecordPlugins();
         }
         private void StartRecordPlugins()
         {
-            var p = Interfaces.Plugins.recordPlugins.Where(x => x.Name == "Windows").First();
+            var p = Core.Plugins.recordPlugins.Where(x => x.Name == "Windows").First();
             p.OnUserAction += OnUserAction;
             p.Start();
         }
         private void StopRecordPlugins()
         {
-            var p = Interfaces.Plugins.recordPlugins.Where(x => x.Name == "Windows").First();
+            var p = Core.Plugins.recordPlugins.Where(x => x.Name == "Windows").First();
             p.OnUserAction -= OnUserAction;
             p.Stop();
         }
@@ -127,8 +128,8 @@ namespace OpenRPA.Windows.Views
             StopRecordPlugins();
             AutomationHelper.syncContext.Post(o =>
             {
-                Interfaces.GenericTools.Restore();
-                foreach (var p in Interfaces.Plugins.recordPlugins)
+                Core.GenericTools.Restore();
+                foreach (var p in Core.Plugins.recordPlugins)
                 {
                     if (p.Name != sender.Name)
                     {

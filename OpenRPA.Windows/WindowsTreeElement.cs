@@ -2,7 +2,7 @@
 using FlaUI.Core.AutomationElements;
 using FlaUI.Core.AutomationElements.Infrastructure;
 using FlaUI.Core.Definitions;
-using OpenRPA.Interfaces.Selector;
+using OpenRPA.Core.Selector;
 using System;
 using System.Collections.Generic;
 using System.Linq;

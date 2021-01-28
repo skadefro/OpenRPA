@@ -9,6 +9,7 @@ using System.Runtime.DurableInstancing;
 using System.Runtime.Serialization;
 using System.Xml;
 using System.Xml.Linq;
+using OpenRPA.Core;
 
 namespace OpenRPA.Store
 {

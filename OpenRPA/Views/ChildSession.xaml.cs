@@ -4,7 +4,7 @@ using MSTSCLib;
 using Newtonsoft.Json.Linq;
 using OpenRPA.Input;
 using OpenRPA.Interfaces;
-using OpenRPA.Interfaces.entity;
+using OpenRPA.Core.entity;
 using OpenRPA.Net;
 using OpenRPA.Views;
 using System;
@@ -29,6 +29,7 @@ using System.Windows.Media.Imaging;
 using System.Windows.Navigation;
 using System.Windows.Shapes;
 using Xceed.Wpf.AvalonDock.Layout;
+using OpenRPA.Core;
 
 namespace OpenRPA.Views
 {
@@ -101,7 +102,7 @@ namespace OpenRPA.Views
                         {
                             if(!connected)
                             {
-                                connected = Interfaces.IPCService.OpenRPAServiceUtil.GetInstance(ChildSession: true);
+                                connected = Core.IPCService.OpenRPAServiceUtil.GetInstance(ChildSession: true);
                                 if(connected)
                                 {
                                     try
@@ -118,7 +119,7 @@ namespace OpenRPA.Views
                             } 
                             else
                             {
-                                connected = Interfaces.IPCService.OpenRPAServiceUtil.GetInstance(ChildSession: true);
+                                connected = Core.IPCService.OpenRPAServiceUtil.GetInstance(ChildSession: true);
                             }
                             System.Threading.Thread.Sleep(1000);
                         }

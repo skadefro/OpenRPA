@@ -1,8 +1,9 @@
-﻿using FlaUI.Core;
+﻿using OpenRPA.Core;
+using FlaUI.Core;
 using FlaUI.Core.AutomationElements;
 using FlaUI.Core.AutomationElements.Infrastructure;
+using OpenRPA.Core.Selector;
 using OpenRPA.Interfaces;
-using OpenRPA.Interfaces.Selector;
 using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;

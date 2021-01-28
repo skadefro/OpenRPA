@@ -7,6 +7,7 @@ using System.Diagnostics;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using OpenRPA.Core;
 
 namespace OpenRPA.Activities
 {

@@ -6,13 +6,9 @@ using System.Threading.Tasks;
 
 namespace OpenRPA.Interfaces.entity
 {
-    public class Rolemember
+    public interface IRolemember
     {
-        public string _id { get; set; }
-        public string name { get; set; }
-        public override string ToString()
-        {
-            return name;
-        }
+        string _id { get; set; }
+        string name { get; set; }
     }
 }

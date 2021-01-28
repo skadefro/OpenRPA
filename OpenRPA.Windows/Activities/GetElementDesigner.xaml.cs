@@ -1,4 +1,5 @@
 ﻿using Microsoft.VisualBasic.Activities;
+using OpenRPA.Core;
 using OpenRPA.Interfaces;
 using System;
 using System.Activities;
@@ -19,7 +20,7 @@ namespace OpenRPA.Windows
         public GetElementDesigner()
         {
             InitializeComponent();
-            HighlightImage = Interfaces.Extensions.GetImageSourceFromResource("search.png");
+            HighlightImage = Core.Extensions.GetImageSourceFromResource("search.png");
         }
         public event PropertyChangedEventHandler PropertyChanged;
         private void NotifyPropertyChanged(String propertyName)
@@ -45,14 +46,14 @@ namespace OpenRPA.Windows
             }
             string SelectorString = ModelItem.GetValue<string>("Selector");
             int maxresults = ModelItem.GetValue<int>("MaxResults");
-            Interfaces.Selector.SelectorWindow selectors;
+            Core.Selector.SelectorWindow selectors;
             if (!string.IsNullOrEmpty(SelectorString)) {
                 var selector = new WindowsSelector(SelectorString);
-                selectors = new Interfaces.Selector.SelectorWindow("Windows", selector, anchor, maxresults);
+                selectors = new Core.Selector.SelectorWindow("Windows", selector, anchor, maxresults);
             } else
             {
                 var selector = new WindowsSelector("[{Selector: 'Windows'}]");
-                selectors = new Interfaces.Selector.SelectorWindow("Windows", selector, anchor, maxresults);
+                selectors = new Core.Selector.SelectorWindow("Windows", selector, anchor, maxresults);
             }
             // selectors.Owner = GenericTools.MainWindow; -- Locks up and never returns ?
             if (selectors.ShowDialog() == true)
@@ -98,7 +99,7 @@ namespace OpenRPA.Windows
                 loadFrom = loadFrom.Parent;
             }
 
-            HighlightImage = Interfaces.Extensions.GetImageSourceFromResource(".x.png");
+            HighlightImage = Core.Extensions.GetImageSourceFromResource(".x.png");
             NotifyPropertyChanged("HighlightImage");
             string SelectorString = ModelItem.GetValue<string>("Selector");
             int maxresults = ModelItem.GetValue<int>("MaxResults");
@@ -125,7 +126,7 @@ namespace OpenRPA.Windows
 
                 if (elements.Count() > 0)
                 {
-                    HighlightImage = Interfaces.Extensions.GetImageSourceFromResource("check.png");
+                    HighlightImage = Core.Extensions.GetImageSourceFromResource("check.png");
                     NotifyPropertyChanged("HighlightImage");
                 }
                 foreach (var ele in elements) ele.Highlight(false, System.Drawing.Color.Red, TimeSpan.FromSeconds(1));
@@ -146,12 +147,12 @@ namespace OpenRPA.Windows
             {
                 var image = ImageString;
                 System.Drawing.Bitmap b = Task.Run(() => {
-                    return Interfaces.Image.Util.LoadBitmap(image);
+                    return Core.Image.Util.LoadBitmap(image);
                 }).Result;
                 using (b)
                 {
                     if (b == null) return null;
-                    return Interfaces.Image.Util.BitmapToImageSource(b, Interfaces.Image.Util.ActivityPreviewImageWidth, Interfaces.Image.Util.ActivityPreviewImageHeight);
+                    return Core.Image.Util.BitmapToImageSource(b, Core.Image.Util.ActivityPreviewImageWidth, Core.Image.Util.ActivityPreviewImageHeight);
                 }
             }
         }

@@ -26,12 +26,12 @@ namespace OpenRPA
     using System.Runtime.InteropServices;
     using System.ComponentModel;
     using OpenRPA.Interfaces;
+    using OpenRPA.Core;
 
     public interface ISingleInstanceApp
     {
         bool SignalExternalCommandLineArgs(IList<string> args);
     }
-
     /// <summary>
     /// This class checks to make sure that only one instance of 
     /// this application is running at a time.
@@ -45,49 +45,38 @@ namespace OpenRPA
     /// </remarks>
     public static class SingleInstance<TApplication>
                 where TApplication : Application, ISingleInstanceApp
-
     {
         #region Private Fields
-
         /// <summary>
         /// String delimiter used in channel names.
         /// </summary>
         private const string Delimiter = ":";
-
         /// <summary>
         /// Suffix to the channel name.
         /// </summary>
         private const string ChannelNameSuffix = "SingeInstanceIPCChannel";
-
         /// <summary>
         /// Remote service name.
         /// </summary>
         private const string RemoteServiceName = "SingleInstanceApplicationService";
-
         /// <summary>
         /// IPC protocol used (string).
         /// </summary>
         private const string IpcProtocol = "ipc://";
-
         /// <summary>
         /// Application mutex.
         /// </summary>
         private static Mutex singleInstanceMutex;
-
         /// <summary>
         /// IPC channel for communications.
         /// </summary>
         private static IpcServerChannel channel;
-
         /// <summary>
         /// List of command line arguments for the application.
         /// </summary>
         private static IList<string> commandLineArgs;
-
         #endregion
-
         #region Public Properties
-
         /// <summary>
         /// Gets list of command line arguments for the application.
         /// </summary>
@@ -95,11 +84,9 @@ namespace OpenRPA
         {
             get { return commandLineArgs; }
         }
-
         #endregion
 
         #region Public Methods
-
         /// <summary>
         /// Checks if the instance of the application attempting to start is the first instance. 
         /// If not, activates the first instance.
@@ -125,7 +112,6 @@ namespace OpenRPA
 
             return firstInstance;
         }
-
         /// <summary>
         /// Cleans up single-instance code, clearing shared resources, mutexes, etc.
         /// </summary>
@@ -143,11 +129,9 @@ namespace OpenRPA
                 channel = null;
             }
         }
-
         #endregion
 
         #region Private Methods
-
         /// <summary>
         /// Gets command line args - for ClickOnce deployed applications, command line args may not be passed directly, they have to be retrieved.
         /// </summary>
@@ -191,7 +175,6 @@ namespace OpenRPA
             }
             return new List<string>(args);
         }
-
         /// <summary>
         /// Creates a remote service for communication.
         /// </summary>
@@ -216,7 +199,6 @@ namespace OpenRPA
             IPCRemoteService remoteService = new IPCRemoteService();
             RemotingServices.Marshal(remoteService, RemoteServiceName);
         }
-
         /// <summary>
         /// Creates a client channel and obtains a reference to the remoting service exposed by the server - 
         /// in this case, the remoting service exposed by the first instance. Calls a function of the remoting service 
@@ -245,7 +227,6 @@ namespace OpenRPA
                 firstInstanceRemoteServiceReference.InvokeFirstInstance(args);
             }
         }
-
         /// <summary>
         /// Callback for activating first instance of the application.
         /// </summary>
@@ -258,7 +239,6 @@ namespace OpenRPA
             ActivateFirstInstance(args);
             return null;
         }
-
         /// <summary>
         /// Activates the first instance of the application with arguments from a second instance.
         /// </summary>
@@ -273,11 +253,9 @@ namespace OpenRPA
 
             ((TApplication)Application.Current).SignalExternalCommandLineArgs(args);
         }
-
         #endregion
 
         #region Private Classes
-
         /// <summary>
         /// Remoting service class which is exposed by the server i.e the first instance and called by the second instance
         /// to pass on the command line arguments to the first instance and cause it to activate itself.
@@ -297,7 +275,6 @@ namespace OpenRPA
                         DispatcherPriority.Normal, new DispatcherOperationCallback(SingleInstance<TApplication>.ActivateFirstInstanceCallback), args);
                 }
             }
-
             /// <summary>
             /// Remoting Object's ease expires after every 5 minutes by default. We need to override the InitializeLifetimeService class
             /// to ensure that lease never expires.
@@ -308,7 +285,6 @@ namespace OpenRPA
                 return null;
             }
         }
-
         #endregion
     }
 }

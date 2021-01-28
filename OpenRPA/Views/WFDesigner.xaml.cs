@@ -1,5 +1,7 @@
 ﻿using Newtonsoft.Json.Linq;
+using OpenRPA.Core;
 using OpenRPA.Interfaces;
+using OpenRPA.Interfaces.entity;
 using System;
 using System.Activities;
 using System.Activities.Core.Presentation;
@@ -108,7 +110,7 @@ namespace OpenRPA.Views
         public bool HasChanged { get; set; }
         public void forceHasChanged(bool value) { HasChanged = value; }
         public ModelItem SelectedActivity { get; private set; }
-        public IProject Project
+        public Project Project
         {
             get
             {
@@ -382,7 +384,7 @@ namespace OpenRPA.Views
         }
         public async Task<bool> SaveAsync()
         {
-            var imagepath = System.IO.Path.Combine(Interfaces.Extensions.ProjectsDirectory, "images");
+            var imagepath = System.IO.Path.Combine(Core.Extensions.ProjectsDirectory, "images");
             if (!System.IO.Directory.Exists(imagepath)) System.IO.Directory.CreateDirectory(imagepath);
             WorkflowDesigner.Flush();
             if (global.isConnected)
@@ -414,7 +416,7 @@ namespace OpenRPA.Views
                             string image = item.Properties["Image"].Value.ToString();
                             if (!System.Text.RegularExpressions.Regex.Match(image, "[a-f0-9]{24}").Success)
                             {
-                                var metadata = new OpenRPA.Interfaces.entity.metadata
+                                var metadata = new OpenRPA.Core.entity.metadata
                                 {
                                     // metadata.AddRight(global.webSocketClient.user, null);
                                     _acl = Workflow._acl,
@@ -454,7 +456,7 @@ namespace OpenRPA.Views
                 WorkflowDesigner.Flush();
                 if (!string.IsNullOrEmpty(Workflow._id))
                 {
-                    var files = await global.webSocketClient.Query<Interfaces.entity.metadata>("files", "{\"metadata.workflow\": \"" + Workflow._id + "\"}");
+                    var files = await global.webSocketClient.Query<Core.entity.metadata>("files", "{\"metadata.workflow\": \"" + Workflow._id + "\"}");
                     var unusedfiles = files.Where(x => !usedimages.Contains(x._id)).ToList();
                     //Console.WriteLine("usedimages: " + usedimages.Count);
                     //Console.WriteLine("files: " + files.Length);
@@ -1270,7 +1272,7 @@ Union(modelService.Find(modelService.Root, typeof(System.Activities.Debugger.Sta
 
             if (!string.IsNullOrEmpty(instance.queuename) && !string.IsNullOrEmpty(instance.correlationId))
             {
-                Interfaces.mq.RobotCommand command = new Interfaces.mq.RobotCommand();
+                Core.mq.RobotCommand command = new Core.mq.RobotCommand();
                 var data = JObject.FromObject(instance.Parameters);
                 command.command = "invoke" + instance.state;
                 command.workflowid = instance.WorkflowId;
@@ -1324,7 +1326,7 @@ Union(modelService.Find(modelService.Root, typeof(System.Activities.Debugger.Sta
                     Properties = WorkflowDesigner.PropertyInspectorView;
                     if (global.isConnected)
                     {
-                        ReadOnly = !Workflow.hasRight(global.webSocketClient.user, Interfaces.entity.ace_right.update);
+                        ReadOnly = !Workflow.hasRight(global.webSocketClient.user, ace_right.update);
                     }
                     else
                     {
@@ -1442,7 +1444,7 @@ Union(modelService.Find(modelService.Root, typeof(System.Activities.Debugger.Sta
                 // InitializeStateEnvironment();
                 if (global.isConnected)
                 {
-                    if (!Workflow.hasRight(global.webSocketClient.user, Interfaces.entity.ace_right.invoke))
+                    if (!Workflow.hasRight(global.webSocketClient.user, ace_right.invoke))
                     {
                         Log.Error("Access denied, " + global.webSocketClient.user.username + " does not have invoke permission");
                         return;
@@ -1944,7 +1946,7 @@ Union(modelService.Find(modelService.Root, typeof(System.Activities.Debugger.Sta
                 InitializeStateEnvironment();
                 if (global.isConnected)
                 {
-                    if (!Workflow.hasRight(global.webSocketClient.user, Interfaces.entity.ace_right.invoke))
+                    if (!Workflow.hasRight(global.webSocketClient.user, ace_right.invoke))
                     {
                         Log.Error("Access denied, " + global.webSocketClient.user.username + " does not have invoke permission");
                         return;
@@ -1978,8 +1980,6 @@ Union(modelService.Find(modelService.Root, typeof(System.Activities.Debugger.Sta
 
             });
         }
-
-
         public static async Task<string> LoadImages(string xaml)
         {
             WorkflowDesigner wfDesigner;
@@ -2000,9 +2000,9 @@ Union(modelService.Find(modelService.Root, typeof(System.Activities.Debugger.Sta
                         string image = item.Properties["Image"].Value.ToString();
                         if (System.Text.RegularExpressions.Regex.Match(image, "[a-f0-9]{24}").Success)
                         {
-                            using (var b = await Interfaces.Image.Util.LoadBitmap(image))
+                            using (var b = await Core.Image.Util.LoadBitmap(image))
                             {
-                                image = Interfaces.Image.Util.Bitmap2Base64(b);
+                                image = Core.Image.Util.Bitmap2Base64(b);
                             }
                             item.Properties["Image"].SetValue(image);
                         }

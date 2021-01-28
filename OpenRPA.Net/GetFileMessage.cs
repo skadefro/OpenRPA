@@ -15,7 +15,7 @@ namespace OpenRPA.Net
         public string filename { get; set; }
         public string file { get; set; }
         public string mimeType { get; set; }
-        public Interfaces.entity.metadata metadata { get; set; }
+        public Core.entity.metadata metadata { get; set; }
         public string id { get; set; }
 
     }

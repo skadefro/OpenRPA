@@ -10,6 +10,7 @@ using System.Windows.Media;
 using Microsoft.CodeAnalysis;
 using Microsoft.CodeAnalysis.Tags;
 using OpenRPA.Interfaces;
+using OpenRPA.Core;
 
 namespace OpenRPA.CodeEditor
 {

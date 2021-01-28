@@ -1,5 +1,6 @@
 ﻿using FlaUI.Core.AutomationElements;
 using FlaUI.Core.AutomationElements.Infrastructure;
+using OpenRPA.Core;
 using OpenRPA.Input;
 using OpenRPA.Interfaces;
 using OpenRPA.Interfaces.entity;
@@ -14,7 +15,7 @@ namespace OpenRPA.Windows
 {
     public class WindowsClickDetectorPlugin : ObservableObject, IDetectorPlugin
     {
-        public Detector Entity { get; set; }
+        public IDetector Entity { get; set; }
         public string Name
         {
             get
@@ -57,7 +58,7 @@ namespace OpenRPA.Windows
             }
         }
         public event DetectorDelegate OnDetector;
-        public void Initialize(IOpenRPAClient client, Detector InEntity)
+        public void Initialize(IOpenRPAClient client, IDetector InEntity)
         {
             Entity = InEntity;
             Start();
@@ -132,6 +133,7 @@ namespace OpenRPA.Windows
     }
     public class DetectorEvent : IDetectorEvent
     {
+        public ITokenUser user { get; set; }
         public IElement element { get; set; }
         public string host { get; set; }
         public string fqdn { get; set; }

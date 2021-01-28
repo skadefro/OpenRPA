@@ -1,4 +1,5 @@
-﻿using System;
+﻿using OpenRPA.Interfaces.entity;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -6,11 +7,11 @@ using System.Threading.Tasks;
 
 namespace OpenRPA.Interfaces
 {
-    public interface ISnippet
+    public interface ISnippet : IBase
     {
         string Name { get; }
         string Category { get; }
         string Xaml { get; }
-        entity.snippet Snippet { get; set; }
+        ISnippet Snippet { get; set; }
     }
 }

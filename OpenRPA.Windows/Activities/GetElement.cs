@@ -11,6 +11,7 @@ using System.Threading.Tasks;
 using System.Windows.Threading;
 using System.Reflection;
 using FlaUI.Core.Input;
+using OpenRPA.Core;
 
 namespace OpenRPA.Windows
 {
@@ -58,7 +59,7 @@ namespace OpenRPA.Windows
 
             UIElement[] elements = null;
             var selector = Selector.Get(context);
-            selector = OpenRPA.Interfaces.Selector.Selector.ReplaceVariables(selector, context.DataContext);
+            selector = Core.Selector.Selector.ReplaceVariables(selector, context.DataContext);
             var sel = new WindowsSelector(selector);
             var timeout = Timeout.Get(context);
             var maxresults = MaxResults.Get(context);
@@ -181,10 +182,10 @@ namespace OpenRPA.Windows
         protected override void CacheMetadata(NativeActivityMetadata metadata)
         {
             metadata.AddDelegate(Body);
-            Interfaces.Extensions.AddCacheArgument(metadata, "Selector", Selector);
-            Interfaces.Extensions.AddCacheArgument(metadata, "From", From);
-            Interfaces.Extensions.AddCacheArgument(metadata, "Elements", Elements);
-            Interfaces.Extensions.AddCacheArgument(metadata, "MaxResults", MaxResults);
+            Core.Extensions.AddCacheArgument(metadata, "Selector", Selector);
+            Core.Extensions.AddCacheArgument(metadata, "From", From);
+            Core.Extensions.AddCacheArgument(metadata, "Elements", Elements);
+            Core.Extensions.AddCacheArgument(metadata, "MaxResults", MaxResults);
 
             metadata.AddImplementationVariable(_elements);
             metadata.AddImplementationVariable(_lastelements);

@@ -1,4 +1,5 @@
-﻿using System;
+﻿using OpenRPA.Interfaces.entity;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -6,7 +7,6 @@ using System.Threading.Tasks;
 
 namespace OpenRPA.Interfaces
 {
-    using OpenRPA.Interfaces.entity;
     using System.Security;
     public interface IBaseMessage
     {
@@ -47,7 +47,7 @@ namespace OpenRPA.Interfaces
         event Action OnOpen;
         event Action<string> OnClose;        
         event QueueMessageDelegate OnQueueMessage;
-        TokenUser user { get; }
+        ITokenUser user { get; }
         string url { get; set; }
         string jwt { get; }
         bool isConnected { get; }
@@ -55,9 +55,9 @@ namespace OpenRPA.Interfaces
         Task Connect();
         Task Close();
         // Task<IMessage> SendMessage(IMessage msg);
-        Task<TokenUser> Signin(string username, SecureString password, string clientagent = "", string clientversion = "");
-        Task<TokenUser> Signin(string jwt, string clientagent = "", string clientversion = "");
-        Task<TokenUser> Signin(SecureString jwt, string clientagent = "", string clientversion = "");
+        Task<ITokenUser> Signin(string username, SecureString password, string clientagent = "", string clientversion = "");
+        Task<ITokenUser> Signin(string jwt, string clientagent = "", string clientversion = "");
+        Task<ITokenUser> Signin(SecureString jwt, string clientagent = "", string clientversion = "");
         Task RegisterUser(string name, string username, string password);
         Task<string> RegisterQueue(string queuename);
         Task<object> QueueMessage(string queuename, object data, string replyto, string correlationId);
@@ -68,18 +68,10 @@ namespace OpenRPA.Interfaces
         Task<T> UpdateOne<T>(string collectionname, int w, bool j, T item);
         // Task UpdateOne(string collectionname, string query, int w, bool j, Newtonsoft.Json.Linq.JObject UpdateDoc);
         Task DeleteOne(string collectionname, string Id);
-        Task<string> UploadFile(string filepath, string path, metadata metadata);
+        Task<string> UploadFile(string filepath, string path, Imetadata metadata);
         Task DownloadFileAndSave(string filename, string id, string filepath, bool ignorepath);
         Task DownloadFileAndSaveAs(string filename, string id, string filepath, bool ignorepath);
         Task<ICollection[]> ListCollections(bool includehist = false);
         Task PushMetrics(string metrics);
-    }
-    public class QueueMessageEventArgs : EventArgs
-    {
-        public bool isBusy { get; set; }
-        public QueueMessageEventArgs()
-        {
-            isBusy = false;
-        }
     }
 }

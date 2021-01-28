@@ -10,6 +10,7 @@ using System.Threading.Tasks;
 using Prometheus.Client.Abstractions;
 using Prometheus.Client;
 using System.Diagnostics;
+using OpenRPA.Core;
 
 namespace OpenRPA
 {

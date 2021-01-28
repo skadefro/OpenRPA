@@ -34,8 +34,6 @@ namespace OpenRPA
             var childList = root.GetChildren();
             return childList != null && childList.Count > 0;
         }
-
-
         public static Collection<System.Activities.ActivityInstance> GetChildren(this System.Activities.ActivityInstance root)
         {
             //if (!root.HasChildren2())
@@ -51,23 +49,19 @@ namespace OpenRPA
             var p = root.GetType().GetField("parent", System.Reflection.BindingFlags.NonPublic | System.Reflection.BindingFlags.Instance).GetValue(root);
             return p as System.Activities.ActivityInstance;
         }
-
     }
     class ChildEnumerator : IDisposable, IEnumerator<System.Activities.ActivityInstance>
     {
         private System.Activities.ActivityInstance root;
         private System.Activities.ActivityInstance current;
         private bool initialized;
-
         public ChildEnumerator(System.Activities.ActivityInstance root)
         {
             this.root = root;
         }
-
         public void Dispose()
         {
         }
-
         public bool MoveNext()
         {
             if (!this.initialized)
@@ -91,18 +85,14 @@ namespace OpenRPA
             }
             return true;
         }
-
         public void Reset()
         {
             this.current = null;
             this.initialized = false;
         }
-
         public System.Activities.ActivityInstance Current =>
             this.current;
-
         object IEnumerator.Current =>
             this.Current;
     }
-
 }

@@ -1,4 +1,6 @@
 ﻿using Newtonsoft.Json;
+using OpenRPA.Core;
+using OpenRPA.Core.entity;
 using OpenRPA.Interfaces;
 using OpenRPA.Interfaces.entity;
 using System;
@@ -29,7 +31,22 @@ namespace OpenRPA
             IsVisible = true;
         }
         public string queue { get { return GetProperty<string>(); } set { SetProperty(value); } }        
-        public string Xaml { get { return GetProperty<string>(); } set { _activity = null; SetProperty(value); } }
+        public string Xaml { get { 
+                var _xaml = GetProperty<string>();
+                if (!string.IsNullOrEmpty(_xaml) && Config.local.fix_xaml_1_2_17)
+                {
+                    var doc = new System.Xml.XmlDocument();
+                    doc.LoadXml(_xaml);
+                    foreach (System.Xml.XmlAttribute att in doc.DocumentElement.Attributes)
+                    {
+                        if (att.Value == "clr-namespace:OpenRPA;assembly=OpenRPA.Interfaces") att.Value = "clr-namespace:OpenRPA;assembly=OpenRPA.Core";
+                    }
+                    _xaml = doc.OuterXml;
+                }
+                return _xaml;
+            } 
+            set { _activity = null; SetProperty(value); } 
+        }
         public List<workflowparameter> Parameters { get { return GetProperty<List<workflowparameter>>(); } set { SetProperty(value); } }
         public bool Serializable { get { return GetProperty<bool>(); } set { SetProperty(value); } }
         public string Filename { get { return GetProperty<string>(); } set { SetProperty(value); } }
@@ -156,8 +173,8 @@ namespace OpenRPA
             }
         }
         [JsonIgnore]
-        public IProject Project { get; set; }
-        public static Workflow FromFile(IProject project, string Filename)
+        public Project Project { get; set; }
+        public static Workflow FromFile(Project project, string Filename)
         {
             var result = new Workflow();
             result._type = "workflow";
@@ -169,7 +186,7 @@ namespace OpenRPA
             //sresult.Instances = new System.Collections.ObjectModel.ObservableCollection<WorkflowInstance>();
             return result;
         }
-        public static Workflow Create(IProject Project, string Name)
+        public static Workflow Create(Project Project, string Name)
         {
             Workflow workflow = new Workflow { Project = Project, name = Name, _acl = Project._acl };
             bool isUnique = false; int counter = 1;
@@ -292,7 +309,7 @@ namespace OpenRPA
             if (!global.isConnected) return;
             if (!string.IsNullOrEmpty(_id))
             {
-                var imagepath = System.IO.Path.Combine(Interfaces.Extensions.ProjectsDirectory, "images");
+                var imagepath = System.IO.Path.Combine(Core.Extensions.ProjectsDirectory, "images");
                 if (!System.IO.Directory.Exists(imagepath)) System.IO.Directory.CreateDirectory(imagepath);
                 var files = await global.webSocketClient.Query<metadataitem>("files", "{\"metadata.workflow\": \"" + _id + "\"}");
                 foreach (var f in files)
@@ -448,7 +465,8 @@ namespace OpenRPA
             }
         }
         [JsonIgnore]
-        public bool IsVisible { get { return GetProperty<bool>(); } set { SetProperty(value); } } 
+        public bool IsVisible { get { return GetProperty<bool>(); } set { SetProperty(value); } }
+        IProject IWorkflow.Project { get => Project; set => Project = value as Project; }
     }
 
 }

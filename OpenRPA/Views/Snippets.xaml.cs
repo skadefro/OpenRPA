@@ -1,4 +1,5 @@
-﻿using OpenRPA.Interfaces;
+﻿using OpenRPA.Core;
+using OpenRPA.Interfaces;
 using System;
 using System.Activities.Presentation.Toolbox;
 using System.Collections.Generic;
@@ -42,7 +43,7 @@ namespace OpenRPA.Views
             {
                 if(dag == null)
                 {
-                    // dag = new DynamicActivityGenerator("Snippets", Interfaces.Extensions.ProjectsDirectory);
+                    // dag = new DynamicActivityGenerator("Snippets", Core.Extensions.ProjectsDirectory);
                     dag = new DynamicActivityGenerator("Snippets", System.IO.Path.GetTempPath());
                 }
                 var cs = new Dictionary<string, ToolboxCategory>();

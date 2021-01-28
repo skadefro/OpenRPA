@@ -10,9 +10,10 @@ using System.Threading.Tasks;
 using FlaUI.Core;
 using FlaUI.Core.AutomationElements;
 using FlaUI.Core.AutomationElements.Infrastructure;
+using OpenRPA.Core;
+using OpenRPA.Core.Selector;
 using OpenRPA.Input;
 using OpenRPA.Interfaces;
-using OpenRPA.Interfaces.Selector;
 
 namespace OpenRPA.Windows
 {
@@ -458,6 +459,30 @@ namespace OpenRPA.Windows
         {
             return true;
         }
+        object[] IRecordPlugin.GetRootElements(object anchor)
+        {
+            return GetRootElements(anchor as Selector);
+        }
+        object IRecordPlugin.GetSelector(object anchor, object item)
+        {
+            return GetSelector(anchor as Selector, item as treeelement);
+        }
+        IElement[] IRecordPlugin.GetElementsWithSelector(object selector, IElement fromElement, int maxresults)
+        {
+            return GetElementsWithSelector(selector as Selector, fromElement, maxresults);
+        }
+        bool IRecordPlugin.Match(object item, IElement m)
+        {
+            return Match(item as SelectorItem, m);
+        }
+        IElement IRecordPlugin.LaunchBySelector(object selector, bool CheckRunning, TimeSpan timeout)
+        {
+            return LaunchBySelector(selector as Selector, CheckRunning, timeout);
+        }
+        void IRecordPlugin.CloseBySelector(object selector, TimeSpan timeout, bool Force)
+        {
+            CloseBySelector(selector as Selector, timeout, Force);
+        }
     }
     public class GetElementResult : IBodyActivity
     {
@@ -513,10 +538,10 @@ namespace OpenRPA.Windows
     {
         public RecordEvent() { SupportVirtualClick = true; }
         // public AutomationElement Element { get; set; }
-        public UIElement UIElement { get; set; }
+        public IUIElement UIElement { get; set; }
         public IElement Element { get; set; }
         public IBodyActivity a { get; set; }
-        public Interfaces.Selector.Selector Selector { get; set; }
+        public Selector Selector { get; set; }
         public bool SupportInput { get; set; }
         public bool SupportSelect { get; set; }        
         public int X { get; set; }
@@ -526,5 +551,6 @@ namespace OpenRPA.Windows
         public bool ClickHandled { get; set; }
         public bool SupportVirtualClick { get; set; }
         public MouseButton Button { get; set; }
+        object IRecordEvent.Selector { get => Selector; set => Selector = value as Selector; }
     }
 }

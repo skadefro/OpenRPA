@@ -1,4 +1,6 @@
 ﻿using Newtonsoft.Json;
+using OpenRPA.Core;
+using OpenRPA.Core.entity;
 using OpenRPA.Interfaces;
 using OpenRPA.Interfaces.entity;
 using System;
@@ -37,7 +39,6 @@ namespace OpenRPA
                 // return _Instances.Where(x => x.state != "loaded").ToList();
             }
         }
-
         public event VisualTrackingHandler OnVisualTracking;
         public event idleOrComplete OnIdleOrComplete;
         public Dictionary<string, object> Parameters { get { return GetProperty<Dictionary<string, object>>(); } set { SetProperty(value); } }
@@ -346,10 +347,8 @@ namespace OpenRPA
         }
         public System.Diagnostics.Stopwatch runWatch { get; set; }
         IWorkflow IWorkflowInstance.Workflow { get => this.Workflow; set => this.Workflow = value as Workflow; }
-
         // apibase IWorkflowInstance.Workflow { get => this.Workflow; set => this.Workflow = value as Workflow; }
         //public void Run(Activity root, string activityid)
-
         public void RunThis(Activity root, Activity activity)
         {
             createApp(activity);
@@ -970,5 +969,4 @@ namespace OpenRPA
             Log.FunctionOutdent("RobotInstance", "RunPendingInstances");
         }
     }
-
 }

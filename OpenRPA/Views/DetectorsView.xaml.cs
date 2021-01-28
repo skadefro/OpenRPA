@@ -1,5 +1,5 @@
 ﻿using OpenRPA.Interfaces;
-using OpenRPA.Interfaces.Selector;
+using OpenRPA.Core.Selector;
 using System;
 using System.Collections.Generic;
 using System.ComponentModel;
@@ -16,6 +16,7 @@ using System.Windows.Media;
 using System.Windows.Media.Imaging;
 using System.Windows.Navigation;
 using System.Windows.Shapes;
+using OpenRPA.Core;
 
 namespace OpenRPA.Views
 {
@@ -63,7 +64,7 @@ namespace OpenRPA.Views
                 var list = (ExtendedObservableCollection<OpenRPA.Interfaces.IDetectorPlugin>)sender;
                 foreach(var p in list.ToList())
                 {
-                    var Entity = (p.Entity as Interfaces.entity.Detector);
+                    var Entity = (p.Entity as Core.entity.Detector);
                     if (global.isConnected)
                     {
                         try
@@ -76,7 +77,7 @@ namespace OpenRPA.Views
                             }
                             else
                             {
-                                var result = await global.webSocketClient.UpdateOne("openrpa", 0, false, p.Entity);
+                                var result = await global.webSocketClient.UpdateOne("openrpa", 0, false, Entity);
                                 Entity._acl = result._acl;
                             }
                         }
@@ -108,9 +109,9 @@ namespace OpenRPA.Views
             {
                 var btn = sender as System.Windows.Controls.Button;
                 var kv = (System.Collections.Generic.KeyValuePair<string, System.Type>)btn.DataContext;
-                var d = new Interfaces.entity.Detector(); d.Plugin = kv.Value.FullName;
+                var d = new Core.entity.Detector(); d.Plugin = kv.Value.FullName;
                 IDetectorPlugin dp = null;
-                d.Path = Interfaces.Extensions.ProjectsDirectory;
+                d.Path = Core.Extensions.ProjectsDirectory;
                 dp = Plugins.AddDetector(RobotInstance.instance, d);
                 dp.OnDetector += main.OnDetector;
                 NotifyPropertyChanged("detectorPlugins");
@@ -134,13 +135,13 @@ namespace OpenRPA.Views
                     var item = lidtDetectors.SelectedValue as IDetectorPlugin;
                     item.Stop();
                     item.OnDetector -= main.OnDetector;
-                    var d = item.Entity as OpenRPA.Interfaces.entity.Detector;
+                    var d = item.Entity as Core.entity.Detector;
                     if (d != null) d.Delete();
-                    var kd = item.Entity;
+                    var kd = item.Entity as Core.entity.Detector;
                     if (kd != null) kd.Delete();
                     if (global.isConnected)
                     {
-                        var _id = (item.Entity as Interfaces.entity.Detector)._id;
+                        var _id = (item.Entity as Core.entity.Detector)._id;
                         if (!string.IsNullOrEmpty(_id))
                         {
                             await global.webSocketClient.DeleteOne("openrpa", _id);

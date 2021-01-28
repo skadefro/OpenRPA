@@ -1,5 +1,6 @@
 ﻿using Newtonsoft.Json.Linq;
 using NuGet.Configuration;
+using OpenRPA.Core;
 using OpenRPA.Interfaces;
 using System;
 using System.Collections.Generic;

@@ -10,6 +10,7 @@ using System.Text;
 using System.Threading.Tasks;
 using System.Runtime.InteropServices;
 using System.Data;
+using OpenRPA.Core;
 
 namespace OpenRPA.Activities
 {

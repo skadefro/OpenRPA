@@ -1,0 +1,32 @@
+﻿using OpenRPA.Interfaces.entity;
+using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Text;
+using System.Threading.Tasks;
+
+namespace OpenRPA.Core.entity
+{
+    public class apiuser : apibase, Iapiuser
+    {
+        public string username { get; set; }
+        public Rolemember[] roles { get; set; }
+        IRolemember[] Iapiuser.roles { get => roles; set => roles = value as Rolemember[]; }
+        public bool hasRole(string role)
+        {
+            foreach (var r in roles)
+            {
+                if (r.name == role || r._id == role)
+                {
+                    return true;
+                }
+            }
+            return false;
+        }
+        public override string ToString()
+        {
+            if (roles == null) return name + " " + username;
+            return name + " " + username + " [" + string.Join(",", roles.Select(w => w.name)) + "]";
+        }
+    }
+}

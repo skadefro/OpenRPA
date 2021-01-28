@@ -9,6 +9,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using System.Runtime.InteropServices;
+using OpenRPA.Core;
 
 namespace OpenRPA.Activities
 {
@@ -32,7 +33,7 @@ namespace OpenRPA.Activities
         public InArgument<bool> AnimateMouse { get; set; } = false;
         [RequiredArgument, LocalizedDisplayName("activity_mousebutton", typeof(Resources.strings)), LocalizedDescription("activity_mousebutton_help", typeof(Resources.strings))]
         //[Editor(typeof(SelectButtonEditor), typeof(PropertyValueEditor))]
-        public InArgument<int> Button { get; set; } = (int)Input.MouseButton.Left;
+        public InArgument<int> Button { get; set; } = (int)MouseButton.Left;
         [RequiredArgument, LocalizedDisplayName("activity_offsetx", typeof(Resources.strings)), LocalizedDescription("activity_offsetx_help", typeof(Resources.strings))]
         public int OffsetX { get; set; } = 5;
         [RequiredArgument, LocalizedDisplayName("activity_offsety", typeof(Resources.strings)), LocalizedDescription("activity_offsety_help", typeof(Resources.strings))]
@@ -66,7 +67,7 @@ namespace OpenRPA.Activities
             var keys = TypeText.GetKeys(keymodifiers);
             foreach (var vk in keys) disposes.Add(FlaUI.Core.Input.Keyboard.Pressing(vk));
 
-            var _button = (Input.MouseButton)button;
+            var _button = (MouseButton)button;
             el.Click(virtualClick, _button, OffsetX, OffsetY, doubleclick, animatemouse);
             disposes.ForEach(x => { x.Dispose(); });
             TimeSpan postwait = TimeSpan.Zero;

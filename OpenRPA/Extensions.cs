@@ -1,4 +1,5 @@
 ﻿using Microsoft.VisualBasic.Activities;
+using OpenRPA.Core;
 using OpenRPA.Interfaces;
 using OpenRPA.Net;
 using System;
@@ -91,7 +92,6 @@ namespace OpenRPA
 
             return filename;
         }
-
         public static string NormalizePath(string path)
         {
             return System.IO.Path.GetFullPath(new Uri(path).LocalPath)
@@ -136,7 +136,6 @@ namespace OpenRPA
             return type.GetProperties(BindingFlags.FlattenHierarchy
                 | BindingFlags.Public | BindingFlags.Instance);
         }
-
         public static System.Windows.Media.Imaging.BitmapFrame GetImageSourceFromResource(string resourceName)
         {
             string[] names = typeof(Extensions).Assembly.GetManifestResourceNames();

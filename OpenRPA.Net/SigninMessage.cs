@@ -36,7 +36,7 @@ namespace OpenRPA.Net
         public bool validate_only { get; set; }
         public string username { get; set; }
         public string password { get; set; }
-        public TokenUser user { get; set; }
+        public Core.entity.TokenUser user { get; set; }
         public int websocket_package_size { get; set; }
         public string clientagent { get; set; } = "openrpa";
         public string clientversion { get; set; } = "0.0.0.1";

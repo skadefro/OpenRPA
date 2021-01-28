@@ -10,9 +10,9 @@ namespace OpenRPA.Windows
 {
     public static class Extensions
     {
-        public static AndCondition GetConditionsWithoutStar(this Interfaces.Selector.SelectorItem item)
+        public static AndCondition GetConditionsWithoutStar(this Core.Selector.SelectorItem item)
         {
-            using (var automation = Interfaces.AutomationUtil.getAutomation())
+            using (var automation = OpenRPA.Core.AutomationUtil.getAutomation())
             {
                 var cond = new List<ConditionBase>();
                 foreach (var p in item.Properties.Where(x => x.Enabled == true && (x.Value != null && !x.Value.Contains("*"))))
@@ -37,13 +37,13 @@ namespace OpenRPA.Windows
                 return new AndCondition(cond);
             }
         }
-        public static string Title(this Interfaces.Selector.SelectorItem item)
+        public static string Title(this Core.Selector.SelectorItem item)
         {
             var e = item.Properties.Where(x => x.Name == "Title").FirstOrDefault();
             if (e == null) return null;
             return e.Value;
         }
-        public static bool Index(this Interfaces.Selector.SelectorItem item)
+        public static bool Index(this Core.Selector.SelectorItem item)
         {
             var e = item.Properties.Where(x => x.Name == "Index").FirstOrDefault();
             if (e == null || string.IsNullOrEmpty(e.Value)) return false;
@@ -57,27 +57,27 @@ namespace OpenRPA.Windows
         //    if (e.Value.ToLower() == "true") return true;
         //    return false;
         //}
-        public static bool SearchDescendants(this Interfaces.Selector.SelectorItem item)
+        public static bool SearchDescendants(this Core.Selector.SelectorItem item)
         {
             var e = item.Properties.Where(x => x.Name == "SearchDescendants").FirstOrDefault();
             if (e == null || string.IsNullOrEmpty(e.Value)) return false;
             if (e.Value.ToLower() == "true") return true;
             return false;
         }
-        public static string processname(this Interfaces.Selector.SelectorItem item)
+        public static string processname(this Core.Selector.SelectorItem item)
         {
             var e = item.Properties.Where(x => x.Name == "processname").FirstOrDefault();
             if (e == null) return null;
             return e.Value;
         }
-        public static bool isImmersiveProcess(this Interfaces.Selector.SelectorItem item)
+        public static bool isImmersiveProcess(this Core.Selector.SelectorItem item)
         {
             var e = item.Properties.Where(x => x.Name == "isImmersiveProcess").FirstOrDefault();
             if (e == null || string.IsNullOrEmpty(e.Value)) return false;
             if (e.Value.ToLower() == "true") return true;
             return false;
         }
-        public static string ControlType(this Interfaces.Selector.SelectorItem item)
+        public static string ControlType(this Core.Selector.SelectorItem item)
         {
             var e = item.Properties.Where(x => x.Name == "ControlType").FirstOrDefault();
             if (e == null) return null;

@@ -1,4 +1,5 @@
 ﻿using Newtonsoft.Json.Linq;
+using OpenRPA.Core;
 using OpenRPA.Interfaces;
 using System;
 using System.Collections.Generic;
@@ -7,6 +8,7 @@ using System.Text;
 using System.Threading.Tasks;
 using System.Windows;
 using Xceed.Wpf.AvalonDock.Layout;
+using OpenRPA.Core;
 
 namespace OpenRPA
 {
@@ -61,7 +63,7 @@ namespace OpenRPA
                 {
                     _instance = new RobotInstance();
                     global.OpenRPAClient = _instance;
-                    Interfaces.IPCService.OpenRPAServiceUtil.InitializeService();
+                    Core.IPCService.OpenRPAServiceUtil.InitializeService();
                 }
                 return _instance;
             }
@@ -245,14 +247,18 @@ namespace OpenRPA
                     var projects = await global.webSocketClient.Query<Project>("openrpa", "{_type: 'project'}", orderby: "{\"name\":-1}");
                     projects = projects.OrderBy(x => x.name).ToArray();
                     Log.Debug("Get detectors from server " + string.Format("{0:mm\\:ss\\.fff}", sw.Elapsed));
-                    var detectors = await global.webSocketClient.Query<Interfaces.entity.Detector>("openrpa", "{_type: 'detector'}");
+                    var detectors = await global.webSocketClient.Query<Core.entity.Detector>("openrpa", "{_type: 'detector'}");
                     Log.Debug("Done getting workflows and projects " + string.Format("{0:mm\\:ss\\.fff}", sw.Elapsed));
                     CreateMainWindow();
                     SetStatus("Initialize detecors");
                     foreach (var d in detectors)
                     {
                         IDetectorPlugin dp = null;
-                        d.Path = Interfaces.Extensions.ProjectsDirectory;
+                        d.Path = Core.Extensions.ProjectsDirectory;
+                        if(Config.local.fix_xaml_1_2_17)
+                        {
+                            d.Plugin = d.Plugin.Replace("OpenRPA.Interfaces.", "OpenRPA.Core.");
+                        }
                         dp = Plugins.AddDetector(this, d);
                         if (dp != null) dp.OnDetector += Window.OnDetector;
                         if (dp == null) Log.Error("Detector " + d.name + " not loaded! (plugin: " + d.Plugin + ")");
@@ -264,10 +270,10 @@ namespace OpenRPA
                         var r = new System.Text.RegularExpressions.Regex(string.Format("[{0}]", System.Text.RegularExpressions.Regex.Escape(regexSearch)));
                         p.name = r.Replace(p.name, "");
 
-                        p.Path = System.IO.Path.Combine(Interfaces.Extensions.ProjectsDirectory, p.name);
+                        p.Path = System.IO.Path.Combine(Core.Extensions.ProjectsDirectory, p.name);
                         if (folders.Contains(p.Path))
                         {
-                            p.Path = System.IO.Path.Combine(Interfaces.Extensions.ProjectsDirectory, p._id);
+                            p.Path = System.IO.Path.Combine(Core.Extensions.ProjectsDirectory, p._id);
                         }
                         folders.Add(p.Path);
                     }
@@ -284,7 +290,7 @@ namespace OpenRPA
                             Log.Error(ex.ToString());
                         }
                         SetStatus("Initialize " + p.name);
-                        p.Path = System.IO.Path.Combine(Interfaces.Extensions.ProjectsDirectory, p.name);
+                        p.Path = System.IO.Path.Combine(Core.Extensions.ProjectsDirectory, p.name);
                         p.Workflows = new System.Collections.ObjectModel.ObservableCollection<IWorkflow>();
                         foreach (var workflow in workflows)
                         {
@@ -304,7 +310,7 @@ namespace OpenRPA
                         var hasProject = RobotInstance.instance.Projects.Where(x => x._id == wf.projectid && !string.IsNullOrEmpty(wf.projectid)).FirstOrDefault();
                         if (hasProject == null)
                         {
-                            if (up == null) up = await Project.Create(Interfaces.Extensions.ProjectsDirectory, "Unknown", false);
+                            if (up == null) up = await Project.Create(Core.Extensions.ProjectsDirectory, "Unknown", false);
                             wf.Project = up;
                             up.Workflows.Add(wf);
                         }
@@ -319,12 +325,12 @@ namespace OpenRPA
                     SetStatus("Fetching workflows");
                     var workflows = await global.webSocketClient.Query<Workflow>("openrpa", "{_type: 'workflow'}", orderby: "{\"projectid\":-1,\"name\":-1}", top: 5000);
                     SetStatus("Fetching detectors");
-                    var detectors = await global.webSocketClient.Query<Interfaces.entity.Detector>("openrpa", "{_type: 'detector'}");
+                    var detectors = await global.webSocketClient.Query<Core.entity.Detector>("openrpa", "{_type: 'detector'}");
                     GenericTools.RunUI(async () =>
                     {
                         foreach (var project in projects)
                         {
-                            project.Path = System.IO.Path.Combine(Interfaces.Extensions.ProjectsDirectory, project.name);
+                            project.Path = System.IO.Path.Combine(Core.Extensions.ProjectsDirectory, project.name);
                             Project exists = RobotInstance.instance.Projects.Where(x => x._id == project._id).FirstOrDefault();
                             if (exists != null && exists._version != project._version)
                             {
@@ -587,7 +593,7 @@ namespace OpenRPA
                 var options = parser.Parse(args, true);
                 if (options.ContainsKey("workflowid"))
                 {
-                    Interfaces.IPCService.OpenRPAServiceUtil.RemoteInstance.RunWorkflowByIDOrRelativeFilename(options["workflowid"].ToString(), false, options);
+                    Core.IPCService.OpenRPAServiceUtil.RemoteInstance.RunWorkflowByIDOrRelativeFilename(options["workflowid"].ToString(), false, options);
                 }
             }
             catch (Exception ex)
@@ -614,11 +620,11 @@ namespace OpenRPA
                 {
                     CreateMainWindow();
                     SetStatus("loading detectors");
-                    var Detectors = Interfaces.entity.Detector.loadDetectors(Interfaces.Extensions.ProjectsDirectory);
+                    var Detectors = Core.entity.Detector.loadDetectors(Core.Extensions.ProjectsDirectory);
                     foreach (var d in Detectors)
                     {
                         IDetectorPlugin dp = null;
-                        d.Path = Interfaces.Extensions.ProjectsDirectory;
+                        d.Path = Core.Extensions.ProjectsDirectory;
                         dp = Plugins.AddDetector(RobotInstance.instance, d);
                         if (dp != null) dp.OnDetector += Window.OnDetector;
                     }
@@ -650,7 +656,7 @@ namespace OpenRPA
                 else
                 {
                     SetStatus("loading projects and workflows");
-                    var _Projects = await Project.LoadProjects(Interfaces.Extensions.ProjectsDirectory);
+                    var _Projects = await Project.LoadProjects(Core.Extensions.ProjectsDirectory);
                     RobotInstance.instance.Projects = new System.Collections.ObjectModel.ObservableCollection<Project>();
                     foreach (Project p in _Projects)
                     {
@@ -785,7 +791,7 @@ namespace OpenRPA
             {
                 Log.Error(ex.ToString());
             }
-            Interfaces.entity.TokenUser user = null;
+            Core.entity.TokenUser user = null;
             try
             {
                 string url = "http";
@@ -807,7 +813,7 @@ namespace OpenRPA
                         {
                             SetStatus("Connected to " + Config.local.wsurl + " signing in as " + Config.local.username + " ...");
                             Log.Debug("Signing in as " + Config.local.username + " " + string.Format("{0:mm\\:ss\\.fff}", sw.Elapsed));
-                            user = await global.webSocketClient.Signin(Config.local.username, Config.local.UnprotectString(Config.local.password));
+                            user = await global.webSocketClient.Signin(Config.local.username, Config.local.UnprotectString(Config.local.password)) as Core.entity.TokenUser;
                             Log.Debug("Signed in as " + Config.local.username + " " + string.Format("{0:mm\\:ss\\.fff}", sw.Elapsed));
                             SetStatus("Connected to " + Config.local.wsurl + " as " + user.name);
                         }
@@ -823,7 +829,7 @@ namespace OpenRPA
                         {
                             SetStatus("Sign in to " + Config.local.wsurl);
                             Log.Debug("Signing in with token " + string.Format("{0:mm\\:ss\\.fff}", sw.Elapsed));
-                            user = await global.webSocketClient.Signin(Config.local.UnprotectString(Config.local.jwt));
+                            user = await global.webSocketClient.Signin(Config.local.UnprotectString(Config.local.jwt)) as Core.entity.TokenUser;
                             if (user != null)
                             {
                                 Config.local.username = user.username;
@@ -861,7 +867,7 @@ namespace OpenRPA
                                         if (!string.IsNullOrEmpty(jwt))
                                         {
                                             Config.local.jwt = Config.local.ProtectString(jwt);
-                                            user = await global.webSocketClient.Signin(Config.local.UnprotectString(Config.local.jwt));
+                                            user = await global.webSocketClient.Signin(Config.local.UnprotectString(Config.local.jwt)) as Core.entity.TokenUser;
                                             if (user != null)
                                             {
                                                 Config.local.username = user.username;
@@ -931,7 +937,7 @@ namespace OpenRPA
                 {
 
                     bool registerqueues = true;
-                    if(Interfaces.win32.ChildSession.IsChildSessionsEnabled())
+                    if(Core.win32.ChildSession.IsChildSessionsEnabled())
                     {
                         var CurrentP = System.Diagnostics.Process.GetCurrentProcess();
                         var myusername = UserLogins.QuerySessionInformation(CurrentP.SessionId, UserLogins.WTS_INFO_CLASS.WTSUserName);
@@ -978,7 +984,7 @@ namespace OpenRPA
 
                         foreach (var role in global.webSocketClient.user.roles)
                         {
-                            var roles = await global.webSocketClient.Query<Interfaces.entity.apirole>("users", "{_id: '" + role._id + "'}", top: 5000);
+                            var roles = await global.webSocketClient.Query<Core.entity.apirole>("users", "{_id: '" + role._id + "'}", top: 5000);
                             if (roles.Length == 1 && roles[0].rparole)
                             {
                                 SetStatus("Add queue " + role.name);
@@ -1085,10 +1091,10 @@ namespace OpenRPA
         private async void WebSocketClient_OnQueueMessage(IQueueMessage message, QueueMessageEventArgs e)
         {
             Log.FunctionIndent("RobotInstance", "WebSocketClient_OnQueueMessage");
-            Interfaces.mq.RobotCommand command = null;
+            Core.mq.RobotCommand command = null;
             try
             {
-                command = Newtonsoft.Json.JsonConvert.DeserializeObject<Interfaces.mq.RobotCommand>(message.data.ToString());
+                command = Newtonsoft.Json.JsonConvert.DeserializeObject<Core.mq.RobotCommand>(message.data.ToString());
                 if (command.command == "invokecompleted" || command.command == "invokefailed" || command.command == "invokeaborted" || command.command == "error" || command.command == null)
                 {
                     if (!string.IsNullOrEmpty(message.correlationId))
@@ -1266,7 +1272,7 @@ namespace OpenRPA
             }
             catch (Exception ex)
             {
-                command = new Interfaces.mq.RobotCommand
+                command = new Core.mq.RobotCommand
                 {
                     command = "error",
                     data = JObject.FromObject(ex)

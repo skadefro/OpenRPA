@@ -5,6 +5,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using OpenRPA.Core;
 
 namespace OpenRPA.Store
 {
@@ -28,7 +29,7 @@ namespace OpenRPA.Store
                     var i = WorkflowInstance.Instances.Where(x => x.InstanceId == instanceId.ToString()).FirstOrDefault();
                     if(i!=null)
                     {
-                        i.xml = Interfaces.Extensions.Base64Encode(doc);
+                        i.xml = Core.Extensions.Base64Encode(doc);
                         if(string.IsNullOrEmpty(i._id))
                         {
                             i.Save();
@@ -58,7 +59,7 @@ namespace OpenRPA.Store
                         return null;
                     }
                     Log.Debug("Loading " + instanceId.ToString() + " from Instance Store");
-                    return Interfaces.Extensions.Base64Decode(i.xml);
+                    return Core.Extensions.Base64Decode(i.xml);
                 }
                 Log.Error("Error locating " + instanceId.ToString() + " in Instance Store");
                 return null;

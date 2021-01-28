@@ -1,4 +1,5 @@
-﻿using System;
+﻿using OpenRPA.Core;
+using System;
 using System.Activities;
 using OpenRPA.Interfaces;
 using System.Activities.Presentation.PropertyEditing;
@@ -130,7 +131,7 @@ namespace OpenRPA.Activities
             if (!waitforcompleted) return;
             // keep bookmark, incase workflow dies, and need to pickup more data when started again
             // context.RemoveBookmark(bookmark.Name);
-            var command = Newtonsoft.Json.JsonConvert.DeserializeObject<Interfaces.mq.RobotCommand>(obj.ToString());
+            var command = Newtonsoft.Json.JsonConvert.DeserializeObject<Core.mq.RobotCommand>(obj.ToString());
             if (command.data == null) return;
             if(command.command == "invokefailed")
             {

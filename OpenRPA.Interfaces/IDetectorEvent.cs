@@ -13,6 +13,6 @@ namespace OpenRPA.Interfaces
         string host { get; set; }
         string fqdn { get; set; }
         string result { get; set; }
-        // TokenUser user { get; set; }
+        ITokenUser user { get; set; }
     }
 }
