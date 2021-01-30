@@ -21,6 +21,7 @@
         <File Id='openrpaExe' Source='!(wix.MainSource)\OpenRPA.exe' />
 
         <File Id="fil89D857203DD54ABCB0908F0A87409698" Source="!(wix.MainSource)\netstandard.dll" />
+        <File Id="fil89D857203DD54ABCB0908F0A87409699" Source="!(wix.MainSource)\OpenRPA.Core.dll" />
         <File Id="fil5A4BD987D2852D4ABC653BD9F45AC1F3" Source="!(wix.MainSource)\DotNetProjects.DataVisualization.Toolkit.dll" />
         <File Id="fil32CB20C686F2A6C01A3E679A4C6D58C6" Source="!(wix.MainSource)\DotNetProjects.Input.Toolkit.dll" />
         <File Id="fil403875F1BC31A5787C30F5A9187BCC2B" Source="!(wix.MainSource)\DotNetProjects.Layout.Toolkit.dll" />
@@ -178,91 +179,91 @@
         <RemoveFolder Id='RemoveLocalAppDataFolder' Directory='INSTALLDIR' On='uninstall' />
       </Component>
       <Component Id='mainComponentde' Win64='yes' Directory="mainde" Guid='{5B022629-6132-43BC-87EF-8777CD939585}'>
-        <File Id="filA5458E628554269CB6826367CEFB1666" Source="!(wix.MainSource)\de\OpenRPA.Interfaces.resources.dll" />
+        <File Id="filA5458E628554269CB6826367CEFB1667" Source="!(wix.MainSource)\de\OpenRPA.Core.resources.dll" />
         <File Id="fil797F0C60977BD6032BC2A613D743DD25" Source="!(wix.MainSource)\de\OpenRPA.resources.dll" />
         <File Id="fil14DBE8E2B9C70D54810FE919E0752A69" Source="!(wix.MainSource)\de\OpenRPA.Windows.resources.dll" />
         <File Id="fil9D2A1A803B60D41FC0B1B7FD67EEC9C8" Source="!(wix.MainSource)\de\Xceed.Wpf.AvalonDock.resources.dll" />
       </Component>
       <Component Id='mainComponentda' Win64='yes' Directory="mainda" Guid='{1D088BCA-915A-4C5A-A4D7-2CC4C201E51C}'>
-        <File Id="filA24898E5C7E8CB87CEA35187DAE669B3" Source="!(wix.MainSource)\da\OpenRPA.Interfaces.resources.dll" />
+        <File Id="filA24898E5C7E8CB87CEA35187DAE669B4" Source="!(wix.MainSource)\da\OpenRPA.Core.resources.dll" />
         <File Id="fil4BE0EB83D68A5739E022CDE8B7A3D262" Source="!(wix.MainSource)\da\OpenRPA.resources.dll" />
         <File Id="filDBB52774CBA866987F7C6B5046F7D82A" Source="!(wix.MainSource)\da\OpenRPA.Windows.resources.dll" />
       </Component>
       <Component Id='mainComponentes' Win64='yes' Directory="maines" Guid='{3D21139F-5E2F-41B7-AF81-86763AF93542}'>
-        <File Id="fil901A37465B4269BCE9EE3F7B1884B8FA" Source="!(wix.MainSource)\es\OpenRPA.Interfaces.resources.dll" />
+        <File Id="fil901A37465B4269BCE9EE3F7B1884B8FB" Source="!(wix.MainSource)\es\OpenRPA.Core.resources.dll" />
         <File Id="filDFE451954FC532AF4BBB503DD282485A" Source="!(wix.MainSource)\es\OpenRPA.resources.dll" />
         <File Id="filA78901410E91AE56E3995ED51BBC7B53" Source="!(wix.MainSource)\es\OpenRPA.Windows.resources.dll" />
         <File Id="filB2E79FB9BDA560198EF614222AEFD35B" Source="!(wix.MainSource)\es\Xceed.Wpf.AvalonDock.resources.dll" />
       </Component>
       <Component Id='mainComponentpt' Win64='yes' Directory="mainpt" Guid='{F7315FEA-84DC-485E-999A-8CD6FA8B0C0D}'>
-        <File Id="filF4BA2BA8FD71B387B8821A723886F1BF" Source="!(wix.MainSource)\pt\OpenRPA.Interfaces.resources.dll" />
+        <File Id="filF4BA2BA8FD71B387B8821A723886F1B1" Source="!(wix.MainSource)\pt\OpenRPA.Core.resources.dll" />
         <File Id="fil34429B66C2C40EB3EEE1D2DA86B6B5DE" Source="!(wix.MainSource)\pt\OpenRPA.resources.dll" />
         <File Id="fil3316B9A3F177CF529C4C501F3A61AB77" Source="!(wix.MainSource)\pt\OpenRPA.Windows.resources.dll" />
       </Component>
       <Component Id='mainComponentro' Win64='yes' Directory="mainro" Guid='{A5C38BDE-0F0A-49B0-BFEF-964B81A02F35}'>
-        <File Id="filCB0114F5EFE192364FBA9FB7F2F0C61F" Source="!(wix.MainSource)\ro\OpenRPA.Interfaces.resources.dll" />
+        <File Id="filCB0114F5EFE192364FBA9FB7F2F0C611" Source="!(wix.MainSource)\ro\OpenRPA.Core.resources.dll" />
         <File Id="fil36507B8C89ECB8F8BF5B934D6FA434F8" Source="!(wix.MainSource)\ro\OpenRPA.resources.dll" />
         <File Id="filDA3067B9DC56657830C3E584F1D6B0B6" Source="!(wix.MainSource)\ro\OpenRPA.Windows.resources.dll" />
         <File Id="fil3F9345202472B57C4B615EF270AFC9AA" Source="!(wix.MainSource)\ro\Xceed.Wpf.AvalonDock.resources.dll" />
       </Component>
       <Component Id='mainComponentru' Win64='yes' Directory="mainru" Guid='{28ABE303-A809-461B-9CE0-04AE18FC466E}'>
-        <File Id="fil99D92301886B43CC25CA00F3CC04DD25" Source="!(wix.MainSource)\ru\OpenRPA.Interfaces.resources.dll" />
+        <File Id="fil99D92301886B43CC25CA00F3CC04DD26" Source="!(wix.MainSource)\ru\OpenRPA.Core.resources.dll" />
         <File Id="filAB7C65F71250E2651BC942C367B07E6C" Source="!(wix.MainSource)\ru\OpenRPA.resources.dll" />
         <File Id="fil126FD8D7BC3CA134C631C10414C0844C" Source="!(wix.MainSource)\ru\OpenRPA.Windows.resources.dll" />
         <File Id="fil746AB0109F6368FE0AE56C2FA8C44711" Source="!(wix.MainSource)\ru\Xceed.Wpf.AvalonDock.resources.dll" />
       </Component>
       <Component Id='mainComponentja' Win64='yes' Directory="mainja" Guid='{A0C9CC00-7B62-4296-8E8B-9F14C0BEA6B6}'>
         <File Id="A0C9CC007B6242968E8B9F14C0BEA6B6" Source="!(wix.MainSource)\ja\OpenRPA.resources.dll" />
-        <File Id="DEB91C7224B2421EB67FE7ED8D99978A" Source="!(wix.MainSource)\ja\OpenRPA.Interfaces.resources.dll" />
+        <File Id="DEB91C7224B2421EB67FE7ED8D99978B" Source="!(wix.MainSource)\ja\OpenRPA.Core.resources.dll" />
         <File Id="E4DA92091EB045328D402CA5EA4F24F7" Source="!(wix.MainSource)\ja\OpenRPA.Windows.resources.dll" />
       </Component>
-      <Component Id='mainComponentx64' Win64='yes' Directory="mainx64" Guid='{225DF59C-8C11-4AFF-95A9-88A98A6CD576}'>
-        <File Id="filB436E4594E3544C098B9943DBDC1A518" Source="!(wix.MainSource)\x64\cef.pak" />
-        <File Id="filCB052B4928C8DBE2730D9A211E470208" Source="!(wix.MainSource)\x64\CefSharp.BrowserSubprocess.Core.dll" />
-        <File Id="filAD8611FDD6171BAEF79E9F9EC1705EE9" Source="!(wix.MainSource)\x64\CefSharp.BrowserSubprocess.exe" />
-        <File Id="filC88C7623422BE649CB1D8DE7EFDA2997" Source="!(wix.MainSource)\x64\CefSharp.Core.dll" />
-        <File Id="fil4C19941476E258861D238F3315543B39" Source="!(wix.MainSource)\x64\CefSharp.Core.xml" />
-        <File Id="filF0CF59F24A01DAE00DEA461CE18C9389" Source="!(wix.MainSource)\x64\CefSharp.dll" />
-        <File Id="filB95C83CD1FA714D6B1FEAF7CC01A5BF5" Source="!(wix.MainSource)\x64\CefSharp.Wpf.dll" />
-        <File Id="fil20A7E14E1D3C37B0E54D8397517A3E73" Source="!(wix.MainSource)\x64\CefSharp.Wpf.XML" />
-        <File Id="filD2AA37AE152DD56688B960E7D87291C5" Source="!(wix.MainSource)\x64\CefSharp.XML" />
-        <File Id="fil18028080F88700FE877D5F5995B9FAAC" Source="!(wix.MainSource)\x64\cef_100_percent.pak" />
-        <File Id="fil86FBD9BD4053D025057804F494C3C44E" Source="!(wix.MainSource)\x64\cef_200_percent.pak" />
-        <File Id="filD132C0CB08CAA3499E2E024BAF5FE50F" Source="!(wix.MainSource)\x64\cef_extensions.pak" />
-        <File Id="filDDDF9CCC8E330C0F855A1C50665348FD" Source="!(wix.MainSource)\x64\chrome_elf.dll" />
-        <File Id="fil1BD7CBF242A2FF3CDDABAEFD77107A5A" Source="!(wix.MainSource)\x64\d3dcompiler_47.dll" />
-        <File Id="filA849CD5386108EDE5B8B3D8518EEEDB3" Source="!(wix.MainSource)\x64\devtools_resources.pak" />
-        <File Id="filB0AB397896475F4E74FF1B70A72D0B8B" Source="!(wix.MainSource)\x64\icudtl.dat" />
-        <File Id="fil323CAEE6BB05F64F185321F5B2E40B68" Source="!(wix.MainSource)\x64\libcef.dll" />
-        <File Id="filAD78B91DA97E98FE6AF8DD9B80F98B22" Source="!(wix.MainSource)\x64\libEGL.dll" />
-        <File Id="fil37B200E9C3DCCC4F10FC43F9BEC63A0F" Source="!(wix.MainSource)\x64\libGLESv2.dll" />
-        <!--<File Id="fil4E634A3E360C3A8A8E07F98A66B10343" Source="!(wix.MainSource)\x64\natives_blob.bin" />-->
-        <File Id="fil9ACC4265158BEE28AC5D12597C532D84" Source="!(wix.MainSource)\x64\README.txt" />
-        <File Id="fil171EB7F3B881DFD880449D01AB09ECA1" Source="!(wix.MainSource)\x64\snapshot_blob.bin" />
-        <File Id="fil9CFD5D2CAB69A2A827A1756C5C77ACD3" Source="!(wix.MainSource)\x64\v8_context_snapshot.bin" />
+      <Component Id='mainComponentx64' Win64='yes' Directory="INSTALLDIR" Guid='{225DF59C-8C11-4AFF-95A9-88A98A6CD576}'>
+        <File Id="filB436E4594E3544C098B9943DBDC1A518" Source="!(wix.MainSource)\cef.pak" />
+        <File Id="filCB052B4928C8DBE2730D9A211E470208" Source="!(wix.MainSource)\CefSharp.BrowserSubprocess.Core.dll" />
+        <File Id="filAD8611FDD6171BAEF79E9F9EC1705EE9" Source="!(wix.MainSource)\CefSharp.BrowserSubprocess.exe" />
+        <File Id="filC88C7623422BE649CB1D8DE7EFDA2997" Source="!(wix.MainSource)\CefSharp.Core.dll" />
+        <File Id="fil4C19941476E258861D238F3315543B39" Source="!(wix.MainSource)\CefSharp.Core.xml" />
+        <File Id="filF0CF59F24A01DAE00DEA461CE18C9389" Source="!(wix.MainSource)\CefSharp.dll" />
+        <File Id="filB95C83CD1FA714D6B1FEAF7CC01A5BF5" Source="!(wix.MainSource)\CefSharp.Wpf.dll" />
+        <File Id="fil20A7E14E1D3C37B0E54D8397517A3E73" Source="!(wix.MainSource)\CefSharp.Wpf.XML" />
+        <File Id="filD2AA37AE152DD56688B960E7D87291C5" Source="!(wix.MainSource)\CefSharp.XML" />
+        <File Id="fil18028080F88700FE877D5F5995B9FAAC" Source="!(wix.MainSource)\cef_100_percent.pak" />
+        <File Id="fil86FBD9BD4053D025057804F494C3C44E" Source="!(wix.MainSource)\cef_200_percent.pak" />
+        <File Id="filD132C0CB08CAA3499E2E024BAF5FE50F" Source="!(wix.MainSource)\cef_extensions.pak" />
+        <File Id="filDDDF9CCC8E330C0F855A1C50665348FD" Source="!(wix.MainSource)\chrome_elf.dll" />
+        <File Id="fil1BD7CBF242A2FF3CDDABAEFD77107A5A" Source="!(wix.MainSource)\d3dcompiler_47.dll" />
+        <File Id="filA849CD5386108EDE5B8B3D8518EEEDB3" Source="!(wix.MainSource)\devtools_resources.pak" />
+        <File Id="filB0AB397896475F4E74FF1B70A72D0B8B" Source="!(wix.MainSource)\icudtl.dat" />
+        <File Id="fil323CAEE6BB05F64F185321F5B2E40B68" Source="!(wix.MainSource)\libcef.dll" />
+        <File Id="filAD78B91DA97E98FE6AF8DD9B80F98B22" Source="!(wix.MainSource)\libEGL.dll" />
+        <File Id="fil37B200E9C3DCCC4F10FC43F9BEC63A0F" Source="!(wix.MainSource)\libGLESv2.dll" />
+        <!--<File Id="fil4E634A3E360C3A8A8E07F98A66B10343" Source="!(wix.MainSource)\natives_blob.bin" />-->
+        <File Id="fil9ACC4265158BEE28AC5D12597C532D84" Source="!(wix.MainSource)\README.txt" />
+        <File Id="fil171EB7F3B881DFD880449D01AB09ECA1" Source="!(wix.MainSource)\snapshot_blob.bin" />
+        <File Id="fil9CFD5D2CAB69A2A827A1756C5C77ACD3" Source="!(wix.MainSource)\v8_context_snapshot.bin" />
       </Component>
       <Component Id='mainComponentx64locales' Win64='yes' Directory="mainx64locales" Guid='{BDFFBBB0-5B79-416C-864C-771950B1A1A6}'>
-        <File Id="filEF12054F8A16DD0B055F01537814B5BE" Source="!(wix.MainSource)\x64\locales\en-US.pak" />
+        <File Id="filEF12054F8A16DD0B055F01537814B5BE" Source="!(wix.MainSource)\locales\en-US.pak" />
       </Component>
 
       <Component Id='mainComponent64swiftshader' Win64='yes' Directory="mainx64swiftshader" Guid='{C3F02B5A-0400-4E48-B59C-084F57274F53}'>
-        <File Id="filC9308A93852388F958DCE84F682053A6" Source="!(wix.MainSource)\x64\swiftshader\libEGL.dll" />
-        <File Id="fil8FF6AC89C5907A8A5363662784AB3F58" Source="!(wix.MainSource)\x64\swiftshader\libGLESv2.dll" />
+        <File Id="filC9308A93852388F958DCE84F682053A6" Source="!(wix.MainSource)\swiftshader\libEGL.dll" />
+        <File Id="fil8FF6AC89C5907A8A5363662784AB3F58" Source="!(wix.MainSource)\swiftshader\libGLESv2.dll" />
       </Component>
 
       <Component Id='mainComponentzh' Win64='yes' Directory="mainzh" Guid='{0D177985-1CD6-43C0-BB13-19209789FAF0}'>
         <File Id="ED69C2B027A8485085512581DF0FBF1C" Source="!(wix.MainSource)\zh\OpenRPA.resources.dll" />
-        <File Id="F4BCCF92B56B4313982A0457F0DAD1A4" Source="!(wix.MainSource)\zh\OpenRPA.Interfaces.resources.dll" />
+        <File Id="F4BCCF92B56B4313982A0457F0DAD1A5" Source="!(wix.MainSource)\zh\OpenRPA.Core.resources.dll" />
         <File Id="BB6C4642DAAB463798B57182BC26DCA2" Source="!(wix.MainSource)\zh\OpenRPA.Windows.resources.dll" />
       </Component>
 
     </ComponentGroup>
 
     <DirectoryRef Id="INSTALLDIR">
-      <Directory Id="mainx64" Name="x64">
-        <Directory Id="mainx64swiftshader" Name="swiftshader" />
-        <Directory Id="mainx64locales" Name="locales" />
-      </Directory>
+      <!--<Directory Id="mainx64" Name="x64">
+      </Directory>-->
+      <Directory Id="mainx64swiftshader" Name="swiftshader" />
+      <Directory Id="mainx64locales" Name="locales" />
       <Directory Id="mainde" Name="de">
       </Directory>
       <Directory Id="mainda" Name="da">

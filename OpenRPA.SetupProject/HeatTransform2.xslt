@@ -13,6 +13,7 @@
   <xsl:key match="wix:Component[ substring( wix:File/@Source, string-length( wix:File/@Source ) - 21 ) = 'OpenRPA.Interfaces.dll' ]" use="@Id" name="RemoveFile"  />
   <xsl:key match="wix:Component[ substring( wix:File/@Source, string-length( wix:File/@Source ) - 21 ) = 'OpenRPA.Interfaces.pdb' ]" use="@Id" name="RemoveFile"  />
   <xsl:key match="wix:Component[ substring( wix:File/@Source, string-length( wix:File/@Source ) - 31 ) = 'OpenRPA.Interfaces.resources.dll' ]" use="@Id" name="RemoveFile"  />
+  <xsl:key match="wix:Component[ substring( wix:File/@Source, string-length( wix:File/@Source ) - 31 ) = 'OpenRPA.Core.resources.dll' ]" use="@Id" name="RemoveFile"  />
 
   <xsl:key match="wix:Component[ substring( wix:File/@Source, string-length( wix:File/@Source ) - 27 ) = 'OpenRPA.NamedPipeWrapper.dll' ]" use="@Id" name="RemoveFile"  />
   <xsl:key match="wix:Component[ substring( wix:File/@Source, string-length( wix:File/@Source ) - 27 ) = 'OpenRPA.NamedPipeWrapper.pdb' ]" use="@Id" name="RemoveFile"  />
