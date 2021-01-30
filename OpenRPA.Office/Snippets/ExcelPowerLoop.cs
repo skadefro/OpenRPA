@@ -15,6 +15,6 @@ namespace OpenRPA.Office.Snippets
         public string Name => "ExcelPowerLoop";
         public string Category => "Excel";
         public string Xaml => Extensions.ResourceAsString(typeof(ExcelPowerLoop), "ExcelPowerLoop.xaml");
-        public snippet Snippet { get; set; }
+        public ISnippet Snippet { get; set; }
     }
 }

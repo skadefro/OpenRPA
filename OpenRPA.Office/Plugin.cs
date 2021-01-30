@@ -1,18 +1,23 @@
 ﻿using Microsoft.VisualBasic.Activities;
 using OpenRPA.Interfaces;
-using OpenRPA.Interfaces.Selector;
 using System;
 using System.Activities;
 using System.Activities.Expressions;
 using System.Collections.Generic;
+using System.ComponentModel;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
 namespace OpenRPA.Office
 {
-    public class Plugin : ObservableObject, IRecordPlugin
+    public class Plugin : IRecordPlugin, INotifyPropertyChanged
     {
+        public event PropertyChangedEventHandler PropertyChanged;
+        private void NotifyPropertyChanged(String propertyName)
+        {
+            PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(propertyName));
+        }
         public string Name => "Office";
         public string Status => "";
         public event Action<IRecordPlugin, IRecordEvent> OnUserAction
@@ -26,35 +31,35 @@ namespace OpenRPA.Office
             remove { }
         }
         public System.Windows.Controls.UserControl editor => null;
-        public IElement[] GetElementsWithSelector(Selector selector, IElement fromElement = null, int maxresults = 1)
+        public IElement[] GetElementsWithSelector(object selector, IElement fromElement = null, int maxresults = 1)
         {
             return new IElement[] { };
         }
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Design", "IDE1006")]
-        public static treeelement[] _GetRootElements(Selector anchor)
+        public static object[] _GetRootElements(object anchor)
         {
-            if(anchor!=null) return new treeelement[] { };
-            return new treeelement[] { };
+            if(anchor!=null) return new object[] { };
+            return new object[] { };
         }
-        public treeelement[] GetRootElements(Selector anchor)
+        public object[] GetRootElements(object anchor)
         {
             return Plugin._GetRootElements(anchor);
         }
-        public Selector GetSelector(Selector anchor, treeelement item)
+        public object GetSelector(object anchor, object item)
         {
             return null;
         }
         public void Initialize(IOpenRPAClient client)
         {
         }
-        public IElement LaunchBySelector(Selector selector, bool CheckRunning, TimeSpan timeout)
+        public IElement LaunchBySelector(object selector, bool CheckRunning, TimeSpan timeout)
         {
             throw new NotImplementedException();
         }
-        public void CloseBySelector(Selector selector, TimeSpan timeout, bool Force)
+        public void CloseBySelector(object selector, TimeSpan timeout, bool Force)
         {
         }
-        public bool Match(SelectorItem item, IElement m)
+        public bool Match(object item, IElement m)
         {
             return false;
         }

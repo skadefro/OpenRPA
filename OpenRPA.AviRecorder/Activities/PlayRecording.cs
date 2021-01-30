@@ -1,4 +1,5 @@
-﻿using OpenRPA.Interfaces;
+﻿using OpenRPA.Core;
+using OpenRPA.Interfaces;
 using System;
 using System.Activities;
 using System.Activities.Presentation.PropertyEditing;
@@ -11,7 +12,7 @@ using System.Threading.Tasks;
 
 namespace OpenRPA.AviRecorder.Activities
 {
-    [System.ComponentModel.Designer(typeof(PlayRecordingDesigner), typeof(System.ComponentModel.Design.IDesigner))]
+    [Designer(typeof(PlayRecordingDesigner), typeof(System.ComponentModel.Design.IDesigner))]
     [System.Drawing.ToolboxBitmap(typeof(ResFinder2), "Resources.toolbox.gethtmlelement.png")]
     [LocalizedToolboxTooltip("activity_playrecording_tooltip", typeof(Resources.strings))]
     [LocalizedDisplayName("activity_playrecording", typeof(Resources.strings))]

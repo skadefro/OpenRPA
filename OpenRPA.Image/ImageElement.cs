@@ -1,4 +1,5 @@
-﻿using OpenRPA.Interfaces;
+﻿using OpenRPA.Core;
+using OpenRPA.Interfaces;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -23,7 +24,7 @@ namespace OpenRPA.Image
             {
                 if(_element==null)
                 {
-                    _element = Interfaces.Image.Util.Screenshot(Rectangle.X, Rectangle.Y, Rectangle.Width, Rectangle.Height);
+                    _element = Core.Image.Util.Screenshot(Rectangle.X, Rectangle.Y, Rectangle.Width, Rectangle.Height);
                 }
                 return _element;
             }
@@ -62,7 +63,7 @@ namespace OpenRPA.Image
             Height = Rectangle.Height;
             this.element = Element;
         }
-        public void Click(bool VirtualClick, Input.MouseButton Button, int OffsetX, int OffsetY, bool DoubleClick, bool AnimateMouse)
+        public void Click(bool VirtualClick, MouseButton Button, int OffsetX, int OffsetY, bool DoubleClick, bool AnimateMouse)
         {
             if (AnimateMouse)
             {
@@ -89,7 +90,7 @@ namespace OpenRPA.Image
         }
         public Task _Highlight(System.Drawing.Color Color, TimeSpan Duration)
         {
-            using (Interfaces.Overlay.OverlayWindow _overlayWindow = new Interfaces.Overlay.OverlayWindow(true))
+            using (Core.Overlay.OverlayWindow _overlayWindow = new Core.Overlay.OverlayWindow(true))
             {
                 _overlayWindow.BackColor = Color;
                 _overlayWindow.Visible = true;
@@ -116,14 +117,14 @@ namespace OpenRPA.Image
                 var ScreenImagex = Rectangle.X - (AddedWidth / 2);
                 var ScreenImagey = Rectangle.Y - (AddedHeight / 2);
                 if (ScreenImagex < 0) ScreenImagex = 0; if (ScreenImagey < 0) ScreenImagey = 0;
-                using (var image = Interfaces.Image.Util.Screenshot(ScreenImagex, ScreenImagey, ScreenImageWidth, ScreenImageHeight, Interfaces.Image.Util.ActivityPreviewImageWidth, Interfaces.Image.Util.ActivityPreviewImageHeight))
+                using (var image = Core.Image.Util.Screenshot(ScreenImagex, ScreenImagey, ScreenImageWidth, ScreenImageHeight, Core.Image.Util.ActivityPreviewImageWidth, Core.Image.Util.ActivityPreviewImageHeight))
                 {
-                    return Interfaces.Image.Util.Bitmap2Base64(image);
+                    return Core.Image.Util.Bitmap2Base64(image);
                 }
             }
             else
             {
-                return Interfaces.Image.Util.Bitmap2Base64(element);
+                return Core.Image.Util.Bitmap2Base64(element);
             }
         }
         public void Dispose()
@@ -142,7 +143,7 @@ namespace OpenRPA.Image
                         return Text;
                     }
                     var lang = Config.local.ocrlanguage;
-                    string basepath = Interfaces.Extensions.DataDirectory;
+                    string basepath = Core.Extensions.DataDirectory;
                     string path = System.IO.Path.Combine(basepath, "tessdata");
                     ocr.TesseractDownloadLangFile(path, Config.local.ocrlanguage);
                     ocr.TesseractDownloadLangFile(path, "osd");

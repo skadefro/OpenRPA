@@ -2,6 +2,7 @@
 using FlaUI.Core.AutomationElements.Infrastructure;
 using FlaUI.Core.Conditions;
 using FlaUI.Core.Definitions;
+using OpenRPA.Core;
 using OpenRPA.Interfaces;
 using System;
 using System.Collections.Generic;
@@ -143,7 +144,7 @@ namespace OpenRPA.IE
         }
         private void findPanel()
         {
-            using (var automation = Interfaces.AutomationUtil.getAutomation())
+            using (var automation = AutomationUtil.getAutomation())
             {
                 var _ele = automation.FromHandle(new IntPtr(wBrowser.HWND));
                 panel = _ele.FindFirst(TreeScope.Descendants,

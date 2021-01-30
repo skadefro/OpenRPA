@@ -5,7 +5,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace OpenRPA.Core
+namespace OpenRPA.NativeMessagingHost
 {
     [Serializable]
     public class NativeMessagingMessage : PipeMessage

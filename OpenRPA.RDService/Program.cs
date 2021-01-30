@@ -9,6 +9,8 @@ using System.Threading.Tasks;
 namespace OpenRPA.RDService
 {
     using FlaUI.UIA3.Patterns;
+    using OpenRPA.Core;
+    using OpenRPA.Core.entity;
     using OpenRPA.Interfaces;
     using System.IO.Pipes;
     using System.Threading;
@@ -177,7 +179,7 @@ namespace OpenRPA.RDService
             try
             {
                 Log.Information("WebSocketClient_OnOpen");
-                TokenUser user = null;
+                ITokenUser user = null;
                 while (user == null)
                 {
                     if (!string.IsNullOrEmpty(PluginConfig.tempjwt))

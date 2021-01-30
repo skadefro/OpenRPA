@@ -14,7 +14,7 @@ namespace OpenRPA.Forms.Snippets
     {
         public string Name => "ImageForm";
         public string Category => "Form";
-        public string Xaml => Interfaces.Extensions.ResourceAsString(typeof(ImageForm), "ImageForm.xaml");
-        public snippet Snippet { get; set; }
+        public string Xaml => Extensions.ResourceAsString(typeof(ImageForm), "ImageForm.xaml");
+        public ISnippet Snippet { get; set; }
     }
 }

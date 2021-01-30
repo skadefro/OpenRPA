@@ -1,4 +1,5 @@
 ﻿using NAudio.Wave;
+using OpenRPA.Core;
 using OpenRPA.Interfaces;
 using SharpAvi;
 using SharpAvi.Codecs;
@@ -34,10 +35,9 @@ namespace OpenRPA.AviRecorder
                 return _Instance;
             }
         }
-
         private void InitDefaultSettings()
         {
-            outputFolder = Interfaces.Extensions.MyVideos;
+            outputFolder = RunPlugin.MyVideos;
 
             encoder = KnownFourCCs.Codecs.MotionJpeg;
             encodingQuality = 70;
@@ -47,7 +47,6 @@ namespace OpenRPA.AviRecorder
             encodeAudio = true;
             audioQuality = (Mp3AudioEncoderLame.SupportedBitRates.Length + 1) / 2;
         }
-
         public bool IsRecording { get; set; }
         public string lastFileName { get; set; }
         private Recorder recorder;
@@ -74,7 +73,6 @@ namespace OpenRPA.AviRecorder
                 IsRecording = true;
             });
         }
-
         public void StopRecording()
         {
             if (!IsRecording)

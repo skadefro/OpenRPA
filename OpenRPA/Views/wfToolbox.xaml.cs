@@ -131,15 +131,6 @@ namespace OpenRPA.Views
                             //    wfToolboxCategory.Tools.Add(new ToolboxItemWrapper(typeof(System.Activities.Core.Presentation.Factories.ParallelForEachWithBodyFactory<>), "ParallelForEach"));
                             //}
                         }
-
-                        foreach (var w in actvities)
-                        {
-                            if (w.Type == null)
-                            {
-                                Console.WriteLine(w.DisplayName + " has no type");
-                            }
-                        }
-
                     }
                     catch (Exception)
                     {

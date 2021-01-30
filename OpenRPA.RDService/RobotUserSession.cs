@@ -7,6 +7,7 @@ using System.Threading.Tasks;
 
 namespace OpenRPA.RDService
 {
+    using OpenRPA.Core;
     using OpenRPA.Interfaces;
     using SimpleImpersonation;
     using System.Windows.Threading;

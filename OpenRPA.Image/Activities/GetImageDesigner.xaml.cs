@@ -1,4 +1,6 @@
 ﻿using Microsoft.VisualBasic.Activities;
+using OpenRPA.Core;
+using OpenRPA.Core.Selector;
 using OpenRPA.Interfaces;
 using System;
 using System.Activities;
@@ -20,7 +22,7 @@ namespace OpenRPA.Image
         public GetImageDesigner()
         {
             InitializeComponent();
-            HighlightImage = Extensions.GetImageSourceFromResource("search.png");
+            HighlightImage = Core.Extensions.GetImageSourceFromResource("search.png");
         }
         public event PropertyChangedEventHandler PropertyChanged;
         private void NotifyPropertyChanged(String propertyName)
@@ -57,9 +59,9 @@ namespace OpenRPA.Image
             Rectangle match = Rectangle.Empty;
             if (!string.IsNullOrEmpty(loadFromSelectorString))
             {
-                var selector = new Interfaces.Selector.Selector(loadFromSelectorString);
+                var selector = new Selector(loadFromSelectorString);
                 var pluginname = selector.First().Selector;
-                var Plugin = Interfaces.Plugins.recordPlugins.Where(x => x.Name == pluginname).First();
+                var Plugin = Core.Plugins.recordPlugins.Where(x => x.Name == pluginname).First();
                 var elements = Plugin.GetElementsWithSelector(selector, null, 1);
                 if (elements.Length > 0)
                 {
@@ -78,7 +80,7 @@ namespace OpenRPA.Image
                 }
                 else
                 {
-                    var tip = new Interfaces.Overlay.TooltipWindow("Mark a found item");
+                    var tip = new Core.Overlay.TooltipWindow("Mark a found item");
                     match = await getrectangle.GetitAsync();
                     tip.Close();
                     tip = null;
@@ -90,7 +92,7 @@ namespace OpenRPA.Image
                 if (!string.IsNullOrEmpty(image))
                 {
                     Bitmap b = Task.Run(() => {
-                        return Interfaces.Image.Util.LoadBitmap(image);
+                        return Core.Image.Util.LoadBitmap(image);
                     }).Result;
                     using (b)
                     {
@@ -99,13 +101,12 @@ namespace OpenRPA.Image
                         var Processname = loadFrom.GetValue<string>("Processname");
                         var limit = loadFrom.GetValue<Rectangle>("Limit");
                         if (Threshold < 0.5) Threshold = 0.8;
-
-                        Interfaces.GenericTools.Minimize();
+                        GenericTools.Minimize();
                         System.Threading.Thread.Sleep(100);
                         var matches = ImageEvent.waitFor(b, Threshold, Processname, TimeSpan.FromMilliseconds(100), CompareGray, limit);
                         if (matches.Count() == 0)
                         {
-                            Interfaces.GenericTools.Restore();
+                            GenericTools.Restore();
                             return Rectangle.Empty;
                         }
                         match = matches[0];
@@ -119,24 +120,23 @@ namespace OpenRPA.Image
         {
             Rectangle match = await GetBaseRectangle();
             Rectangle rect = Rectangle.Empty;
-            using (Interfaces.Overlay.OverlayWindow _overlayWindow = new Interfaces.Overlay.OverlayWindow(true))
+            using (Core.Overlay.OverlayWindow _overlayWindow = new Core.Overlay.OverlayWindow(true))
             {
                 _overlayWindow.BackColor = System.Drawing.Color.Blue;
                 _overlayWindow.Visible = true;
                 _overlayWindow.Bounds = match;
                 _overlayWindow.TopMost = true;
 
-                var tip = new Interfaces.Overlay.TooltipWindow("Select relative area to capture");
+                var tip = new Core.Overlay.TooltipWindow("Select relative area to capture");
                 rect = await getrectangle.GetitAsync();
                 tip.Close();
                 tip = null;
             }
-
             ModelItem.Properties["OffsetX"].SetValue(new System.Activities.InArgument<int>(rect.X - match.X));
             ModelItem.Properties["OffsetY"].SetValue(new System.Activities.InArgument<int>(rect.Y - match.Y));
             ModelItem.Properties["Width"].SetValue(new System.Activities.InArgument<int>(rect.Width));
             ModelItem.Properties["Height"].SetValue(new System.Activities.InArgument<int>(rect.Height));
-            Interfaces.GenericTools.Restore();
+            GenericTools.Restore();
         }
         private async void Highlight_Click(object sender, RoutedEventArgs e)
         {
@@ -150,7 +150,7 @@ namespace OpenRPA.Image
 
             var rect = new ImageElement(new Rectangle(_hi.X + OffsetX, _hi.Y + OffsetY, Width, Height));
             await rect.Highlight(false, System.Drawing.Color.PaleGreen, TimeSpan.FromSeconds(1));
-            Interfaces.GenericTools.Restore();
+            GenericTools.Restore();
         }
     }
 }

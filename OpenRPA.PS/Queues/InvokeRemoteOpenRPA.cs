@@ -8,6 +8,7 @@ using System.Management.Automation;
 using Newtonsoft.Json.Linq;
 using System.Collections.ObjectModel;
 using OpenRPA.Interfaces.entity;
+using OpenRPA.Core.entity;
 
 namespace OpenRPA.PS
 {
@@ -269,12 +270,12 @@ namespace OpenRPA.PS
             return base.EndProcessingAsync();
         }
         private string correlationId = null;
-        private Interfaces.mq.RobotCommand command = null;
+        private Core.mq.RobotCommand command = null;
         private void WebSocketClient_OnQueueMessage(IQueueMessage message, QueueMessageEventArgs e)
         {
             if (correlationId == message.correlationId && message.data != null)
             {
-                command = Newtonsoft.Json.JsonConvert.DeserializeObject<Interfaces.mq.RobotCommand>(message.data.ToString());
+                command = Newtonsoft.Json.JsonConvert.DeserializeObject<Core.mq.RobotCommand>(message.data.ToString());
                 if (command.command == "invokefailed" || command.command == "invokeaborted" || command.command == "invokecompleted")
                 {
                     workItemsWaiting.Set();

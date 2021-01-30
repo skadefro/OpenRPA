@@ -83,7 +83,7 @@ namespace OpenRPA.Script.Activities
             if (string.IsNullOrEmpty(language)) language = "VB";
             var f = new Editor(code, language, vars, namespaces.ToArray());
             f.textEditor.SyntaxHighlighting = f.Languages.Where(x => x.Name == language).FirstOrDefault();
-            f.Owner = GenericTools.MainWindow;
+            f.Owner = Plugin.client.Window as System.Windows.Window;
             f.ShowDialog();
             if (f.textEditor.Text != code)
             {

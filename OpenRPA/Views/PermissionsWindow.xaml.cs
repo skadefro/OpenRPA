@@ -1,7 +1,6 @@
 ﻿using OpenRPA.Core;
 using OpenRPA.Core.entity;
 using OpenRPA.Interfaces;
-using OpenRPA.Core.entity;
 using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;

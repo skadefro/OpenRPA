@@ -1,4 +1,5 @@
-﻿using OpenRPA.Interfaces.entity;
+﻿using OpenRPA.Core.entity;
+using OpenRPA.Interfaces.entity;
 using System;
 using System.Collections.Generic;
 using System.Linq;

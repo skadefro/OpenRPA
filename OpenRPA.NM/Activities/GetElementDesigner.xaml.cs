@@ -1,4 +1,5 @@
 ﻿using Microsoft.VisualBasic.Activities;
+using OpenRPA.Core;
 using OpenRPA.Interfaces;
 using System;
 using System.Activities;
@@ -43,16 +44,16 @@ namespace OpenRPA.NM
             }
             string SelectorString = ModelItem.GetValue<string>("Selector");
             int maxresults = ModelItem.GetValue<int>("MaxResults");
-            Interfaces.Selector.SelectorWindow selectors;
+            Core.Selector.SelectorWindow selectors;
             if (!string.IsNullOrEmpty(SelectorString))
             {
                 var selector = new NMSelector(SelectorString);
-                selectors = new Interfaces.Selector.SelectorWindow("NM", selector, anchor, maxresults);
+                selectors = new Core.Selector.SelectorWindow("NM", selector, anchor, maxresults);
             }
             else
             {
                 var selector = new NMSelector("[{Selector: 'NM'}]");
-                selectors = new Interfaces.Selector.SelectorWindow("NM", selector, anchor, maxresults);
+                selectors = new Core.Selector.SelectorWindow("NM", selector, anchor, maxresults);
             }
             // selectors.Owner = GenericTools.MainWindow; -- Locks up and never returns ?
             if (selectors.ShowDialog() == true)
@@ -140,12 +141,12 @@ namespace OpenRPA.NM
             {
                 var image = ImageString;
                 System.Drawing.Bitmap b = Task.Run(() => {
-                    return Interfaces.Image.Util.LoadBitmap(image);
+                    return Core.Image.Util.LoadBitmap(image);
                 }).Result;
                 using (b)
                 {
                     if (b == null) return null;
-                    return Interfaces.Image.Util.BitmapToImageSource(b, Interfaces.Image.Util.ActivityPreviewImageWidth, Interfaces.Image.Util.ActivityPreviewImageHeight);
+                    return Core.Image.Util.BitmapToImageSource(b, Core.Image.Util.ActivityPreviewImageWidth, Core.Image.Util.ActivityPreviewImageHeight);
                 }
             }
         }

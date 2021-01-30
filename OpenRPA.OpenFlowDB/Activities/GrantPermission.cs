@@ -53,13 +53,13 @@ namespace OpenRPA.OpenFlowDB
             JArray _acl = (JArray)result.GetValue("_acl");
             //var acl = _acl?.Value<entity.ace[]>().ToList();
 
-            List<OpenRPA.Interfaces.entity.ace> acl = null;
-            if(_acl!=null) { acl =  _acl.ToObject<List<OpenRPA.Interfaces.entity.ace>>();  } else { acl = new List<OpenRPA.Interfaces.entity.ace>(); }
-            
-            OpenRPA.Interfaces.entity.ace ace = acl.Where(x => x._id == _id).FirstOrDefault();
+            List<Core.entity.ace> acl = null;
+            if(_acl!=null) { acl =  _acl.ToObject<List<Core.entity.ace>>();  } else { acl = new List<Core.entity.ace>(); }
+
+            Core.entity.ace ace = acl.Where(x => x._id == _id).FirstOrDefault();
             if (ace == null)
             {
-                ace = new OpenRPA.Interfaces.entity.ace();
+                ace = new Core.entity.ace();
                 ace.unsetBit(1);
                 ace.unsetBit(2);
                 ace.unsetBit(3);

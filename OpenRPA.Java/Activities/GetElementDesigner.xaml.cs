@@ -1,4 +1,5 @@
 ﻿using Microsoft.VisualBasic.Activities;
+using OpenRPA.Core;
 using OpenRPA.Interfaces;
 using System;
 using System.Activities;
@@ -19,7 +20,7 @@ namespace OpenRPA.Java
         public GetElementDesigner()
         {
             InitializeComponent();
-            HighlightImage = Extensions.GetImageSourceFromResource("search.png");
+            HighlightImage = Core.Extensions.GetImageSourceFromResource("search.png");
         }
         public event PropertyChangedEventHandler PropertyChanged;
         private void NotifyPropertyChanged(String propertyName)
@@ -45,16 +46,16 @@ namespace OpenRPA.Java
             }
             string SelectorString = ModelItem.GetValue<string>("Selector");
             int maxresults = ModelItem.GetValue<int>("MaxResults");
-            Interfaces.Selector.SelectorWindow selectors;
+            Core.Selector.SelectorWindow selectors;
             if (!string.IsNullOrEmpty(SelectorString))
             {
                 var selector = new JavaSelector(SelectorString);
-                selectors = new Interfaces.Selector.SelectorWindow("Java", selector, anchor, maxresults);
+                selectors = new Core.Selector.SelectorWindow("Java", selector, anchor, maxresults);
             }
             else
             {
                 var selector = new JavaSelector("[{Selector: 'Java'}]");
-                selectors = new Interfaces.Selector.SelectorWindow("Java", selector, anchor, maxresults);
+                selectors = new Core.Selector.SelectorWindow("Java", selector, anchor, maxresults);
             }
             // selectors.Owner = GenericTools.MainWindow;  -- Locks up and never returns ?
             if (selectors.ShowDialog() == true)
@@ -100,7 +101,7 @@ namespace OpenRPA.Java
                 loadFrom = loadFrom.Parent;
             }
 
-            HighlightImage = Extensions.GetImageSourceFromResource(".x.png");
+            HighlightImage = Core.Extensions.GetImageSourceFromResource(".x.png");
             NotifyPropertyChanged("HighlightImage");
             string SelectorString = ModelItem.GetValue<string>("Selector");
             int maxresults = ModelItem.GetValue<int>("MaxResults");
@@ -146,12 +147,12 @@ namespace OpenRPA.Java
             {
                 var image = ImageString;
                 System.Drawing.Bitmap b = Task.Run(() => {
-                    return Interfaces.Image.Util.LoadBitmap(image);
+                    return Core.Image.Util.LoadBitmap(image);
                 }).Result;
                 using (b)
                 {
                     if (b == null) return null;
-                    return Interfaces.Image.Util.BitmapToImageSource(b, Interfaces.Image.Util.ActivityPreviewImageWidth, Interfaces.Image.Util.ActivityPreviewImageHeight);
+                    return Core.Image.Util.BitmapToImageSource(b, Core.Image.Util.ActivityPreviewImageWidth, Core.Image.Util.ActivityPreviewImageHeight);
                 }
             }
         }

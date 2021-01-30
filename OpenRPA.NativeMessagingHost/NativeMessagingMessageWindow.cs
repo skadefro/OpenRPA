@@ -1,11 +1,12 @@
-﻿using Newtonsoft.Json.Linq;
+﻿using OpenRPA.Interfaces;
+using Newtonsoft.Json.Linq;
 using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace OpenRPA.Core
+namespace OpenRPA.NativeMessagingHost
 {
     [Serializable]
     public class NativeMessagingMessageWindow

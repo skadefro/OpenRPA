@@ -252,6 +252,11 @@ namespace OpenRPA.Core
                     if (dllFile.Contains("Snippets.")) continue;
                     if (dllFile.Contains("Interop.SAPFEWSELib")) continue;
                     if (dllFile.Contains("Interop.SapROTWr")) continue;
+                    if (dllFile.Contains("chrome_elf.dll")) continue;
+                    if (dllFile.Contains("d3dcompiler_47.dll")) continue;
+                    if (dllFile.Contains("libcef.dll")) continue;
+                    if (dllFile.Contains("libEGL.dll")) continue;
+                    if (dllFile.Contains("libGLESv2.dll")) continue;
                     AssemblyName an = AssemblyName.GetAssemblyName(dllFile);
                     Assembly assembly = Assembly.Load(an);
                     // assemblies.Add(assembly);

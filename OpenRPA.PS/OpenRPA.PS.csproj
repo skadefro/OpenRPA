@@ -6,9 +6,10 @@
     <Configurations>Debug;Release;PrepInstaller</Configurations>
     <Version>1.0.2</Version>
     <PackageReleaseNotes>1.0.2 Check for error response on Invoke-Openflow</PackageReleaseNotes>
+    <Platforms>AnyCPU;x64</Platforms>
   </PropertyGroup>
   <ItemGroup>
-    <ProjectReference Include="..\OpenRPA.Interfaces\OpenRPA.Interfaces.csproj" />
+    <ProjectReference Include="..\OpenRPA.Core\OpenRPA.Core.csproj" />
     <ProjectReference Include="..\OpenRPA.Net\OpenRPA.Net.csproj" />
   </ItemGroup>
   <ItemGroup>

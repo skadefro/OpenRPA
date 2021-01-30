@@ -8,34 +8,47 @@
     <PackageProjectUrl>https://github.com/open-rpa/openrpa</PackageProjectUrl>
     <PackageLicenseExpression>MPL-2.0</PackageLicenseExpression>
     <Version>1.0.27</Version>
-    <PackageReleaseNotes>1.0.27 Minor fixes to Windows Selector and cache
-1.0.26 Add ClearCache to Get Element / Add search_timeout to control timeout
-1.0.25 Fix threading error in windows.getelement
-1.0.24 Add Interactive to GetElement
-1.0.23 Change target framework to 4.7.2
-1.0.22 Add support for variables in selector
-1.0.21 Fix issue when searching for ghot elements on Windows 7
-1.0.20 Fix issue with "traverse back" recorder options when running with Japanese language
-1.0.19 Add support for moving and resizing windows
-1.0.18 Make enable_cache default true
-1.0.17 Improve caching
-1.0.16 Fast fix, to speed up wpf finding
-1.0.15 Add langauges and bug fixes
-1.0.12 add ui for new options to fine tune windows recording
-1.0.11 fix double click
-1.0.9 update interfaces reference
-1.0.8 support for seperate images 
-1.0.7 Workaround for WPF double elements
-1.0.5 update interfaces reference</PackageReleaseNotes>
+    <PackageReleaseNotes>
+      1.0.27 Minor fixes to Windows Selector and cache
+      1.0.26 Add ClearCache to Get Element / Add search_timeout to control timeout
+      1.0.25 Fix threading error in windows.getelement
+      1.0.24 Add Interactive to GetElement
+      1.0.23 Change target framework to 4.7.2
+      1.0.22 Add support for variables in selector
+      1.0.21 Fix issue when searching for ghot elements on Windows 7
+      1.0.20 Fix issue with "traverse back" recorder options when running with Japanese language
+      1.0.19 Add support for moving and resizing windows
+      1.0.18 Make enable_cache default true
+      1.0.17 Improve caching
+      1.0.16 Fast fix, to speed up wpf finding
+      1.0.15 Add langauges and bug fixes
+      1.0.12 add ui for new options to fine tune windows recording
+      1.0.11 fix double click
+      1.0.9 update interfaces reference
+      1.0.8 support for seperate images
+      1.0.7 Workaround for WPF double elements
+      1.0.5 update interfaces reference
+    </PackageReleaseNotes>
     <Description>Recorder plugin and Activities for interacting with Windows Elements</Description>
     <PackageIcon>open_rpa128.png</PackageIcon>
     <Configurations>Debug;Release;ReleaseNuget;PrepInstaller</Configurations>
     <PackageTags>OpenRPAcore</PackageTags>
     <RepositoryUrl>https://github.com/open-rpa/openrpa</RepositoryUrl>
-    <Platforms>AnyCPU;x86</Platforms>
+    <Platforms>AnyCPU;x86;x64</Platforms>
     <Company>OpenIAP</Company>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|AnyCPU'">
+    <ShouldCreateLogs>True</ShouldCreateLogs>
+    <AdvancedSettingsExpanded>False</AdvancedSettingsExpanded>
+    <UpdateAssemblyVersion>False</UpdateAssemblyVersion>
+    <UpdateAssemblyFileVersion>False</UpdateAssemblyFileVersion>
+    <UpdateAssemblyInfoVersion>True</UpdateAssemblyInfoVersion>
+    <UpdatePackageVersion>False</UpdatePackageVersion>
+    <AssemblyInfoVersionType>SemVer1</AssemblyInfoVersionType>
+    <InheritWinAppVersionFrom>None</InheritWinAppVersionFrom>
+    <AssemblyInfoVersionSemVerSettings>AssemblyVersion.IncrementWithAutoReset.None</AssemblyInfoVersionSemVerSettings>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
     <ShouldCreateLogs>True</ShouldCreateLogs>
     <AdvancedSettingsExpanded>False</AdvancedSettingsExpanded>
     <UpdateAssemblyVersion>False</UpdateAssemblyVersion>
@@ -60,11 +73,17 @@
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|AnyCPU'">
     <OutputPath>..\dist</OutputPath>
   </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
+    <OutputPath>..\dist</OutputPath>
+  </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|x86'">
     <OutputPath>..\dist</OutputPath>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='PrepInstaller|AnyCPU'">
     <OutputPath></OutputPath>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='PrepInstaller|x64'">
+    <OutputPath />
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='PrepInstaller|x86'">
     <OutputPath />
@@ -154,5 +173,17 @@
   <Target Name="PostBuild" AfterTargets="Pack" Condition="'$(Configuration)' == 'PrepInstaller'">
     <Exec Command="copy $(OutputPath)..\$(PackageId).$(PackageVersion).nupkg C:\code\OpenRPA\packages" />
   </Target>
-  <ProjectExtensions><VisualStudio><UserProperties BuildVersion_StartDate="2000/1/1" /></VisualStudio></ProjectExtensions>
+  <ProjectExtensions>
+    <VisualStudio>
+      <UserProperties BuildVersion_StartDate="2000/1/1" />
+    </VisualStudio>
+  </ProjectExtensions>
+
+  <Target Name="FixAL1703Warning" BeforeTargets="GenerateSatelliteAssemblies" Condition="'$(PlatformTarget)' == 'x64'">
+    <Message Text="Adjusting SDK tools directory to use x64 version of AL.EXE" />
+    <PropertyGroup>
+      <TargetFrameworkSDKToolsDirectory>$(TargetFrameworkSDKToolsDirectory)$(PlatformTarget)\</TargetFrameworkSDKToolsDirectory>
+    </PropertyGroup>
+  </Target>
+
 </Project>

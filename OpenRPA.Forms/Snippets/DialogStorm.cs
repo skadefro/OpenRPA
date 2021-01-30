@@ -14,7 +14,7 @@ namespace OpenRPA.Forms.Snippets
     {
         public string Name => "Dialog Storm";
         public string Category => "Form";
-        public string Xaml => Interfaces.Extensions.ResourceAsString(typeof(DialogStorm), "DialogStorm.xaml");
-        public snippet Snippet { get; set; }
+        public string Xaml => Extensions.ResourceAsString(typeof(DialogStorm), "DialogStorm.xaml");
+        public ISnippet Snippet { get; set; }
     }
 }

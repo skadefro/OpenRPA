@@ -51,11 +51,11 @@ namespace OpenRPA.Views
         {
             get
             {
-                return Config.local.show_getting_started;
+                return PluginConfig.show_getting_started;
             }
             set
             {
-                Config.local.show_getting_started = value;
+                PluginConfig.show_getting_started = value;
                 //NotifyPropertyChanged("ShowAgain");
             }
         }

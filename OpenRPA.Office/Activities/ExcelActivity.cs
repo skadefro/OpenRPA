@@ -43,7 +43,10 @@ namespace OpenRPA.Office.Activities
         private static Microsoft.Office.Interop.Excel.Application StartExcel()
         {
             Microsoft.Office.Interop.Excel.Application instance = null;
-            OpenRPA.Interfaces.GenericTools.RunUI(() =>
+            System.Windows.Window mainForm = RunPlugin.client.Window as System.Windows.Window;
+            // GenericTools.RunUI(() =>
+            mainForm.Dispatcher.Invoke(() =>
+            //OpenRPA.Interfaces.GenericTools.RunUI(() =>
             {
                 try
                 {

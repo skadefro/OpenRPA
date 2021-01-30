@@ -1,9 +1,10 @@
 ﻿using FlaUI.Core.AutomationElements;
 using Newtonsoft.Json.Linq;
+using OpenRPA.Core.entity;
+using OpenRPA.Core.Input;
 using OpenRPA.Input;
 using OpenRPA.Interfaces;
 using OpenRPA.Interfaces.entity;
-using OpenRPA.Interfaces.Input;
 using OpenRPA.Windows;
 using System;
 using System.Collections.Generic;
@@ -63,9 +64,10 @@ namespace OpenRPA.PDPlugin
                 {
                     Button = e.Button
                 };
-                re.Selector = new WindowsSelector(e.Element.RawElement, null, false);
+                var winselector = new WindowsSelector(e.Element.RawElement, null, false);
+                re.Selector = winselector;
                 if (re.Selector == null) return;
-                if (re.Selector.Count < 2) return;
+                if (winselector.Count < 2) return;
                 re.OffsetX = e.X - e.Element.Rectangle.X;
                 re.OffsetY = e.Y - e.Element.Rectangle.Y;
                 re.UIElement = e.Element;
@@ -73,7 +75,7 @@ namespace OpenRPA.PDPlugin
                 re.X = e.X;
                 re.Y = e.Y;
 
-                foreach (var p in Plugins.recordPlugins)
+                foreach (var p in Core.Plugins.recordPlugins)
                 {
                     // if (p.Name != "Windows")
                     if (p.Name == "IE" || p.Name == "Java" || p.Name == "NM")
@@ -106,9 +108,9 @@ namespace OpenRPA.PDPlugin
                 Log.Error(ex.ToString());
             }
         }
-        private void OnKeyUp(Input.InputEventArgs e)
+        private void OnKeyUp(InputEventArgs e)
         {
-            var key = new Interfaces.Input.vKey((FlaUI.Core.WindowsAPI.VirtualKeyShort)e.Key, true);
+            var key = new vKey((FlaUI.Core.WindowsAPI.VirtualKeyShort)e.Key, true);
             var i = new keyboardevent(key);
             _ = global.webSocketClient.InsertOne(PluginConfig.collectionname, 0, false, i);
         }

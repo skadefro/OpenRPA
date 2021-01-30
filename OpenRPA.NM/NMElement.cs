@@ -1,6 +1,8 @@
 ﻿using Newtonsoft.Json;
 using Newtonsoft.Json.Linq;
+using OpenRPA.Core;
 using OpenRPA.Interfaces;
+using OpenRPA.NativeMessagingHost;
 using System;
 using System.Collections.Generic;
 using System.Drawing;
@@ -225,10 +227,10 @@ namespace OpenRPA.NM
                         zn_id = zn_id,
                         tabid = message.tabid,
                         frameId = message.frameId,
-                        data = Interfaces.Extensions.Base64Encode(value),
+                        data = Core.Extensions.Base64Encode(value),
                         result = "value"
                     };
-                    var temp = Interfaces.Extensions.Base64Decode(updateelement.data);
+                    var temp = Core.Extensions.Base64Decode(updateelement.data);
                     if (value == null) updateelement.data = null;
                     var subsubresult = NMHook.sendMessageResult(updateelement, true, PluginConfig.protocol_timeout);
                     if (subsubresult == null) throw new Exception("Failed setting html element value");
@@ -262,10 +264,10 @@ namespace OpenRPA.NM
                         zn_id = zn_id,
                         tabid = message.tabid,
                         frameId = message.frameId,
-                        data = Interfaces.Extensions.Base64Encode(value),
+                        data = Core.Extensions.Base64Encode(value),
                         result = "value"
                     };
-                    var temp = Interfaces.Extensions.Base64Decode(updateelement.data);
+                    var temp = Core.Extensions.Base64Decode(updateelement.data);
                     if (value == null) updateelement.data = null;
                     var subsubresult = NMHook.sendMessageResult(updateelement, true, PluginConfig.protocol_timeout);
                     if (subsubresult == null) throw new Exception("Failed setting html element value");
@@ -299,10 +301,10 @@ namespace OpenRPA.NM
                         zn_id = zn_id,
                         tabid = message.tabid,
                         frameId = message.frameId,
-                        data = Interfaces.Extensions.Base64Encode(value),
+                        data = Core.Extensions.Base64Encode(value),
                         result = "value"
                     };
-                    var temp = Interfaces.Extensions.Base64Decode(updateelement.data);
+                    var temp = Core.Extensions.Base64Decode(updateelement.data);
                     if (value == null) updateelement.data = null;
                     var subsubresult = NMHook.sendMessageResult(updateelement, true, PluginConfig.protocol_timeout);
                     if (subsubresult == null) throw new Exception("Failed setting html element value");
@@ -352,7 +354,7 @@ namespace OpenRPA.NM
                         zn_id = zn_id,
                         tabid = message.tabid,
                         frameId = message.frameId,
-                        data = Interfaces.Extensions.Base64Encode(JsonConvert.SerializeObject(value))
+                        data = Core.Extensions.Base64Encode(JsonConvert.SerializeObject(value))
                     };
                     var subsubresult = NMHook.sendMessageResult(updateelement, true, PluginConfig.protocol_timeout);
                     if (subsubresult == null) throw new Exception("Failed setting html element value");
@@ -415,9 +417,9 @@ namespace OpenRPA.NM
                         zn_id = zn_id,
                         tabid = message.tabid,
                         frameId = message.frameId,
-                        data = Interfaces.Extensions.Base64Encode(value), result = "innerhtml"
+                        data = Core.Extensions.Base64Encode(value), result = "innerhtml"
                     };
-                    var temp = Interfaces.Extensions.Base64Decode(updateelement.data);
+                    var temp = Core.Extensions.Base64Decode(updateelement.data);
                     if (value == null) updateelement.data = null;
                     var subsubresult = NMHook.sendMessageResult(updateelement, true, PluginConfig.protocol_timeout);
                     if (subsubresult == null) throw new Exception("Failed setting html element value");
@@ -459,10 +461,10 @@ namespace OpenRPA.NM
                         zn_id = zn_id,
                         tabid = message.tabid,
                         frameId = message.frameId,
-                        data = Interfaces.Extensions.Base64Encode(value),
+                        data = Core.Extensions.Base64Encode(value),
                         result = "value"
                     };
-                    var temp = Interfaces.Extensions.Base64Decode(updateelement.data);
+                    var temp = Core.Extensions.Base64Decode(updateelement.data);
                     if (value == null) updateelement.data = null;
                     var subsubresult = NMHook.sendMessageResult(updateelement, true, PluginConfig.protocol_timeout);
                     if (subsubresult == null) throw new Exception("Failed setting html element value");
@@ -474,9 +476,9 @@ namespace OpenRPA.NM
                 }
             }
         }
-        public void Click(bool VirtualClick, Input.MouseButton Button, int OffsetX, int OffsetY, bool DoubleClick, bool AnimateMouse)
+        public void Click(bool VirtualClick, MouseButton Button, int OffsetX, int OffsetY, bool DoubleClick, bool AnimateMouse)
         {
-            if (Button != Input.MouseButton.Left) { VirtualClick = false; }
+            if (Button != MouseButton.Left) { VirtualClick = false; }
             if(type== "file") { VirtualClick = false; }
             if (!VirtualClick)
             {
@@ -655,7 +657,7 @@ namespace OpenRPA.NM
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Design", "IDE1006")]
         public Task _Highlight(System.Drawing.Color Color, TimeSpan Duration)
         {
-            using (Interfaces.Overlay.OverlayWindow _overlayWindow = new Interfaces.Overlay.OverlayWindow(true))
+            using (Core.Overlay.OverlayWindow _overlayWindow = new Core.Overlay.OverlayWindow(true))
             {
                 _overlayWindow.BackColor = Color;
                 _overlayWindow.Visible = true;
@@ -698,9 +700,9 @@ namespace OpenRPA.NM
             var ScreenImagex = Rectangle.X - (AddedWidth / 2);
             var ScreenImagey = Rectangle.Y - (AddedHeight / 2);
             if (ScreenImagex < 0) ScreenImagex = 0; if (ScreenImagey < 0) ScreenImagey = 0;
-            using (var image = Interfaces.Image.Util.Screenshot(ScreenImagex, ScreenImagey, ScreenImageWidth, ScreenImageHeight, Interfaces.Image.Util.ActivityPreviewImageWidth, Interfaces.Image.Util.ActivityPreviewImageHeight))
+            using (var image = Core.Image.Util.Screenshot(ScreenImagex, ScreenImagey, ScreenImageWidth, ScreenImageHeight, Core.Image.Util.ActivityPreviewImageWidth, Core.Image.Util.ActivityPreviewImageHeight))
             {
-                return Interfaces.Image.Util.Bitmap2Base64(image);
+                return Core.Image.Util.Bitmap2Base64(image);
             }
         }
         [Newtonsoft.Json.JsonIgnore]
@@ -822,7 +824,7 @@ namespace OpenRPA.NM
                         zn_id = zn_id,
                         tabid = message.tabid,
                         frameId = message.frameId,
-                        data = Interfaces.Extensions.Base64Encode(value.ToString()),
+                        data = Core.Extensions.Base64Encode(value.ToString()),
                         result = "value"
                     };
                     var subsubresult = NMHook.sendMessageResult(updateelement, true, PluginConfig.protocol_timeout);

@@ -16,7 +16,6 @@ namespace OpenRPA.Core
 {
     public class CustomSelectEditor : PropertyValueEditor
     {
-
         public CustomSelectEditor()
         {
             this.InlineEditorTemplate = new DataTemplate();
@@ -38,8 +37,6 @@ namespace OpenRPA.Core
             this.InlineEditorTemplate.VisualTree = combo;
 
         }
-
-
         public virtual DataTable options
         {
             get
@@ -54,11 +51,7 @@ namespace OpenRPA.Core
                 return lst;
             }
         }
-
     }
-
-
-    #region IValueConverter Members
     public class DataTableConverter : IValueConverter
     {
         public object Convert(object value, Type targetType, object parameter, System.Globalization.CultureInfo culture)
@@ -74,17 +67,9 @@ namespace OpenRPA.Core
         {
             throw new NotImplementedException();
         }
-
     }
-    #endregion
-
-
     public class StateConverter : IValueConverter
     {
-        public StateConverter()
-        {
-            ;
-        }
         public object Convert(object value, Type targetType, object parameter, System.Globalization.CultureInfo culture)
         {
 
@@ -98,7 +83,6 @@ namespace OpenRPA.Core
             }
             return null;
         }
-
         public object ConvertBack(object value, Type targetType, object parameter, System.Globalization.CultureInfo culture)
         {
             if (value == null) return null;

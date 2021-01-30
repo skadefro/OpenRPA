@@ -1,6 +1,5 @@
 ﻿using Microsoft.VisualBasic.Activities;
 using OpenRPA.Interfaces;
-using OpenRPA.Interfaces.Selector;
 using System;
 using System.Activities;
 using System.Activities.Expressions;

@@ -17,7 +17,7 @@ namespace OpenRPA.RDService
         {
             this.command = command;
         }
-        public RPAMessage(string command, string windowsusername, Interfaces.entity.TokenUser user, string openrpapath) : base()
+        public RPAMessage(string command, string windowsusername, Core.entity.TokenUser user, string openrpapath) : base()
         {
             this.command = command;
             this.windowsusername = windowsusername;
@@ -26,7 +26,7 @@ namespace OpenRPA.RDService
         }
         public string command { get; set; }
         public string windowsusername { get; set; }
-        public Interfaces.entity.TokenUser user { get; set; }
+        public Core.entity.TokenUser user { get; set; }
         public string openrpapath { get; set; }
 
     }

@@ -7,7 +7,7 @@ using System.Threading.Tasks;
 
 namespace OpenRPA.Interfaces
 {
-    public interface ISnippet : IBase
+    public interface ISnippet
     {
         string Name { get; }
         string Category { get; }

@@ -1,4 +1,5 @@
-﻿using OpenRPA.Interfaces;
+﻿using OpenRPA.Core;
+using OpenRPA.Interfaces;
 using System;
 using System.Activities;
 using System.Activities.Presentation.PropertyEditing;
@@ -47,7 +48,7 @@ namespace OpenRPA.IE
         protected override void Execute(NativeActivityContext context)
         {
             var selector = Selector.Get(context);
-            selector = OpenRPA.Interfaces.Selector.Selector.ReplaceVariables(selector, context.DataContext);
+            selector = Core.Selector.Selector.ReplaceVariables(selector, context.DataContext);
             var sel = new IESelector(selector);
             var timeout = Timeout.Get(context);
             var from = From.Get(context);
@@ -124,10 +125,10 @@ namespace OpenRPA.IE
         protected override void CacheMetadata(NativeActivityMetadata metadata)
         {
             metadata.AddDelegate(Body);
-            Interfaces.Extensions.AddCacheArgument(metadata, "Selector", Selector);
-            Interfaces.Extensions.AddCacheArgument(metadata, "From", From);
-            Interfaces.Extensions.AddCacheArgument(metadata, "Elements", Elements);
-            Interfaces.Extensions.AddCacheArgument(metadata, "MaxResults", MaxResults);
+            Core.Extensions.AddCacheArgument(metadata, "Selector", Selector);
+            Core.Extensions.AddCacheArgument(metadata, "From", From);
+            Core.Extensions.AddCacheArgument(metadata, "Elements", Elements);
+            Core.Extensions.AddCacheArgument(metadata, "MaxResults", MaxResults);
             metadata.AddImplementationVariable(_elements);
             base.CacheMetadata(metadata);
         }

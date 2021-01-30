@@ -1,7 +1,7 @@
 ﻿using OpenRPA.NamedPipeWrapper;
 using Newtonsoft.Json;
 using OpenRPA.Interfaces;
-using static OpenRPA.Interfaces.RegUtil;
+using static OpenRPA.Core.RegUtil;
 using OpenRPA.NM.pipe;
 using System;
 using System.Collections.Generic;
@@ -9,6 +9,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using FlaUI.Core.AutomationElements;
+using OpenRPA.NativeMessagingHost;
 
 namespace OpenRPA.NM
 {
@@ -279,7 +280,7 @@ namespace OpenRPA.NM
         {
             var json = msg.data;
             var download = JsonConvert.DeserializeObject<Download>(json);
-            foreach(var p in Plugins.detectorPlugins)
+            foreach(var p in Core.Plugins.detectorPlugins)
             {
                 if(p is DownloadDetectorPlugin plugin)
                 {
@@ -705,7 +706,7 @@ namespace OpenRPA.NM
                     if (!hkcuExists(@"SOFTWARE\Google\Chrome\NativeMessagingHosts")) hkcuCreate(@"SOFTWARE\Google\Chrome\NativeMessagingHosts");
                     if (!hkcuExists(@"SOFTWARE\Google\Chrome\NativeMessagingHosts\com.openrpa.msg")) hkcuCreate(@"SOFTWARE\Google\Chrome\NativeMessagingHosts\com.openrpa.msg");
                 }
-                var basepath = Interfaces.Extensions.PluginsDirectory;
+                var basepath = Core.Extensions.PluginsDirectory;
                 var filename = System.IO.Path.Combine(basepath, "chromemanifest.json");
                 if (!System.IO.File.Exists(filename)) return;
                 string json = System.IO.File.ReadAllText(filename);
@@ -816,7 +817,7 @@ namespace OpenRPA.NM
                     if (!hkcuExists(@"SOFTWARE\Mozilla\NativeMessagingHosts")) hkcuCreate(@"SOFTWARE\Mozilla\NativeMessagingHosts");
                     if (!hkcuExists(@"SOFTWARE\Mozilla\NativeMessagingHosts\com.openrpa.msg")) hkcuCreate(@"SOFTWARE\Mozilla\NativeMessagingHosts\com.openrpa.msg");
                 }
-                var basepath = Interfaces.Extensions.PluginsDirectory;
+                var basepath = Core.Extensions.PluginsDirectory;
                 var filename = System.IO.Path.Combine(basepath, "ffmanifest.json");
                 if (!System.IO.File.Exists(filename)) return;
                 string json = System.IO.File.ReadAllText(filename);

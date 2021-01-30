@@ -148,8 +148,8 @@ namespace OpenRPA
                     System.IO.Directory.CreateDirectory(settings.CachePath);
                 }
                 // We need to update useragent to be of one of the supported browsers on googles signin page
-                settings.UserAgent = Config.local.cef_useragent;
-                if (string.IsNullOrEmpty(Config.local.cef_useragent))
+                settings.UserAgent = PluginConfig.cef_useragent;
+                if (string.IsNullOrEmpty(PluginConfig.cef_useragent))
                 {
                     // We use firefox, since google often check if chrome is uptodate
                     // Syntax
@@ -178,47 +178,56 @@ namespace OpenRPA
                 file.CopyTo(System.IO.Path.Combine(target.FullName, file.Name));
             }
         }
+        private static object dllloader_lock = new object();
         static Assembly LoadFromSameFolder(object sender, ResolveEventArgs args)
         {
             string assemblyPath = "";
-            if (args != null && !string.IsNullOrEmpty(args.Name)) assemblyPath = args.Name;
             try
             {
-                assemblyPath = new AssemblyName(args.Name).Name + ".dll";
-            }
-            catch (Exception)
-            {
-            }
-            try
-            {
-                if (args.Name.StartsWith("CefSharp"))
+                lock (dllloader_lock)
                 {
-                    string assemblyName = args.Name.Split(new[] { ',' }, 2)[0] + ".dll";
-                    string archSpecificPath = System.IO.Path.Combine(AppDomain.CurrentDomain.SetupInformation.ApplicationBase,
-                                                           Environment.Is64BitProcess ? "x64" : "x86",
-                                                           assemblyName);
+                    AssemblyName askedAssembly = new AssemblyName(args.Name);
+                    string[] fields = args.Name.Split(',');
+                    if (askedAssembly.Name == "Xceed.Wpf.AvalonDock.XmlSerializers") return null;
+                    string culture = "";
+                    if (!string.IsNullOrEmpty(askedAssembly.CultureName)) culture = askedAssembly.CultureName;
+                    if (askedAssembly.Name.EndsWith(".resources") && !culture.EndsWith("neutral")) return null;
+                    if (args != null && !string.IsNullOrEmpty(args.Name)) assemblyPath = args.Name;
+                    assemblyPath = askedAssembly.Name + ".dll";
+                    if (args.Name.StartsWith("CefSharp"))
+                    {
+                        string assemblyName = args.Name.Split(new[] { ',' }, 2)[0] + ".dll";
+                        string archSpecificPath = Path.Combine(AppDomain.CurrentDomain.SetupInformation.ApplicationBase,
+                                                               Environment.Is64BitProcess ? "x64" : "x86",
+                                                               assemblyName);
 
-                    return File.Exists(archSpecificPath)
-                               ? Assembly.LoadFile(archSpecificPath)
-                               : null;
+                        return File.Exists(archSpecificPath)
+                                   ? Assembly.LoadFile(archSpecificPath)
+                                   : null;
+                    }
+                    string folderPath = Path.GetDirectoryName(Assembly.GetExecutingAssembly().Location);
+                    assemblyPath = Path.Combine(folderPath, new AssemblyName(args.Name).Name + ".dll");
+                    if (File.Exists(assemblyPath)) return Assembly.LoadFrom(assemblyPath);
+
+                    folderPath = Core.Extensions.PluginsDirectory;
+                    assemblyPath = Path.Combine(folderPath, new AssemblyName(args.Name).Name + ".dll");
+                    if (File.Exists(assemblyPath)) return Assembly.LoadFrom(assemblyPath);
+
+                    folderPath = Core.Extensions.ProjectsDirectory;
+                    assemblyPath = Path.Combine(folderPath, new AssemblyName(args.Name).Name + ".dll");
+                    if (File.Exists(assemblyPath)) return Assembly.LoadFrom(assemblyPath);
+
+                    folderPath = Core.Extensions.ProjectsDirectory + "\\extensions";
+                    assemblyPath = Path.Combine(folderPath, new AssemblyName(args.Name).Name + ".dll");
+                    if (File.Exists(assemblyPath)) return Assembly.LoadFrom(assemblyPath);
                 }
-                string folderPath = System.IO.Path.GetDirectoryName(Assembly.GetExecutingAssembly().Location);
-                assemblyPath = System.IO.Path.Combine(folderPath, new AssemblyName(args.Name).Name + ".dll");
-                if (System.IO.File.Exists(assemblyPath)) return Assembly.LoadFrom(assemblyPath);
-
-                folderPath = Core.Extensions.PluginsDirectory;
-                assemblyPath = System.IO.Path.Combine(folderPath, new AssemblyName(args.Name).Name + ".dll");
-                if (System.IO.File.Exists(assemblyPath)) return Assembly.LoadFrom(assemblyPath);
-
-                folderPath = Core.Extensions.ProjectsDirectory;
-                assemblyPath = System.IO.Path.Combine(folderPath, new AssemblyName(args.Name).Name + ".dll");
-                if (System.IO.File.Exists(assemblyPath)) return Assembly.LoadFrom(assemblyPath);
             }
             catch (Exception ex)
             {
                 Log.Error(assemblyPath);
                 Log.Error(ex.ToString());
             }
+            Log.Debug("Failed locating: " + args.Name);
             return null;
         }
         void nIcon_Click(object sender, EventArgs e)
@@ -244,6 +253,7 @@ namespace OpenRPA
         public static Views.SplashScreen splash { get; set; }
         private async void Application_Startup(object sender, StartupEventArgs e)
         {
+            Core.Logger.Initialize();
             if(Config.local.showloadingscreen)
             {
                 splash = new Views.SplashScreen();

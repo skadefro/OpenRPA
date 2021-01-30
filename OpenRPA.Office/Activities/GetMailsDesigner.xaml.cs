@@ -87,7 +87,6 @@ namespace OpenRPA.Office.Activities
         {
             return new String(' ', num);
         }
-
         private void Button_Click(object sender, RoutedEventArgs e)
         {
             Reload();

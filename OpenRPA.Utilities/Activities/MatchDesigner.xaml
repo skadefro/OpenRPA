@@ -1,6 +1,6 @@
 ﻿<sap:ActivityDesigner x:Class="OpenRPA.Utilities.MatchDesigner"
     xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
-    xmlns:c="clr-namespace:OpenRPA.Interfaces;assembly=OpenRPA.Interfaces"
+    xmlns:c="clr-namespace:OpenRPA.Core;assembly=OpenRPA.Core"
     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
     xmlns:sa="clr-namespace:System.Activities;assembly=System.Activities"
     xmlns:sap="clr-namespace:System.Activities.Presentation;assembly=System.Activities.Presentation"

@@ -83,9 +83,7 @@ namespace OpenRPA.Script.Activities
             string currentdir = System.IO.Directory.GetCurrentDirectory();
             try
             {
-                System.IO.Directory.SetCurrentDirectory(Interfaces.Extensions.ProjectsDirectory);
-
-
+                System.IO.Directory.SetCurrentDirectory(Config.ProjectsDirectory);
                 var code = Code.Get(context);
                 var language = Language.Get(context);
                 var variables = new Dictionary<string, Type>();
@@ -222,7 +220,9 @@ namespace OpenRPA.Script.Activities
                 {
                     try
                     {
-                        GenericTools.RunUI(() =>
+                        System.Windows.Window mainForm = Plugin.client.Window as System.Windows.Window;
+                        // GenericTools.RunUI(() =>
+                        mainForm.Dispatcher.Invoke(() =>
                         {
                             if (PluginConfig.use_embedded_python)
                             {

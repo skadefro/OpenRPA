@@ -1,18 +1,23 @@
-﻿using System;
+﻿using OpenRPA.Interfaces;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 namespace OpenRPA.Core
 {
-    public class Log
+    public class Logger : ILogger
     {
+        public static void Initialize()
+        {
+            Log.Logger = new Logger();
+        }
         // private static string logpath = "";
         // public static object loglock = new object();
-        private static NLog.Logger nlog = null;
-        public static int Indent = 0;
-        public static System.Collections.Concurrent.ConcurrentStack<string> functions = new System.Collections.Concurrent.ConcurrentStack<string>();
-        public static void FunctionIndent(string cls, string func, string message = "")
+        private NLog.Logger nlog = null;
+        public int Indent = 0;
+        public System.Collections.Concurrent.ConcurrentStack<string> functions = new System.Collections.Concurrent.ConcurrentStack<string>();
+        public void FunctionIndent(string cls, string func, string message = "")
         {
             Indent++;
             // functions.Push(cls + "." + func);
@@ -29,7 +34,7 @@ namespace OpenRPA.Core
                 //LogLine(string.Format("[{0}][{1}][{2}]::BEGIN:{3}", cls, func, Indent, message), "Func");
             }
         }
-        public static void FunctionOutdent(string cls, string func, string message = "")
+        public void FunctionOutdent(string cls, string func, string message = "")
         {
             if (Config.local.log_to_file)
             {
@@ -48,7 +53,7 @@ namespace OpenRPA.Core
             string dummy = "";
             functions.TryPop(out dummy);
         }
-        public static void Function(string cls, string func, string message = "")
+        public void Function(string cls, string func, string message = "")
         {
             if (!Config.local.log_to_file) return;
             if (string.IsNullOrEmpty(message))
@@ -62,13 +67,13 @@ namespace OpenRPA.Core
                 // LogLine(string.Format("[{0}][{1}][{2}]::{3}", cls, func, Indent, message), "Func");
             }
         }
-        public static void ResetLogPath(string folder)
+        public void ResetLogPath(string folder)
         {
             Extensions.ProjectsDirectory = folder;
             Config.local.log_to_file = true;
             nlog = null;
         }
-        public static void LogLine(string message, string category)
+        public void LogLine(string message, string category)
         {
             if (!Config.local.log_to_file) return;
             if (nlog == null)
@@ -112,59 +117,59 @@ namespace OpenRPA.Core
                 }
             });
         }
-        public static void Verbose(string message)
+        public void Verbose(string message)
         {
             if (Config.local.log_verbose) { System.Diagnostics.Trace.WriteLine(message, "Verbose"); }
             LogLine(message, "Verbose");
         }
-        public static void Network(string message)
+        public void Network(string message)
         {
             if (Config.local.log_network) { System.Diagnostics.Trace.WriteLine(message, "Network"); }
             LogLine(message, "Network");
         }
-        public static void Activity(string message)
+        public void Activity(string message)
         {
             if (Config.local.log_activity) { System.Diagnostics.Trace.WriteLine(message, "Activity"); }
             LogLine(message, "Activity");
         }
-        public static void Debug(string message)
+        public void Debug(string message)
         {
             if (Config.local.log_debug) { System.Diagnostics.Trace.WriteLine(message, "Debug"); }
             LogLine(message, "Debug");
         }
-        public static void Selector(string message)
+        public void Selector(string message)
         {
             if (Config.local.log_selector) { System.Diagnostics.Trace.WriteLine(message, "Selector"); }
             LogLine(message, "Verbose");
         }
-        public static void SelectorVerbose(string message)
+        public void SelectorVerbose(string message)
         {
             if (Config.local.log_selector_verbose) { System.Diagnostics.Trace.WriteLine(message, "SelectorVerbose"); }
             LogLine(message, "SelectorVerbose");
         }
-        public static void Information(string message)
+        public void Information(string message)
         {
             if (Config.local.log_information) { System.Diagnostics.Trace.WriteLine(message, "Information"); }
             LogLine(message, "Information");
         }
-        public static void Output(string message)
+        public void Output(string message)
         {
             if (Config.local.log_output) { System.Diagnostics.Trace.WriteLine(message, "Output"); }
             LogLine(message, "Output");
         }
-        public static void Warning(string message)
+        public void Warning(string message)
         {
             if (Config.local.log_warning) { System.Diagnostics.Trace.WriteLine(message, "Warning"); }
             LogLine(message, "Warning");
         }
-        public static void Error(object obj, string message)
+        public void Error(object obj, string message)
         {
             var _message = obj.ToString();
             if (!string.IsNullOrEmpty(message)) _message = message + "\n" + _message;
             System.Diagnostics.Trace.WriteLine(_message, "Error");
             LogLine(_message, "Error");
         }
-        public static void Error(string message)
+        public void Error(string message)
         {
             if (Config.local.log_error) { System.Diagnostics.Trace.WriteLine(message, "Error"); }
             LogLine(message, "Error");

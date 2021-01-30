@@ -1,11 +1,12 @@
 ﻿using OpenRPA.Interfaces;
-using OpenRPA.Interfaces.Selector;
+using OpenRPA.Core;
 using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Controls;
+using OpenRPA.Core.Selector;
 
 namespace OpenRPA.Image
 {
@@ -71,7 +72,8 @@ namespace OpenRPA.Image
                 if (_processing) { return true; }
                 _processing = true;
             }
-            var image = getrectangle.GuessContour(element, e.OffsetX, e.OffsetY, out int newOffsetX, out int newOffsetY, out System.Drawing.Rectangle resultrect);
+            var image = getrectangle.GuessContour(element as FlaUI.Core.AutomationElements.AutomationElement, 
+                e.OffsetX, e.OffsetY, out int newOffsetX, out int newOffsetY, out System.Drawing.Rectangle resultrect);
             lock (_lock)
             {
                 _processing = false;
@@ -118,10 +120,11 @@ namespace OpenRPA.Image
             };
             e.SupportInput = false;
             e.SupportSelect = false;
-            var image = getrectangle.GuessContour(element, e.OffsetX, e.OffsetY, out int newOffsetX, out int newOffsetY, out System.Drawing.Rectangle resultrect);
+            var image = getrectangle.GuessContour(element as FlaUI.Core.AutomationElements.AutomationElement, 
+                e.OffsetX, e.OffsetY, out int newOffsetX, out int newOffsetY, out System.Drawing.Rectangle resultrect);
             if (image == null)
             {
-                var tip = new Interfaces.Overlay.TooltipWindow("Failed Guessing Contour, please select manually");
+                var tip = new Core.Overlay.TooltipWindow("Failed Guessing Contour, please select manually");
                 tip.SetTimeout(TimeSpan.FromSeconds(2));
                 e.OffsetX = 10;
                 e.OffsetY = 10;
@@ -133,7 +136,7 @@ namespace OpenRPA.Image
             e.OffsetY = newOffsetY;
             e.Element = new ImageElement(resultrect, image);
 
-            a.Image = Interfaces.Image.Util.Bitmap2Base64(image);
+            a.Image = Core.Image.Util.Bitmap2Base64(image);
             e.a = new GetElementResult(a);
 
             NativeMethods.SetCursorPos(e.X, e.Y );
@@ -146,6 +149,32 @@ namespace OpenRPA.Image
         public void Stop()
         {
         }
+        object[] IRecordPlugin.GetRootElements(object anchor)
+        {
+            return GetRootElements(anchor as Selector);
+        }
+        object IRecordPlugin.GetSelector(object anchor, object item)
+        {
+            return GetSelector(anchor as Selector, item as treeelement);
+        }
+        IElement[] IRecordPlugin.GetElementsWithSelector(object selector, IElement fromElement, int maxresults)
+        {
+            return GetElementsWithSelector(selector as Selector, fromElement, maxresults);
+        }
+        bool IRecordPlugin.Match(object item, IElement m)
+        {
+            return Match(item as SelectorItem, m);
+        }
+        IElement IRecordPlugin.LaunchBySelector(object selector, bool CheckRunning, TimeSpan timeout)
+        {
+            return LaunchBySelector(selector as Selector, CheckRunning, timeout);
+        }
+        void IRecordPlugin.CloseBySelector(object selector, TimeSpan timeout, bool Force)
+        {
+            CloseBySelector(selector as Selector, timeout, Force);
+        }
+
+
     }
     public class GetElementResult : IBodyActivity
     {

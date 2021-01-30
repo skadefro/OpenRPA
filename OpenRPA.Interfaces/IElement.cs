@@ -20,6 +20,9 @@ namespace OpenRPA.Interfaces
     }
     public interface IUIElement : IElement
     {
-
+        int ProcessId { get; set; }
+        string Type { get; set; }
+        string ClassName { get; set; }
+        string ControlType { get; }
     }
 }

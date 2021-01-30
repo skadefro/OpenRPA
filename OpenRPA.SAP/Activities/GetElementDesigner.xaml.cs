@@ -1,4 +1,5 @@
 ﻿using Microsoft.VisualBasic.Activities;
+using OpenRPA.Core;
 using OpenRPA.Interfaces;
 using System;
 using System.Activities;
@@ -19,7 +20,7 @@ namespace OpenRPA.SAP
         public GetElementDesigner()
         {
             InitializeComponent();
-            HighlightImage = Interfaces.Extensions.GetImageSourceFromResource("search.png");
+            HighlightImage = Core.Extensions.GetImageSourceFromResource("search.png");
         }
         public event PropertyChangedEventHandler PropertyChanged;
         private void NotifyPropertyChanged(String propertyName)
@@ -45,16 +46,16 @@ namespace OpenRPA.SAP
             }
             string SelectorString = ModelItem.GetValue<string>("Selector");
             int maxresults = ModelItem.GetValue<int>("MaxResults");
-            Interfaces.Selector.SelectorWindow selectors;
+            Core.Selector.SelectorWindow selectors;
             if (!string.IsNullOrEmpty(SelectorString))
             {
                 var selector = new SAPSelector(SelectorString);
-                selectors = new Interfaces.Selector.SelectorWindow("SAP", selector, anchor, maxresults);
+                selectors = new Core.Selector.SelectorWindow("SAP", selector, anchor, maxresults);
             }
             else
             {
                 var selector = new SAPSelector("[{Selector: 'SAP'}]");
-                selectors = new Interfaces.Selector.SelectorWindow("SAP", selector, anchor, maxresults);
+                selectors = new Core.Selector.SelectorWindow("SAP", selector, anchor, maxresults);
             }
             if (selectors.ShowDialog() == true)
             {
@@ -92,7 +93,7 @@ namespace OpenRPA.SAP
                 loadFrom = loadFrom.Parent;
             }
 
-            HighlightImage = Interfaces.Extensions.GetImageSourceFromResource(".x.png");
+            HighlightImage = Core.Extensions.GetImageSourceFromResource(".x.png");
             NotifyPropertyChanged("HighlightImage");
             string SelectorString = ModelItem.GetValue<string>("Selector");
             int maxresults = ModelItem.GetValue<int>("MaxResults");
@@ -118,7 +119,7 @@ namespace OpenRPA.SAP
             if (elements.Count() > maxresults && maxresults > 0) elements = elements.ToList().Take(maxresults).ToList();
             if (elements.Count() > 0)
             {
-                HighlightImage = Interfaces.Extensions.GetImageSourceFromResource("check.png");
+                HighlightImage = Core.Extensions.GetImageSourceFromResource("check.png");
                 NotifyPropertyChanged("HighlightImage");
             }
             foreach (var ele in elements) ele.Highlight(false, System.Drawing.Color.Red, TimeSpan.FromSeconds(1));
@@ -138,12 +139,12 @@ namespace OpenRPA.SAP
             {
                 var image = ImageString;
                 System.Drawing.Bitmap b = Task.Run(() => {
-                    return Interfaces.Image.Util.LoadBitmap(image);
+                    return Core.Image.Util.LoadBitmap(image);
                 }).Result;
                 using (b)
                 {
                     if (b == null) return null;
-                    return Interfaces.Image.Util.BitmapToImageSource(b, Interfaces.Image.Util.ActivityPreviewImageWidth, Interfaces.Image.Util.ActivityPreviewImageHeight);
+                    return Core.Image.Util.BitmapToImageSource(b, Core.Image.Util.ActivityPreviewImageWidth, Core.Image.Util.ActivityPreviewImageHeight);
                 }
             }
         }

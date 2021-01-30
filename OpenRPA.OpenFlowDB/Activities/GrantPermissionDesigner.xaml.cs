@@ -1,4 +1,6 @@
 ﻿using Microsoft.VisualBasic.Activities;
+using OpenRPA.Core;
+using OpenRPA.Core.entity;
 using OpenRPA.Interfaces;
 using OpenRPA.Interfaces.entity;
 using System;
@@ -35,8 +37,6 @@ namespace OpenRPA.OpenFlowDB
         {
             PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(propertyName));
         }
-
-
         private void OnSelectionChanged(object sender, SelectionChangedEventArgs e)
         {
             AutoCompleteBox acb = (AutoCompleteBox)sender;
@@ -60,8 +60,6 @@ namespace OpenRPA.OpenFlowDB
             ModelItem.Properties["Name"].SetValue(new System.Activities.InArgument<string>(item.name));
             //txtname.Text = item.name;
         }
-
-
         private apiuser[] usergroups;
         private async void OnPopulatingAsynchronous(object sender, PopulatingEventArgs e)
         {
@@ -99,9 +97,6 @@ namespace OpenRPA.OpenFlowDB
                     source.PopulateComplete();
                 }));
         }
-
-
-
         private void ActivityDesigner_Loaded(object sender, RoutedEventArgs e)
         {
             search.Text = ModelItem.GetValue<string>("Name");

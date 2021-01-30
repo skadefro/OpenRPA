@@ -1,6 +1,5 @@
-﻿using OpenRPA.Input;
+﻿using OpenRPA.Core.Selector;
 using OpenRPA.Interfaces;
-using OpenRPA.Interfaces.Selector;
 using System;
 using System.Activities;
 using System.Collections.Generic;
@@ -43,7 +42,7 @@ namespace OpenRPA.Java
         {
             return Plugin._GetRootElements(anchor);
         }
-        public Interfaces.Selector.Selector GetSelector(Selector anchor, Interfaces.Selector.treeelement item)
+        public Selector GetSelector(Selector anchor, treeelement item)
         {
             var javaitem = item as JavaTreeElement;
             JavaSelector javaanchor = anchor as JavaSelector;
@@ -236,6 +235,30 @@ namespace OpenRPA.Java
             e.Element = LastElement;
             return true;
         }
+        object[] IRecordPlugin.GetRootElements(object anchor)
+        {
+            return GetRootElements(anchor as Selector);
+        }
+        object IRecordPlugin.GetSelector(object anchor, object item)
+        {
+            return GetSelector(anchor as Selector, item as treeelement);
+        }
+        IElement[] IRecordPlugin.GetElementsWithSelector(object selector, IElement fromElement, int maxresults)
+        {
+            return GetElementsWithSelector(selector as Selector, fromElement, maxresults);
+        }
+        bool IRecordPlugin.Match(object item, IElement m)
+        {
+            return Match(item as SelectorItem, m);
+        }
+        IElement IRecordPlugin.LaunchBySelector(object selector, bool CheckRunning, TimeSpan timeout)
+        {
+            return LaunchBySelector(selector as Selector, CheckRunning, timeout);
+        }
+        void IRecordPlugin.CloseBySelector(object selector, TimeSpan timeout, bool Force)
+        {
+            CloseBySelector(selector as Selector, timeout, Force);
+        }
     }
     public class GetElementResult : IBodyActivity
     {
@@ -288,6 +311,8 @@ namespace OpenRPA.Java
         public int OffsetX { get; set; }
         public int OffsetY { get; set; }
         public MouseButton Button { get; set; }
+        IUIElement IRecordEvent.UIElement { get => UIElement; set => UIElement = value as UIElement; }
+        object IRecordEvent.Selector { get => Selector; set => Selector = value as Selector; }
     }
 
 }

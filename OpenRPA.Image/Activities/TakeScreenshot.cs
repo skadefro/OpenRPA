@@ -50,7 +50,7 @@ namespace OpenRPA.Image
             var w = Width.Get(context);
             if (h > 10) match.Height = h;
             if (w > 10) match.Width = w;
-            var b = Interfaces.Image.Util.Screenshot(match);
+            var b = Core.Image.Util.Screenshot(match);
             var v = new ImageElement(match, b);
             context.SetValue(Result, v);
             context.ScheduleAction(Body, v, OnBodyComplete);
@@ -65,13 +65,13 @@ namespace OpenRPA.Image
         protected override void CacheMetadata(NativeActivityMetadata metadata)
         {
             metadata.AddDelegate(Body);
-            Extensions.AddCacheArgument(metadata, "Element", Element);
+            Core.Extensions.AddCacheArgument(metadata, "Element", Element);
 
-            Extensions.AddCacheArgument(metadata, "Result", Result);
-            Extensions.AddCacheArgument(metadata, "OffsetX", X);
-            Extensions.AddCacheArgument(metadata, "OffsetY", Y);
-            Extensions.AddCacheArgument(metadata, "Width", Width);
-            Extensions.AddCacheArgument(metadata, "Height", Height);
+            Core.Extensions.AddCacheArgument(metadata, "Result", Result);
+            Core.Extensions.AddCacheArgument(metadata, "OffsetX", X);
+            Core.Extensions.AddCacheArgument(metadata, "OffsetY", Y);
+            Core.Extensions.AddCacheArgument(metadata, "Width", Width);
+            Core.Extensions.AddCacheArgument(metadata, "Height", Height);
 
             metadata.AddImplementationVariable(elements);
             base.CacheMetadata(metadata);

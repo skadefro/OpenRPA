@@ -1,4 +1,5 @@
-﻿using OpenRPA.Interfaces;
+﻿using OpenRPA.Core;
+using OpenRPA.Interfaces;
 using System;
 using System.Activities;
 using System.Activities.Presentation.PropertyEditing;
@@ -12,7 +13,7 @@ using System.Threading.Tasks;
 
 namespace OpenRPA.AviRecorder.Activities
 {
-    [System.ComponentModel.Designer(typeof(StartRecordingDesigner), typeof(System.ComponentModel.Design.IDesigner))]
+    [Designer(typeof(StartRecordingDesigner), typeof(System.ComponentModel.Design.IDesigner))]
     [System.Drawing.ToolboxBitmap(typeof(ResFinder2), "Resources.toolbox.gethtmlelement.png")]
     [LocalizedToolboxTooltip("activity_startrecording_tooltip", typeof(Resources.strings))]
     [LocalizedDisplayName("activity_startrecording", typeof(Resources.strings))]
@@ -31,7 +32,7 @@ namespace OpenRPA.AviRecorder.Activities
             var quality = Quality.Get(context);
             if (string.IsNullOrEmpty(folder))
             {
-                folder = Interfaces.Extensions.MyVideos;
+                folder = RunPlugin.MyVideos;
             }
             if (quality < 10) quality = 10;
             if (quality > 100) quality = 100;

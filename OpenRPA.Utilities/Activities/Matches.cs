@@ -86,9 +86,8 @@ namespace OpenRPA.Utilities
         protected override void CacheMetadata(NativeActivityMetadata metadata)
         {
             metadata.AddDelegate(Body);
-            Interfaces.Extensions.AddCacheArgument(metadata, "Input", Input);
-            Interfaces.Extensions.AddCacheArgument(metadata, "Pattern", Pattern);
-
+            Core.Extensions.AddCacheArgument(metadata, "Input", Input);
+            Core.Extensions.AddCacheArgument(metadata, "Pattern", Pattern);
             metadata.AddImplementationVariable(_elements);
             base.CacheMetadata(metadata);
         }

@@ -6,7 +6,7 @@ using System.Reflection;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace OpenRPA.Core
+namespace OpenRPA.Interfaces
 {
     public class LocalizedDescriptionAttribute : DescriptionAttribute
     {

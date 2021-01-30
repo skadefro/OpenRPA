@@ -189,7 +189,9 @@ namespace OpenRPA.Forms.Activities
                 }, 1000);
                 return;
             }
-            GenericTools.RunUI(() =>
+            System.Windows.Window mainForm = RunPlugin.client.Window as System.Windows.Window;
+            // GenericTools.RunUI(() =>
+            mainForm.Dispatcher.Invoke(() =>
             {
                 foreach (var p in defaults)
                 {

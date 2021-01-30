@@ -1393,7 +1393,7 @@ Union(modelService.Find(modelService.Root, typeof(System.Activities.Debugger.Sta
                 Log.Output(message);
                 if (instance.hasError || instance.isCompleted)
                 {
-                    if ((Config.local.notify_on_workflow_end && !isRemote) || (Config.local.notify_on_workflow_remote_end && isRemote))
+                    if ((PluginConfig.notify_on_workflow_end && !isRemote) || (PluginConfig.notify_on_workflow_remote_end && isRemote))
                     {
                         if (instance.state == "completed")
                         {

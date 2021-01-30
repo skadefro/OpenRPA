@@ -1,6 +1,5 @@
-﻿using Newtonsoft.Json;
-using OpenRPA.Input;
-using OpenRPA.Interfaces;
+﻿using OpenRPA.Interfaces;
+using Newtonsoft.Json;
 using OpenRPA.Interfaces.entity;
 using System;
 using System.Collections.Generic;
@@ -9,12 +8,18 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Controls;
+using System.ComponentModel;
 
 namespace OpenRPA.FileWatcher
 {
-    public class FileWatcherDetectorPlugin : ObservableObject, IDetectorPlugin
+    public class FileWatcherDetectorPlugin : IDetectorPlugin
     {
-        public Detector Entity { get; set; }
+        public event System.ComponentModel.PropertyChangedEventHandler PropertyChanged;
+        public void NotifyPropertyChanged(string propertyName)
+        {
+            PropertyChanged?.Invoke(this, new System.ComponentModel.PropertyChangedEventArgs(propertyName));
+        }
+        public IDetector Entity { get; set; }
         public string Name
         {
             get
@@ -42,7 +47,7 @@ namespace OpenRPA.FileWatcher
         }
         public event DetectorDelegate OnDetector;
         FileSystemWatcher watcher = null;
-        public void Initialize(IOpenRPAClient client, Detector InEntity)
+        public void Initialize(IOpenRPAClient client, IDetector InEntity)
         {
             Entity = InEntity;
             watcher = new FileSystemWatcher();
@@ -95,29 +100,23 @@ namespace OpenRPA.FileWatcher
                 Entity.Properties["IncludeSubdirectories"] = value;
             }
         }
+        IDetector IDetectorPlugin.Entity { get => Entity; set => Entity = value as IDetector; }
         public void Start()
         {
-            try
+            watcher.Path = Watchpath;
+            watcher.NotifyFilter = NotifyFilters.LastWrite;
+            if(!string.IsNullOrEmpty(WatchFilter) && (WatchFilter.Contains(",") || WatchFilter.Contains("|")))
             {
-                watcher.Path = Watchpath;
-                watcher.NotifyFilter = NotifyFilters.LastWrite;
-                if(!string.IsNullOrEmpty(WatchFilter) && (WatchFilter.Contains(",") || WatchFilter.Contains("|")))
-                {
-                    watcher.Filter = "*";
-                } 
-                else
-                {
-                    watcher.Filter = WatchFilter;
-                }
+                watcher.Filter = "*";
+            } 
+            else
+            {
+                watcher.Filter = WatchFilter;
+            }
                 
-                watcher.Changed += new FileSystemEventHandler(OnChanged);
-                watcher.EnableRaisingEvents = true;
-                watcher.IncludeSubdirectories = IncludeSubdirectories;
-            }
-            catch (Exception ex)
-            {
-                Log.Error(ex.ToString());
-            }
+            watcher.Changed += new FileSystemEventHandler(OnChanged);
+            watcher.EnableRaisingEvents = true;
+            watcher.IncludeSubdirectories = IncludeSubdirectories;
         }
         public void Stop()
         {
@@ -152,9 +151,14 @@ namespace OpenRPA.FileWatcher
         public void Initialize(IOpenRPAClient client)
         {
         }
+        void IDetectorPlugin.Initialize(IOpenRPAClient client, IDetector Entity)
+        {
+            Initialize(client, Entity);
+        }
     }
     public class DetectorEvent : IDetectorEvent
     {
+        public ITokenUser user { get; set; }
         public IElement element { get; set; }
         public string host { get; set; }
         public string fqdn { get; set; }

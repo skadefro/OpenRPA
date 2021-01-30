@@ -1,5 +1,6 @@
 ﻿using FlaUI.Core.Definitions;
-using OpenRPA.Interfaces.Selector;
+using OpenRPA.Core.Selector;
+using OpenRPA.Interfaces;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -33,7 +34,6 @@ namespace OpenRPA.Java
                 return ControlType.Custom;
             }
         }
-
         public JavaTreeElement(treeelement parent, bool expanded, JavaElement element) : base(parent)
         {
             JavaElement = element;
@@ -41,7 +41,6 @@ namespace OpenRPA.Java
             Element = element;
             Name = element.title;
         }
-
         public override void AddSubElements()
         {
             foreach(var elementNode in JavaElement.Children)
@@ -53,11 +52,10 @@ namespace OpenRPA.Java
                 //var exists = Children.Where(x => !ele.Equals( ((JavaTreeElement)x).Element) ).FirstOrDefault();
                 if (!exists)
                 {
-                    Interfaces.Log.Debug("Adding " + ele.ToString());
+                    Log.Debug("Adding " + ele.ToString());
                     Children.Add(new JavaTreeElement(this, false, ele));
                 }
             }
         }
     }
-
 }

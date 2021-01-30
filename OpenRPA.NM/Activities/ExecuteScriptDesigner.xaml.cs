@@ -1,4 +1,5 @@
 ﻿using Microsoft.VisualBasic.Activities;
+using OpenRPA.Core;
 using OpenRPA.Interfaces;
 using OpenRPA.NM.Activities;
 using System;

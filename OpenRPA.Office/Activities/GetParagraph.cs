@@ -113,11 +113,11 @@ namespace OpenRPA.Office.Activities
         protected override void CacheMetadata(NativeActivityMetadata metadata)
         {
             metadata.AddDelegate(Body);
-            Interfaces.Extensions.AddCacheArgument(metadata, "Filename", Filename);
-            Interfaces.Extensions.AddCacheArgument(metadata, "Index", Index);
-            Interfaces.Extensions.AddCacheArgument(metadata, "MaxResults", MaxResults);
-            Interfaces.Extensions.AddCacheArgument(metadata, "Text", Text);
-            Interfaces.Extensions.AddCacheArgument(metadata, "Count", Count);
+            Extensions.AddCacheArgument(metadata, "Filename", Filename);
+            Extensions.AddCacheArgument(metadata, "Index", Index);
+            Extensions.AddCacheArgument(metadata, "MaxResults", MaxResults);
+            Extensions.AddCacheArgument(metadata, "Text", Text);
+            Extensions.AddCacheArgument(metadata, "Count", Count);
 
             metadata.AddImplementationVariable(_elements);
             base.CacheMetadata(metadata);

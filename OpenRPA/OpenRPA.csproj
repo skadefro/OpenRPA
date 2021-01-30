@@ -1,6 +1,6 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk">
   <PropertyGroup>
-    <CefSharpAnyCpuSupport>true</CefSharpAnyCpuSupport>
+    <!--<CefSharpAnyCpuSupport>true</CefSharpAnyCpuSupport>-->
     <OutputType>WinExe</OutputType>
     <TargetFramework>net462</TargetFramework>
     <ApplicationIcon>Resources\open_rpa.ico</ApplicationIcon>
@@ -201,11 +201,15 @@ Add toggle between embedded and locally installed python, Add PipInstall activit
     <Configurations>Debug;Release;ReleaseNuget;PrepInstaller</Configurations>
     <PackageTags></PackageTags>
     <RepositoryUrl>https://github.com/open-rpa/openrpa</RepositoryUrl>
-    <Platforms>AnyCPU;x86</Platforms>
+    <Platforms>AnyCPU;x86;x64</Platforms>
     <Authors>Allan Zimmermann</Authors>
     <Company>OpenIAP</Company>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|AnyCPU'">
+    <OutputPath>..\debug</OutputPath>
+    <PlatformTarget>x64</PlatformTarget>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
     <OutputPath>..\debug</OutputPath>
     <PlatformTarget>x64</PlatformTarget>
   </PropertyGroup>
@@ -216,11 +220,18 @@ Add toggle between embedded and locally installed python, Add PipInstall activit
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|AnyCPU'">
     <OutputPath>..\dist</OutputPath>
   </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
+    <OutputPath>..\dist</OutputPath>
+  </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|x86'">
     <OutputPath>..\dist</OutputPath>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='PrepInstaller|AnyCPU'">
     <OutputPath></OutputPath>
+    <PlatformTarget>AnyCPU</PlatformTarget>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='PrepInstaller|x64'">
+    <OutputPath />
     <PlatformTarget>AnyCPU</PlatformTarget>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='PrepInstaller|x86'">
@@ -925,4 +936,12 @@ Add toggle between embedded and locally installed python, Add PipInstall activit
   <!--<Target Name="PostBuild" AfterTargets="PostBuildEvent">
     <Exec Command="ECHO ON&#xD;&#xA;dir" />
   </Target>-->
+
+  <Target Name="FixAL1703Warning" BeforeTargets="GenerateSatelliteAssemblies" Condition="'$(PlatformTarget)' == 'x64'">
+    <Message Text="Adjusting SDK tools directory to use x64 version of AL.EXE" />
+    <PropertyGroup>
+      <TargetFrameworkSDKToolsDirectory>$(TargetFrameworkSDKToolsDirectory)$(PlatformTarget)\</TargetFrameworkSDKToolsDirectory>
+    </PropertyGroup>
+  </Target>
+
 </Project>

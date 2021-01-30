@@ -12,18 +12,18 @@ namespace OpenRPA.Image
     using OpenRPA.Interfaces;
     using Emgu.CV;
     using FlaUI.Core.AutomationElements;
+    using OpenRPA.Core;
 
     public static class getrectangle
     {
 
         private static System.Drawing.Rectangle rect;
         private static System.Drawing.Point start;
-        private static OpenRPA.Interfaces.Overlay.OverlayWindow _overlayWindow;
-        private static System.Threading.AutoResetEvent waitHandle;
+        private static Core.Overlay.OverlayWindow _overlayWindow;
+        private static AutoResetEvent waitHandle;
         private static bool mouseDown = false;
         private static System.Drawing.Point point;
         private static System.Windows.Forms.Form form = null;
-
         public static void createform()
         {
             var t = Task.Factory.StartNew(() =>
@@ -51,7 +51,6 @@ namespace OpenRPA.Image
             secondThreadFormHandle = form.Handle;
             form.HandleCreated -= SecondFormHandleCreated;
         }
-
         static void SecondFormHandleDestroyed(object sender, EventArgs e)
         {
             if (form == null) return;
@@ -84,10 +83,10 @@ namespace OpenRPA.Image
         {
             if(VersionHelper.IsWindows8OrGreater())
             {
-                _overlayWindow = new Interfaces.Overlay.OverlayWindow(true);
+                _overlayWindow = new Core.Overlay.OverlayWindow(true);
             } else
             {
-                _overlayWindow = new Interfaces.Overlay.OverlayWindow(false);
+                _overlayWindow = new Core.Overlay.OverlayWindow(false);
 
             }
             _overlayWindow.Visible = true;
@@ -166,7 +165,6 @@ namespace OpenRPA.Image
         }
         public const int AddedWidth = 150;
         public const int AddedHeight = 100;
-
         public static System.Drawing.Bitmap GuessContour(AutomationElement element,
             int x, int y, out int OffsetX, out int OffsetY, out System.Drawing.Rectangle resultrect)
         {
@@ -177,7 +175,7 @@ namespace OpenRPA.Image
             var elementh = (int)element.BoundingRectangle.Height;
             Log.Verbose(string.Format("Snap screenshot of element at ({0}, {1},{2},{3})",
                 elementx, elementy, elementx + elementw, elementy + elementh));
-            var desktopb = Interfaces.Image.Util.Screenshot(elementx, elementy, elementw, elementh);
+            var desktopb = Core.Image.Util.Screenshot(elementx, elementy, elementw, elementh);
 
             List<System.Drawing.Rectangle> con = FindContours(desktopb);
             //var point = new System.Drawing.Point(x - elementx, y - elementy);
@@ -289,7 +287,7 @@ namespace OpenRPA.Image
                 resultrect = new System.Drawing.Rectangle(elementx + rect.X, elementy + rect.Y, rect.Width, rect.Height);
                 System.Diagnostics.Trace.WriteLine(string.Format("Snap screenshot found Contour at ({0}, {1},{2},{3})",
                     elementx + rect.X, elementy + rect.Y, rect.Width, rect.Height), "Debug");
-                return Interfaces.Image.Util.Screenshot(elementx + rect.X, elementy + rect.Y, rect.Width, rect.Height);
+                return Core.Image.Util.Screenshot(elementx + rect.X, elementy + rect.Y, rect.Width, rect.Height);
             }
             OffsetX = x;
             OffsetY = y;
@@ -297,8 +295,6 @@ namespace OpenRPA.Image
             resultrect = System.Drawing.Rectangle.Empty;
             return null;
         }
-
-
         // https://stackoverflow.com/questions/29156091/opencv-edge-border-detection-based-on-color
         public static List<System.Drawing.Rectangle> FindContours(System.Drawing.Bitmap bitmap)
         {
@@ -366,11 +362,7 @@ namespace OpenRPA.Image
             cannyEdges.Dispose();
             return result;
         }
-
-
     }
-
-
     public class overlayform : System.Windows.Forms.Form
     {
         public overlayform()

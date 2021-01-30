@@ -8,7 +8,6 @@ using System.Text;
 using System.Threading.Tasks;
 using System.Windows;
 using Xceed.Wpf.AvalonDock.Layout;
-using OpenRPA.Core;
 
 namespace OpenRPA
 {
@@ -255,7 +254,7 @@ namespace OpenRPA
                     {
                         IDetectorPlugin dp = null;
                         d.Path = Core.Extensions.ProjectsDirectory;
-                        if(Config.local.fix_xaml_1_2_17)
+                        if(PluginConfig.fix_xaml_1_2_17)
                         {
                             d.Plugin = d.Plugin.Replace("OpenRPA.Interfaces.", "OpenRPA.Core.");
                         }
@@ -1137,7 +1136,7 @@ namespace OpenRPA
                     if (workflow == null) throw new ArgumentException("Unknown workflow " + command.workflowid);
                     lock (statelock)
                     {
-                        if (!Config.local.remote_allowed)
+                        if (!PluginConfig.remote_allowed)
                         {
                             // Don't fail, just say busy and let the message expire
                             // so if this was send to a robot in a role, another robot can pick this up.
@@ -1160,27 +1159,27 @@ namespace OpenRPA
                             {
                                 RunningCount++;
                             }
-                            if (!Config.local.remote_allow_multiple_running && RunningCount > 0)
+                            if (!PluginConfig.remote_allow_multiple_running && RunningCount > 0)
                             {
                                 if (i.Workflow != null)
                                 {
-                                    if(Config.local.log_busy_warning) Log.Warning("Cannot invoke " + workflow.name + ", I'm busy. (running " + i.Workflow.ProjectAndName + ")");
+                                    if(PluginConfig.log_busy_warning) Log.Warning("Cannot invoke " + workflow.name + ", I'm busy. (running " + i.Workflow.ProjectAndName + ")");
                                 }
                                 else
                                 {
-                                    if (Config.local.log_busy_warning) Log.Warning("Cannot invoke " + workflow.name + ", I'm busy.");
+                                    if (PluginConfig.log_busy_warning) Log.Warning("Cannot invoke " + workflow.name + ", I'm busy.");
                                 }
                                 e.isBusy = true; return;
                             }
-                            else if (Config.local.remote_allow_multiple_running && RemoteRunningCount > Config.local.remote_allow_multiple_running_max)
+                            else if (PluginConfig.remote_allow_multiple_running && RemoteRunningCount > PluginConfig.remote_allow_multiple_running_max)
                             {
                                 if (i.Workflow != null)
                                 {
-                                    if (Config.local.log_busy_warning) Log.Warning("Cannot invoke " + workflow.name + ", I'm busy. (running " + i.Workflow.ProjectAndName + ")");
+                                    if (PluginConfig.log_busy_warning) Log.Warning("Cannot invoke " + workflow.name + ", I'm busy. (running " + i.Workflow.ProjectAndName + ")");
                                 }
                                 else
                                 {
-                                    if (Config.local.log_busy_warning) Log.Warning("Cannot invoke " + workflow.name + ", I'm busy.");
+                                    if (PluginConfig.log_busy_warning) Log.Warning("Cannot invoke " + workflow.name + ", I'm busy.");
                                 }
                                 e.isBusy = true; return;
                             }
@@ -1254,7 +1253,7 @@ namespace OpenRPA
                                     instance = workflow.CreateInstance(param, message.replyto, message.correlationId, Window.IdleOrComplete, null);
                                     instance.Run();
                                 }
-                                if (Config.local.notify_on_workflow_remote_start)
+                                if (PluginConfig.notify_on_workflow_remote_start)
                                 {
                                     App.notifyIcon.ShowBalloonTip(1000, "", workflow.name + " remotly started", System.Windows.Forms.ToolTipIcon.Info);
                                 }

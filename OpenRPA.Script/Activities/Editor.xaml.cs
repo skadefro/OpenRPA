@@ -221,7 +221,9 @@ namespace OpenRPA.Script.Activities
                     //    }
                     //}
                 }
-                GenericTools.RunUI(() =>
+                System.Windows.Window mainForm = Plugin.client.Window as System.Windows.Window;
+                //GenericTools.RunUI(() =>
+                mainForm.Dispatcher.Invoke(() =>
                 {
                     Title = newtitle;
                     this.errors.Text = error;

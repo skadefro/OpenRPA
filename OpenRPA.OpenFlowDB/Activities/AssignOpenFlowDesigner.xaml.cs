@@ -1,4 +1,6 @@
 ﻿using Microsoft.VisualBasic.Activities;
+using OpenRPA.Core;
+using OpenRPA.Core.entity;
 using OpenRPA.Interfaces;
 using OpenRPA.Interfaces.entity;
 using System;

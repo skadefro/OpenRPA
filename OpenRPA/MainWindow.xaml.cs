@@ -144,9 +144,9 @@ namespace OpenRPA
                         first_connect = false;
                         LoadLayout();
 
-                        if (Config.local.show_getting_started)
+                        if (PluginConfig.show_getting_started)
                         {
-                            var url = Config.local.getting_started_url;
+                            var url = PluginConfig.getting_started_url;
                             if (string.IsNullOrEmpty(url)) url = "https://openrpa.dk/gettingstarted.html";
                             if (!string.IsNullOrEmpty(global.openflowconfig.getting_started_url)) url = global.openflowconfig.getting_started_url;
                             LayoutDocument layoutDocument = new LayoutDocument { Title = "Getting started" };
@@ -1769,7 +1769,7 @@ namespace OpenRPA
                         }
                     }
                     var view = new Views.OpenProject(this);
-                    view.onOpenProject += OnOpenProject;
+                    // view.onOpenProject += OnOpenProject;
                     view.onOpenWorkflow += OnOpenWorkflow;
                     view.onSelectedItemChanged += View_onSelectedItemChanged;
 
@@ -2470,7 +2470,7 @@ namespace OpenRPA
                     errormessage = ex.Message;
                     Log.Error(ex.ToString());
                 }
-                if (Config.local.notify_on_workflow_end && !string.IsNullOrEmpty(errormessage))
+                if (PluginConfig.notify_on_workflow_end && !string.IsNullOrEmpty(errormessage))
                 {
                     App.notifyIcon.ShowBalloonTip(1000, "", errormessage, System.Windows.Forms.ToolTipIcon.Error);
                     GenericTools.Restore();
@@ -2498,7 +2498,7 @@ namespace OpenRPA
             {
                 errormessage = ex.Message;
             }
-            if (Config.local.notify_on_workflow_end && !string.IsNullOrEmpty(errormessage))
+            if (PluginConfig.notify_on_workflow_end && !string.IsNullOrEmpty(errormessage))
             {
                 App.notifyIcon.ShowBalloonTip(1000, "", errormessage, System.Windows.Forms.ToolTipIcon.Error);
                 GenericTools.Restore();
@@ -3288,7 +3288,7 @@ namespace OpenRPA
                     }
                     if (!string.IsNullOrEmpty(instance.errormessage)) message += (Environment.NewLine + "# " + instance.errormessage);
                     Log.Information(message);
-                    if ((Config.local.notify_on_workflow_end && !isRemote) || (Config.local.notify_on_workflow_remote_end && isRemote))
+                    if ((PluginConfig.notify_on_workflow_end && !isRemote) || (PluginConfig.notify_on_workflow_remote_end && isRemote))
                     {
                         if (instance.state == "completed")
                         {
@@ -3685,7 +3685,7 @@ namespace OpenRPA
                     errormessage = ex.Message;
                     Log.Error(ex.ToString());
                 }
-                if (Config.local.notify_on_workflow_end && !string.IsNullOrEmpty(errormessage))
+                if (PluginConfig.notify_on_workflow_end && !string.IsNullOrEmpty(errormessage))
                 {
                     App.notifyIcon.ShowBalloonTip(1000, "", errormessage, System.Windows.Forms.ToolTipIcon.Error);
                     GenericTools.Restore();
@@ -3714,7 +3714,7 @@ namespace OpenRPA
             {
                 errormessage = ex.Message;
             }
-            if (Config.local.notify_on_workflow_end && !string.IsNullOrEmpty(errormessage))
+            if (PluginConfig.notify_on_workflow_end && !string.IsNullOrEmpty(errormessage))
             {
                 App.notifyIcon.ShowBalloonTip(1000, "", errormessage, System.Windows.Forms.ToolTipIcon.Error);
                 GenericTools.Restore();

@@ -43,8 +43,8 @@ namespace OpenRPA.Views
             {
                 if(dag == null)
                 {
-                    // dag = new DynamicActivityGenerator("Snippets", Core.Extensions.ProjectsDirectory);
-                    dag = new DynamicActivityGenerator("Snippets", System.IO.Path.GetTempPath());
+                    dag = new DynamicActivityGenerator("Snippets", Core.Extensions.ProjectsDirectory);
+                    // dag = new DynamicActivityGenerator("Snippets", System.IO.Path.GetTempPath());
                 }
                 var cs = new Dictionary<string, ToolboxCategory>();
                 foreach(var s in Plugins.Snippets)

@@ -1,4 +1,5 @@
-﻿using OpenRPA.Interfaces;
+﻿using OpenRPA.Core;
+using OpenRPA.Interfaces;
 using System;
 using System.Collections.Generic;
 using System.ComponentModel;
@@ -44,7 +45,7 @@ namespace OpenRPA.RDServicePlugin
             this.client = client;
             this.client.Signedin += Client_Signedin;
         }
-        private void Client_Signedin(Interfaces.entity.TokenUser user)
+        private void Client_Signedin(Interfaces.entity.ITokenUser user)
         {
             if (pipe != null) return;
             try

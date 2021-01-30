@@ -1,5 +1,7 @@
-﻿using OpenRPA.Interfaces;
-using OpenRPA.Interfaces.Selector;
+﻿using OpenRPA.Core;
+using OpenRPA.Core.Selector;
+using OpenRPA.Interfaces;
+using OpenRPA.NativeMessagingHost;
 using System;
 using System.Activities;
 using System.Collections.Generic;
@@ -203,7 +205,7 @@ namespace OpenRPA.NM
                         if (LastElement == null) return;
                         var re = new RecordEvent
                         {
-                            Button = Input.MouseButton.Left
+                            Button = MouseButton.Left
                         }; var a = new GetElement { DisplayName = LastElement.ToString() };
 
                         message.tab = NMHook.FindTabById(message.browser, message.tabid);
@@ -360,6 +362,30 @@ namespace OpenRPA.NM
 
             return true;
         }
+        object[] IRecordPlugin.GetRootElements(object anchor)
+        {
+            return GetRootElements(anchor as Selector);
+        }
+        object IRecordPlugin.GetSelector(object anchor, object item)
+        {
+            return GetSelector(anchor as Selector, item as treeelement);
+        }
+        IElement[] IRecordPlugin.GetElementsWithSelector(object selector, IElement fromElement, int maxresults)
+        {
+            return GetElementsWithSelector(selector as Selector, fromElement, maxresults);
+        }
+        bool IRecordPlugin.Match(object item, IElement m)
+        {
+            return Match(item as SelectorItem, m);
+        }
+        IElement IRecordPlugin.LaunchBySelector(object selector, bool CheckRunning, TimeSpan timeout)
+        {
+            return LaunchBySelector(selector as Selector, CheckRunning, timeout);
+        }
+        void IRecordPlugin.CloseBySelector(object selector, TimeSpan timeout, bool Force)
+        {
+            CloseBySelector(selector as Selector, timeout, Force);
+        }
     }
     public class GetElementResult : IBodyActivity
     {
@@ -399,7 +425,7 @@ namespace OpenRPA.NM
     public class RecordEvent : IRecordEvent
     {
         public RecordEvent() { SupportVirtualClick = true; }
-        public UIElement UIElement { get; set; }
+        public IUIElement UIElement { get; set; }
         public IElement Element { get; set; }
         public Selector Selector { get; set; }
         public IBodyActivity a { get; set; }
@@ -411,6 +437,7 @@ namespace OpenRPA.NM
         public int Y { get; set; }
         public int OffsetX { get; set; }
         public int OffsetY { get; set; }
-        public Input.MouseButton Button { get; set; }
+        public MouseButton Button { get; set; }
+        object IRecordEvent.Selector { get => Selector; set => Selector = value as Selector; }
     }
 }

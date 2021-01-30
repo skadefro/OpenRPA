@@ -31,7 +31,8 @@ namespace OpenRPA.Forms.Activities
 
 
             var definition = FormBuilder.Default.GetDefinition(xmlString, freeze: false);
-            List<string> fields = GenericTools.MainWindow.Dispatcher.Invoke<List<string>>(() =>
+            System.Windows.Window mainForm = RunPlugin.client.Window as System.Windows.Window;
+            List<string> fields = mainForm.Dispatcher.Invoke<List<string>>(() =>
             {
                 List<string> _fields = new List<string>();
                 foreach (DataFormField f in definition.GetElements().Where(x => x is DataFormField))
@@ -72,12 +73,14 @@ namespace OpenRPA.Forms.Activities
             }
 
             Exception LastError = null;
-            var res = GenericTools.MainWindow.Dispatcher.Invoke<FormResult>(() =>
+            // var res = GenericTools.MainWindow.Dispatcher.Invoke<FormResult>(() =>
+            var res = mainForm.Dispatcher.Invoke<FormResult>(() =>
             {
                 var f = new Form(xmlString);
                 f.defaults = param;
                 f.Topmost = true;
-                f.Owner = GenericTools.MainWindow;
+                // f.Owner = GenericTools.MainWindow;
+                f.Owner = mainForm;
                 if (f.ShowDialog() == false)
                 {
                     if (f.LastError != null) LastError = f.LastError;

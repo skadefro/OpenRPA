@@ -1,7 +1,8 @@
 ﻿using FlaUI.Core;
 using FlaUI.Core.AutomationElements.Infrastructure;
+using OpenRPA.Core;
+using OpenRPA.Core.Selector;
 using OpenRPA.Interfaces;
-using OpenRPA.Interfaces.Selector;
 using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
@@ -30,7 +31,6 @@ namespace OpenRPA.IE
             }
             return null;
         }
-
         public static readonly string[] frameTags = { "FRAME", "IFRAME" };
         // IEElement element { get; set; }
         public IESelector(string json) : base(json) { }
@@ -430,7 +430,5 @@ namespace OpenRPA.IE
             Log.Selector(string.Format("GetElementsWithuiSelector::end {0:mm\\:ss\\.fff}", sw.Elapsed));
             return result;
         }
-
-
     }
 }

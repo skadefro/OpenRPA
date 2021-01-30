@@ -33,7 +33,7 @@ namespace OpenRPA.Views
         public bool CanClose { get; set; } = false;
         public bool CanHide { get; set; } = false;
         public event Action<Workflow> onOpenWorkflow;
-        public event Action<Project> onOpenProject;
+        // public event Action<Project> onOpenProject;
         public event Action onSelectedItemChanged;
         //public System.Collections.ObjectModel.ObservableCollection<Project> Projects { get; set; }
         private MainWindow main = null;

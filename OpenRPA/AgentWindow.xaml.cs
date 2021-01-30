@@ -373,7 +373,7 @@ namespace OpenRPA
                     }
                     if (!string.IsNullOrEmpty(instance.errormessage)) message += (Environment.NewLine + "# " + instance.errormessage);
                     Log.Information(message);
-                    if ((Config.local.notify_on_workflow_end && !isRemote) || (Config.local.notify_on_workflow_remote_end && isRemote))
+                    if ((PluginConfig.notify_on_workflow_end && !isRemote) || (PluginConfig.notify_on_workflow_remote_end && isRemote))
                     {
                         if (instance.state == "completed")
                         {
@@ -614,7 +614,7 @@ namespace OpenRPA
                     errormessage = ex.Message;
                     Log.Error(ex.ToString());
                 }
-                if (Config.local.notify_on_workflow_end && !string.IsNullOrEmpty(errormessage))
+                if (PluginConfig.notify_on_workflow_end && !string.IsNullOrEmpty(errormessage))
                 {
                     App.notifyIcon.ShowBalloonTip(1000, "", errormessage, System.Windows.Forms.ToolTipIcon.Error);
                     GenericTools.Restore();

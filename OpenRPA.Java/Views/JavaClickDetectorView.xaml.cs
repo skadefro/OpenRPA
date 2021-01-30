@@ -1,4 +1,7 @@
-﻿using OpenRPA.Interfaces;
+﻿using OpenRPA.Core;
+using OpenRPA.Core.entity;
+using OpenRPA.Core.Selector;
+using OpenRPA.Interfaces;
 using OpenRPA.Interfaces.entity;
 using System;
 using System.Collections.Generic;
@@ -74,16 +77,16 @@ namespace OpenRPA.Java.Views
         private void Open_Selector_Click(object sender, RoutedEventArgs e)
         {
             string SelectorString = plugin.Selector;
-            Interfaces.Selector.SelectorWindow selectors;
+            SelectorWindow selectors;
             if (!string.IsNullOrEmpty(SelectorString))
             {
                 var selector = new JavaSelector(SelectorString);
-                selectors = new Interfaces.Selector.SelectorWindow("Java", selector, null, 10);
+                selectors = new SelectorWindow("Java", selector, null, 10);
             }
             else
             {
                 var selector = new JavaSelector("[{Selector: 'Java'}]");
-                selectors = new Interfaces.Selector.SelectorWindow("Java", selector, null, 10);
+                selectors = new SelectorWindow("Java", selector, null, 10);
             }
             // selectors.Owner = GenericTools.MainWindow;  -- Locks up and never returns ?
             if (selectors.ShowDialog() == true)
@@ -106,28 +109,28 @@ namespace OpenRPA.Java.Views
         }
         private void Select_Click(object sender, RoutedEventArgs e)
         {
-            Interfaces.GenericTools.Minimize();
+            GenericTools.Minimize();
             StartRecordPlugins();
         }
         private void StartRecordPlugins()
         {
-            var p = Interfaces.Plugins.recordPlugins.Where(x => x.Name == "Java").First();
+            var p = Core.Plugins.recordPlugins.Where(x => x.Name == "Java").First();
             p.OnUserAction += OnUserAction;
             p.Start();
         }
         private void StopRecordPlugins()
         {
-            var p = Interfaces.Plugins.recordPlugins.Where(x => x.Name == "Java").First();
+            var p = Core.Plugins.recordPlugins.Where(x => x.Name == "Java").First();
             p.OnUserAction -= OnUserAction;
             p.Stop();
         }
-        public void OnUserAction(Interfaces.IRecordPlugin sender, Interfaces.IRecordEvent e)
+        public void OnUserAction(IRecordPlugin sender, IRecordEvent e)
         {
             StopRecordPlugins();
             AutomationHelper.syncContext.Post(o =>
             {
-                Interfaces.GenericTools.Restore();
-                foreach (var p in Interfaces.Plugins.recordPlugins)
+                GenericTools.Restore();
+                foreach (var p in Core.Plugins.recordPlugins)
                 {
                     if (p.Name != sender.Name)
                     {

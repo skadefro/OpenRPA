@@ -44,18 +44,18 @@ namespace OpenRPA.IE
             }
             string SelectorString = ModelItem.GetValue<string>("Selector");
             int maxresults = ModelItem.GetValue<int>("MaxResults");
-            Interfaces.Selector.SelectorWindow selectors;
+            Core.Selector.SelectorWindow selectors;
             if (!string.IsNullOrEmpty(SelectorString))
             {
                 var selector = new IESelector(SelectorString);
-                selectors = new Interfaces.Selector.SelectorWindow("IE", selector, anchor, maxresults);
+                selectors = new Core.Selector.SelectorWindow("IE", selector, anchor, maxresults);
             }
             else
             {
                 var selector = new IESelector("[{Selector: 'IE'}]");
-                selectors = new Interfaces.Selector.SelectorWindow("IE", selector, anchor, maxresults);
+                selectors = new Core.Selector.SelectorWindow("IE", selector, anchor, maxresults);
             }
-            selectors.Owner = Interfaces.GenericTools.MainWindow;
+            selectors.Owner = Core.GenericTools.MainWindow;
             if (selectors.ShowDialog() == true)
             {
                 ModelItem.Properties["Selector"].SetValue(new InArgument<string>() { Expression = new Literal<string>(selectors.vm.json) });
@@ -144,12 +144,12 @@ namespace OpenRPA.IE
             {
                 var image = ImageString;
                 System.Drawing.Bitmap b = Task.Run(() => {
-                    return Interfaces.Image.Util.LoadBitmap(image);
+                    return Core.Image.Util.LoadBitmap(image);
                 }).Result;
                 using (b)
                 {
                     if (b == null) return null;
-                    return Interfaces.Image.Util.BitmapToImageSource(b, Interfaces.Image.Util.ActivityPreviewImageWidth, Interfaces.Image.Util.ActivityPreviewImageHeight);
+                    return Core.Image.Util.BitmapToImageSource(b, Core.Image.Util.ActivityPreviewImageWidth, Core.Image.Util.ActivityPreviewImageHeight);
                 }
             }
         }

@@ -1,5 +1,4 @@
-﻿using OpenRPA.Input;
-using OpenRPA.Interfaces;
+﻿using OpenRPA.Interfaces;
 using OpenRPA.Interfaces.entity;
 using System;
 using System.Collections.Generic;
@@ -11,9 +10,14 @@ using System.Windows.Controls;
 
 namespace OpenRPA.MSSpeech
 {
-    public class MSSpeechPlugin : ObservableObject, IDetectorPlugin
+    public class MSSpeechPlugin : IDetectorPlugin, IDisposable
     {
-        public Detector Entity { get; set; }
+        public event System.ComponentModel.PropertyChangedEventHandler PropertyChanged;
+        public void NotifyPropertyChanged(string propertyName)
+        {
+            PropertyChanged?.Invoke(this, new System.ComponentModel.PropertyChangedEventArgs(propertyName));
+        }
+        public IDetector Entity { get; set; }
         public string Name
         {
             get
@@ -40,12 +44,12 @@ namespace OpenRPA.MSSpeech
             }
         }
         public event DetectorDelegate OnDetector;
-        System.Speech.Recognition.SpeechRecognitionEngine recEngine = new System.Speech.Recognition.SpeechRecognitionEngine();
-        public void Initialize(IOpenRPAClient client, Detector InEntity)
+        System.Speech.Recognition.SpeechRecognitionEngine recEngine = null;
+        private bool disposedValue;
+
+        public void Initialize(IOpenRPAClient client, IDetector InEntity)
         {
             Entity = InEntity;
-            recEngine.SetInputToDefaultAudioDevice();
-            recEngine.SpeechRecognized += SpeechRecognized;
             Start();
         }
         public string Commands
@@ -103,14 +107,30 @@ namespace OpenRPA.MSSpeech
                     gBuilder.Append(commands);
                 }
                 var grammer = new System.Speech.Recognition.Grammar(gBuilder);
-                recEngine.UnloadAllGrammars();
-                recEngine.LoadGrammarAsync(grammer);
-                recEngine.RecognizeAsync(System.Speech.Recognition.RecognizeMode.Multiple);
+                Task.Run(() => {
+                    if (recEngine == null)
+                    {
+                        recEngine = new System.Speech.Recognition.SpeechRecognitionEngine();
+                        recEngine.SetInputToDefaultAudioDevice();
+                        recEngine.SpeechRecognized += SpeechRecognized;
+                    }
+                    recEngine.UnloadAllGrammars();
+                    recEngine.LoadGrammarAsync(grammer);
+                    recEngine.RecognizeAsync(System.Speech.Recognition.RecognizeMode.Multiple);
+                });
             }
         }
         public void Stop()
         {
-            recEngine.RecognizeAsyncStop();
+            Task.Run(() => {
+                if(recEngine != null)
+                {
+                    recEngine.SpeechRecognized -= SpeechRecognized;
+                    recEngine.RecognizeAsyncStop();
+                    recEngine.Dispose();
+                    recEngine = null;
+                }
+            });
         }
         public void Initialize(IOpenRPAClient client)
         {
@@ -120,9 +140,39 @@ namespace OpenRPA.MSSpeech
             var _e = new SpeachEvent(e.Result.Text);
             OnDetector?.Invoke(this, _e, EventArgs.Empty);
         }
+
+        protected virtual void Dispose(bool disposing)
+        {
+            if (!disposedValue)
+            {
+                if (disposing)
+                {
+                    // TODO: dispose managed state (managed objects)
+                }
+                Stop();
+                // TODO: free unmanaged resources (unmanaged objects) and override finalizer
+                // TODO: set large fields to null
+                disposedValue = true;
+            }
+        }
+
+        // // TODO: override finalizer only if 'Dispose(bool disposing)' has code to free unmanaged resources
+        // ~MSSpeechPlugin()
+        // {
+        //     // Do not change this code. Put cleanup code in 'Dispose(bool disposing)' method
+        //     Dispose(disposing: false);
+        // }
+
+        public void Dispose()
+        {
+            // Do not change this code. Put cleanup code in 'Dispose(bool disposing)' method
+            Dispose(disposing: true);
+            GC.SuppressFinalize(this);
+        }
     }
     public class SpeachEvent : IDetectorEvent
     {
+        public ITokenUser user { get; set; }
         public IElement element { get; set; }
         public string host { get; set; }
         public string fqdn { get; set; }

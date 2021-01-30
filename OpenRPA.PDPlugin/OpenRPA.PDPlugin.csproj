@@ -14,7 +14,7 @@
     <RepositoryUrl>https://github.com/open-rpa/openrpa</RepositoryUrl>
     <Version>1.0.1</Version>
     <PackageReleaseNotes>1.0.1 Change target framework to 4.7.2</PackageReleaseNotes>
-    <Platforms>AnyCPU;x86</Platforms>
+    <Platforms>AnyCPU;x86;x64</Platforms>
     <Company>OpenIAP</Company>
   </PropertyGroup>
   <ItemGroup>
@@ -26,18 +26,21 @@
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|AnyCPU'">
     <OutputPath>..\debug</OutputPath>
   </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
+    <OutputPath>..\debug</OutputPath>
+  </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x86'">
     <OutputPath>..\debug86</OutputPath>
   </PropertyGroup>
-  <ItemGroup>
-    <ProjectReference Include="..\OpenRPA.Interfaces\OpenRPA.Interfaces.csproj" />
-    <ProjectReference Include="..\OpenRPA.Windows\OpenRPA.Windows.csproj" />
-  </ItemGroup>
   <ItemGroup>
     <Page Include="Views\PluginView.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\OpenRPA.Core\OpenRPA.Core.csproj" />
+    <ProjectReference Include="..\OpenRPA.Windows\OpenRPA.Windows.csproj" />
   </ItemGroup>
   <ItemGroup>
     <Reference Include="System.Xaml" />
@@ -64,4 +67,12 @@
   <Target Name="PostBuild" AfterTargets="Pack" Condition="'$(Configuration)' == 'PrepInstaller'">
     <Exec Command="copy $(OutputPath)..\$(PackageId).$(PackageVersion).nupkg C:\code\OpenRPA\packages" />
   </Target>
+
+  <Target Name="FixAL1703Warning" BeforeTargets="GenerateSatelliteAssemblies" Condition="'$(PlatformTarget)' == 'x64'">
+    <Message Text="Adjusting SDK tools directory to use x64 version of AL.EXE" />
+    <PropertyGroup>
+      <TargetFrameworkSDKToolsDirectory>$(TargetFrameworkSDKToolsDirectory)$(PlatformTarget)\</TargetFrameworkSDKToolsDirectory>
+    </PropertyGroup>
+  </Target>
+
 </Project>

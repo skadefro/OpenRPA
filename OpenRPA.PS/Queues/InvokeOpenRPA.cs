@@ -78,8 +78,8 @@ namespace OpenRPA.PS
                 //    {
                 //    }
                 //}
-                Interfaces.IPCService.OpenRPAServiceUtil.GetInstance(ChildSession: ChildSession.IsPresent);
-                var result = Interfaces.IPCService.OpenRPAServiceUtil.RemoteInstance.RunWorkflowByIDOrRelativeFilename(Filename, true, param);
+                Core.IPCService.OpenRPAServiceUtil.GetInstance(ChildSession: ChildSession.IsPresent);
+                var result = Core.IPCService.OpenRPAServiceUtil.RemoteInstance.RunWorkflowByIDOrRelativeFilename(Filename, true, param);
                 // Interfaces.IPCService.OpenRPAServiceUtil.RemoteInstance.ParseCommandLineArgs(new string[] { "workflowid", Filename });
 
                 WriteProgress(new ProgressRecord(0, "Invoking", "completed") { RecordType = ProgressRecordType.Completed });
@@ -96,7 +96,7 @@ namespace OpenRPA.PS
                 WriteProgress(new ProgressRecord(0, "Invoking", "completed") { RecordType = ProgressRecordType.Completed });
             }
         }
-        private string correlationId = null;
+        // private string correlationId = null;
         // private Interfaces.mq.RobotCommand command = null;
         //private void WebSocketClient_OnQueueMessage(IQueueMessage message, QueueMessageEventArgs e)
         //{

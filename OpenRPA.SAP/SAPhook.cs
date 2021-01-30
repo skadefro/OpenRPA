@@ -247,10 +247,10 @@ namespace OpenRPA.SAP
             }
             if (!isrunning)
             {
-                var filename = System.IO.Path.Combine(Interfaces.Extensions.PluginsDirectory, "OpenRPA.SAPBridge.exe");
+                var filename = System.IO.Path.Combine(Core.Extensions.PluginsDirectory, "OpenRPA.SAPBridge.exe");
                 if (!System.IO.File.Exists(filename))
                 {
-                    filename = System.IO.Path.Combine(Interfaces.Extensions.PluginsDirectory, "SAP\\OpenRPA.SAPBridge.exe");
+                    filename = System.IO.Path.Combine(Core.Extensions.PluginsDirectory, "SAP\\OpenRPA.SAPBridge.exe");
                 }
                 if (System.IO.File.Exists(filename))
                 {

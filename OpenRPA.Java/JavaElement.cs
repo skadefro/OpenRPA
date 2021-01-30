@@ -1,4 +1,5 @@
 ﻿using Newtonsoft.Json;
+using OpenRPA.Core;
 using OpenRPA.Interfaces;
 using System;
 using System.Collections.Generic;
@@ -328,9 +329,9 @@ namespace OpenRPA.Java
                 return result.ToArray();
             }
         }
-        public void Click(bool VirtualClick, Input.MouseButton Button, int OffsetX, int OffsetY, bool DoubleClick, bool AnimateMouse)
+        public void Click(bool VirtualClick, MouseButton Button, int OffsetX, int OffsetY, bool DoubleClick, bool AnimateMouse)
         {
-            if (Button != Input.MouseButton.Left) { VirtualClick = false; }
+            if (Button != MouseButton.Left) { VirtualClick = false; }
             if (!VirtualClick)
             {
                 if (AnimateMouse)
@@ -402,7 +403,7 @@ namespace OpenRPA.Java
         }
         public Task _Highlight(System.Drawing.Color Color, TimeSpan Duration)
         {
-            using (Interfaces.Overlay.OverlayWindow _overlayWindow = new Interfaces.Overlay.OverlayWindow(true))
+            using (Core.Overlay.OverlayWindow _overlayWindow = new Core.Overlay.OverlayWindow(true))
             {
                 _overlayWindow.BackColor = Color;
                 _overlayWindow.Visible = true;
@@ -461,9 +462,9 @@ namespace OpenRPA.Java
             var ScreenImagex = Rectangle.X - (AddedWidth / 2);
             var ScreenImagey = Rectangle.Y - (AddedHeight / 2);
             if (ScreenImagex < 0) ScreenImagex = 0; if (ScreenImagey < 0) ScreenImagey = 0;
-            using (var image = Interfaces.Image.Util.Screenshot(ScreenImagex, ScreenImagey, ScreenImageWidth, ScreenImageHeight, Interfaces.Image.Util.ActivityPreviewImageWidth, Interfaces.Image.Util.ActivityPreviewImageHeight))
+            using (var image = Core.Image.Util.Screenshot(ScreenImagex, ScreenImagey, ScreenImageWidth, ScreenImageHeight, Core.Image.Util.ActivityPreviewImageWidth, Core.Image.Util.ActivityPreviewImageHeight))
             {
-                return Interfaces.Image.Util.Bitmap2Base64(image);
+                return Core.Image.Util.Bitmap2Base64(image);
             }
         }
         public IElement[] Items

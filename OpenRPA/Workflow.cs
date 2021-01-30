@@ -33,7 +33,7 @@ namespace OpenRPA
         public string queue { get { return GetProperty<string>(); } set { SetProperty(value); } }        
         public string Xaml { get { 
                 var _xaml = GetProperty<string>();
-                if (!string.IsNullOrEmpty(_xaml) && Config.local.fix_xaml_1_2_17)
+                if (!string.IsNullOrEmpty(_xaml) && PluginConfig.fix_xaml_1_2_17)
                 {
                     var doc = new System.Xml.XmlDocument();
                     doc.LoadXml(_xaml);

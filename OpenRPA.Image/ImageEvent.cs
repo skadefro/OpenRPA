@@ -91,7 +91,7 @@ namespace OpenRPA.Image
                 }
                 if (string.IsNullOrEmpty(Processname))
                 {
-                    var desktop = Interfaces.Image.Util.Screenshot();
+                    var desktop = Core.Image.Util.Screenshot();
                     GC.KeepAlive(template);
                     var results = Matches.FindMatches(desktop, template, threshold, 10, CompareGray);
                     if (results.Count() > 0)
@@ -112,8 +112,8 @@ namespace OpenRPA.Image
                         allChildWindows.Add(p.MainWindowHandle);
                         foreach (var window in allChildWindows)
                         {
-                            Interfaces.win32.WindowHandleInfo.RECT rct;
-                            if (!Interfaces.win32.WindowHandleInfo.GetWindowRect(new HandleRef(this, window), out rct))
+                            Core.win32.WindowHandleInfo.RECT rct;
+                            if (!Core.win32.WindowHandleInfo.GetWindowRect(new HandleRef(this, window), out rct))
                             {
                                 continue;
                             }
@@ -145,7 +145,7 @@ namespace OpenRPA.Image
                         foreach (var rect in rects)
                         {
                             // System.Diagnostics.Trace.WriteLine("**** Match within window at " + rect.ToString());
-                            var desktop = Interfaces.Image.Util.Screenshot(rect);
+                            var desktop = Core.Image.Util.Screenshot(rect);
                             try
                             {
                                 var results = Matches.FindMatches(desktop, template, threshold, 10, CompareGray);

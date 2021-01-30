@@ -46,14 +46,7 @@ namespace OpenRPA.Elis.Rossum
             var fileid = fileurl.Substring(fileurl.LastIndexOf("/") + 1);
             var res = SimpleRequests.GET(queue + "/export?status=exported&format=json&id=" + fileid, key);
             var results = JsonConvert.DeserializeObject<ExportResult>(res);
-            try
-            {
-                results.LoadGeneralData();
-            }
-            catch (Exception ex)
-            {
-                Log.Error(ex.ToString());
-            }
+            results.LoadGeneralData();
             context.SetValue(Result, results);
         }
         public new string DisplayName

@@ -6,6 +6,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using WindowsAccessBridgeInterop;
+using OpenRPA.Core;
 
 namespace OpenRPA.Java
 {
@@ -135,10 +136,10 @@ namespace OpenRPA.Java
             }
             if (!isrunning)
             {
-                var filename = System.IO.Path.Combine(Interfaces.Extensions.PluginsDirectory, "OpenRPA.JavaBridge.exe");
+                var filename = System.IO.Path.Combine(Core.Extensions.PluginsDirectory, "OpenRPA.JavaBridge.exe");
                 if (!System.IO.File.Exists(filename))
                 {
-                    filename = System.IO.Path.Combine(Interfaces.Extensions.PluginsDirectory, "java\\OpenRPA.JavaBridge.exe");
+                    filename = System.IO.Path.Combine(Core.Extensions.PluginsDirectory, "java\\OpenRPA.JavaBridge.exe");
                 }
                 if(System.IO.File.Exists(filename))
                 {

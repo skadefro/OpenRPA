@@ -1,4 +1,6 @@
 ﻿using FlaUI.Core.AutomationElements;
+using OpenRPA.Core;
+using OpenRPA.Core.Activity;
 using OpenRPA.Interfaces;
 using System;
 using System.Activities;
@@ -63,7 +65,7 @@ namespace OpenRPA.NM
         {
             IsCancel = false;
             var selector = Selector.Get(context);
-            selector = OpenRPA.Interfaces.Selector.Selector.ReplaceVariables(selector, context.DataContext);
+            selector = Core.Selector.Selector.ReplaceVariables(selector, context.DataContext);
             var sel = new NMSelector(selector);
             var timeout = Timeout.Get(context);
             var from = From?.Get(context);
@@ -125,14 +127,14 @@ namespace OpenRPA.NM
         }
         protected override void CacheMetadata(NativeActivityMetadata metadata)
         {
-            Interfaces.Extensions.AddCacheArgument(metadata, "MaxResults", MaxResults);
-            Interfaces.Extensions.AddCacheArgument(metadata, "MinResults", MinResults);
-            Interfaces.Extensions.AddCacheArgument(metadata, "Timeout", Timeout);
+            Core.Extensions.AddCacheArgument(metadata, "MaxResults", MaxResults);
+            Core.Extensions.AddCacheArgument(metadata, "MinResults", MinResults);
+            Core.Extensions.AddCacheArgument(metadata, "Timeout", Timeout);
 
-            Interfaces.Extensions.AddCacheArgument(metadata, "Selector", Selector);
-            Interfaces.Extensions.AddCacheArgument(metadata, "From", From);
-            Interfaces.Extensions.AddCacheArgument(metadata, "Elements", Elements);
-            Interfaces.Extensions.AddCacheArgument(metadata, "WaitForReady", WaitForReady);
+            Core.Extensions.AddCacheArgument(metadata, "Selector", Selector);
+            Core.Extensions.AddCacheArgument(metadata, "From", From);
+            Core.Extensions.AddCacheArgument(metadata, "Elements", Elements);
+            Core.Extensions.AddCacheArgument(metadata, "WaitForReady", WaitForReady);
 
             metadata.AddImplementationVariable(_elements);
             metadata.AddImplementationVariable(_allelements);

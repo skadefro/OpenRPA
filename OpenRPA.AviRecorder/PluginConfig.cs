@@ -24,14 +24,11 @@ namespace OpenRPA.AviRecorder
             }
         }
         private static string pluginname => "avirecorder";
-
         public static bool enabled { get { return globallocal.GetProperty<bool>(pluginname, false); } set { globallocal.SetProperty(pluginname, value); } }
         public static bool keepsuccessful { get { return globallocal.GetProperty<bool>(pluginname, false); } set { globallocal.SetProperty(pluginname, value); } }
         public static string codec { get { return globallocal.GetProperty<string>(pluginname, "motionjpeg"); } set { globallocal.SetProperty(pluginname, value); } }
         public static int quality { get { return globallocal.GetProperty<int>(pluginname, 70); } set { globallocal.SetProperty(pluginname, value); } }
         public static bool stoponidle { get { return globallocal.GetProperty<bool>(pluginname, false); } set { globallocal.SetProperty(pluginname, value); } }
         public static string folder { get { return globallocal.GetProperty<string>(pluginname, ""); } set { globallocal.SetProperty(pluginname, value); } }
-
-
     }
 }

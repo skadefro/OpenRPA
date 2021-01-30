@@ -1,10 +1,10 @@
 ﻿using OpenRPA.Input;
 using OpenRPA.Interfaces;
-using OpenRPA.Interfaces.Selector;
 using OpenRPA.Script.Activities;
 using System;
 using System.Activities;
 using System.Collections.Generic;
+using System.ComponentModel;
 using System.Linq;
 using System.Management.Automation.Runspaces;
 using System.Text;
@@ -13,20 +13,36 @@ using System.Threading.Tasks;
 
 namespace OpenRPA.Script
 {
-    public class Plugin : ObservableObject, IRecordPlugin
+    public class Plugin : INotifyPropertyChanged, IRecordPlugin
     {
-#pragma warning disable IDE0060 // Remove unused parameter
-        public static treeelement[] _GetRootElements(Selector anchor)
-#pragma warning restore IDE0060 // Remove unused parameter
+        public event PropertyChangedEventHandler PropertyChanged;
+        event PropertyChangedEventHandler INotifyPropertyChanged.PropertyChanged
         {
-            var result = new List<treeelement>();
+            add
+            {
+                PropertyChanged += value;
+            }
+
+            remove
+            {
+                PropertyChanged -= value;
+            }
+        }
+        public void NotifyPropertyChanged(string propertyName)
+        {
+            PropertyChanged?.Invoke(this, new System.ComponentModel.PropertyChangedEventArgs(propertyName));
+        }
+
+        public static object[] _GetRootElements(object anchor)
+        {
+            var result = new List<object>();
             return result.ToArray();
         }
-        public treeelement[] GetRootElements(Selector anchor)
+        public object[] GetRootElements(object anchor)
         {
             return Plugin._GetRootElements(anchor);
         }
-        public Selector GetSelector(Selector anchor, Interfaces.Selector.treeelement item)
+        public object GetSelector(object anchor, object item)
         {
             return null;
         }
@@ -114,19 +130,19 @@ namespace OpenRPA.Script
             //}
 
         }
-        public IElement[] GetElementsWithSelector(Selector selector, IElement fromElement = null, int maxresults = 1)
+        public IElement[] GetElementsWithSelector(object selector, IElement fromElement = null, int maxresults = 1)
         {
             return null;
         }
-        public IElement LaunchBySelector(Selector selector, bool CheckRunning, TimeSpan timeout)
+        public IElement LaunchBySelector(object selector, bool CheckRunning, TimeSpan timeout)
         {
             throw new NotImplementedException();
         }
-        public void CloseBySelector(Selector selector, TimeSpan timeout, bool Force)
+        public void CloseBySelector(object selector, TimeSpan timeout, bool Force)
         {
             throw new NotImplementedException();
         }
-        public bool Match(SelectorItem item, IElement m)
+        public bool Match(object item, IElement m)
         {
             return false;
         }

@@ -238,8 +238,8 @@ namespace OpenRPA
                     {
                         NativeMethods.SetCursorPos(Rectangle.X + OffsetX, Rectangle.Y + OffsetY);
                     }
-                    Input.InputDriver.Click(Button);
-                    if (DoubleClick) Input.InputDriver.Click(Button);
+                    OpenRPA.Input.InputDriver.Click(Button);
+                    if (DoubleClick) OpenRPA.Input.InputDriver.Click(Button);
                 }
             }
             catch (Exception)

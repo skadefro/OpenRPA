@@ -1,4 +1,5 @@
-﻿using OpenRPA.Interfaces;
+﻿using OpenRPA.Core;
+using OpenRPA.Interfaces;
 using System;
 using System.Activities;
 using System.Activities.Presentation.PropertyEditing;
@@ -56,7 +57,7 @@ namespace OpenRPA.Image
             if (System.Text.RegularExpressions.Regex.Match(Image, "[a-f0-9]{24}").Success)
             {
                 b = Task.Run(() => {
-                    return Interfaces.Image.Util.LoadBitmap(Image);
+                    return Core.Image.Util.LoadBitmap(Image);
                 }).Result;
             }
             else
@@ -125,7 +126,7 @@ namespace OpenRPA.Image
             }
             else if(elements.Count() < minresults)
             {
-                throw new Interfaces.ElementNotFoundException("Failed locating item");
+                throw new ElementNotFoundException("Failed locating item");
             }
         }
         private void OnBodyComplete(NativeActivityContext context, ActivityInstance completedInstance)
@@ -151,14 +152,14 @@ namespace OpenRPA.Image
         protected override void CacheMetadata(NativeActivityMetadata metadata)
         {
             metadata.AddDelegate(Body);
-            Interfaces.Extensions.AddCacheArgument(metadata, "From", From);
-            Interfaces.Extensions.AddCacheArgument(metadata, "Elements", Elements);
-            Interfaces.Extensions.AddCacheArgument(metadata, "MaxResults", MaxResults);
-            Interfaces.Extensions.AddCacheArgument(metadata, "MinResults", MinResults);
-            Interfaces.Extensions.AddCacheArgument(metadata, "Processname", Processname);
-            Interfaces.Extensions.AddCacheArgument(metadata, "CompareGray", CompareGray);
-            Interfaces.Extensions.AddCacheArgument(metadata, "Timeout", Timeout);
-            Interfaces.Extensions.AddCacheArgument(metadata, "Limit", Limit);
+            Core.Extensions.AddCacheArgument(metadata, "From", From);
+            Core.Extensions.AddCacheArgument(metadata, "Elements", Elements);
+            Core.Extensions.AddCacheArgument(metadata, "MaxResults", MaxResults);
+            Core.Extensions.AddCacheArgument(metadata, "MinResults", MinResults);
+            Core.Extensions.AddCacheArgument(metadata, "Processname", Processname);
+            Core.Extensions.AddCacheArgument(metadata, "CompareGray", CompareGray);
+            Core.Extensions.AddCacheArgument(metadata, "Timeout", Timeout);
+            Core.Extensions.AddCacheArgument(metadata, "Limit", Limit);
 
             metadata.AddImplementationVariable(_elements);
             base.CacheMetadata(metadata);

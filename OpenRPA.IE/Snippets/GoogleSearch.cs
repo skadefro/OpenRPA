@@ -14,7 +14,7 @@ namespace OpenRPA.NM.Snippets
     {
         public string Name => "GoogleSearch";
         public string Category => "IE";
-        public string Xaml => Extensions.ResourceAsString(typeof(GoogleSearch), "GoogleSearch.xaml");
-        public snippet Snippet { get; set; }
+        public string Xaml => Core.Extensions.ResourceAsString(typeof(GoogleSearch), "GoogleSearch.xaml");
+        public ISnippet Snippet { get; set; }
     }
 }

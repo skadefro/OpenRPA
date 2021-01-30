@@ -1,4 +1,5 @@
 ﻿using Microsoft.VisualBasic.Activities;
+using OpenRPA.Core;
 using OpenRPA.Interfaces;
 using System;
 using System.Activities;
@@ -20,7 +21,7 @@ namespace OpenRPA.Image
         public GetTextDesigner()
         {
             InitializeComponent();
-            HighlightImage = Extensions.GetImageSourceFromResource("search.png");
+            HighlightImage = Core.Extensions.GetImageSourceFromResource("search.png");
         }
         public event PropertyChangedEventHandler PropertyChanged;
         private void NotifyPropertyChanged(String propertyName)
@@ -51,18 +52,18 @@ namespace OpenRPA.Image
             var limit = loadFrom.GetValue<Rectangle>("Limit");
             if (Threshold < 0.5) Threshold = 0.8;
 
-            Interfaces.GenericTools.Minimize();
+            GenericTools.Minimize();
             System.Threading.Thread.Sleep(100);
             var matches = ImageEvent.waitFor(b, Threshold, Processname, TimeSpan.FromMilliseconds(100), CompareGray, limit);
             if (matches.Count() == 0)
             {
-                Interfaces.GenericTools.Restore();
+                GenericTools.Restore();
                 return;
             }
             var match = matches[0];
 
             Rectangle rect = Rectangle.Empty;
-            using (Interfaces.Overlay.OverlayWindow _overlayWindow = new Interfaces.Overlay.OverlayWindow(true))
+            using (Core.Overlay.OverlayWindow _overlayWindow = new Core.Overlay.OverlayWindow(true))
             {
                 _overlayWindow.BackColor = System.Drawing.Color.Blue;
                 _overlayWindow.Visible = true;
@@ -75,9 +76,7 @@ namespace OpenRPA.Image
             ModelItem.Properties["OffsetY"].SetValue(new System.Activities.InArgument<int>(rect.Y - match.Y));
             ModelItem.Properties["Width"].SetValue(new System.Activities.InArgument<int>(rect.Width));
             ModelItem.Properties["Height"].SetValue(new System.Activities.InArgument<int>(rect.Height));
-            Interfaces.GenericTools.Restore();
-
-
+            GenericTools.Restore();
         }
         private void Highlight_Click(object sender, RoutedEventArgs e)
         {
@@ -97,9 +96,9 @@ namespace OpenRPA.Image
             {
                 var base64 = ImageString;
                 if (string.IsNullOrEmpty(base64)) return null;
-                using (var b = Interfaces.Image.Util.Base642Bitmap(base64))
+                using (var b = Core.Image.Util.Base642Bitmap(base64))
                 {
-                    return Interfaces.Image.Util.BitmapToImageSource(b, Interfaces.Image.Util.ActivityPreviewImageWidth, Interfaces.Image.Util.ActivityPreviewImageHeight);
+                    return Core.Image.Util.BitmapToImageSource(b, Core.Image.Util.ActivityPreviewImageWidth, Core.Image.Util.ActivityPreviewImageHeight);
                 }
             }
         }

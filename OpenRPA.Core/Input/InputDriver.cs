@@ -32,7 +32,7 @@ using System.ComponentModel;
 namespace OpenRPA.Input
 {
     public delegate void InputEventHandler(InputEventArgs e);
-    public sealed partial class InputDriver : IDisposable
+    public partial class InputDriver : IDisposable
     {
         private IntPtr keyboardHook;
         private NativeMethods.LLProc keyboardProc;

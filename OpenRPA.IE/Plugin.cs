@@ -1,9 +1,10 @@
 ﻿using FlaUI.Core.AutomationElements.Infrastructure;
 using FlaUI.Core.Conditions;
 using FlaUI.Core.Definitions;
+using OpenRPA.Core;
+using OpenRPA.Core.Selector;
 using OpenRPA.Input;
 using OpenRPA.Interfaces;
-using OpenRPA.Interfaces.Selector;
 using System;
 using System.Activities;
 using System.Collections.Generic;
@@ -49,7 +50,7 @@ namespace OpenRPA.IE
         {
             return Plugin._GetRootElements(anchor);
         }
-        public Interfaces.Selector.Selector GetSelector(Selector anchor, Interfaces.Selector.treeelement item)
+        public Selector GetSelector(Selector anchor, treeelement item)
         {
             var ieitem = item as IETreeElement;
             IESelector ieanchor = anchor as IESelector;
@@ -238,7 +239,7 @@ namespace OpenRPA.IE
                     if (doc != null)
                     {
                         var wBrowser = w as SHDocVw.WebBrowser;
-                        var automation = Interfaces.AutomationUtil.getAutomation();
+                        var automation = AutomationUtil.getAutomation();
                         var _ele = automation.FromHandle(new IntPtr(wBrowser.HWND));
                         if(_ele != null)
                         {
@@ -271,7 +272,7 @@ namespace OpenRPA.IE
                         var wBrowser = _ie as SHDocVw.WebBrowser;
                         if(wBrowser.LocationURL == url || string.IsNullOrEmpty(url))
                         {
-                            using (var automation = Interfaces.AutomationUtil.getAutomation())
+                            using (var automation = AutomationUtil.getAutomation())
                             {
                                 var _ele = automation.FromHandle(new IntPtr(_ie.HWND));
                                 using (var app = new FlaUI.Core.Application(_ele.Properties.ProcessId.Value, false))
@@ -320,6 +321,30 @@ namespace OpenRPA.IE
             if (p.ProcessName != "iexplore" && p.ProcessName != "iexplore.exe") return false;
             return true;
         }
+        object[] IRecordPlugin.GetRootElements(object anchor)
+        {
+            return GetRootElements(anchor as Selector);
+        }
+        object IRecordPlugin.GetSelector(object anchor, object item)
+        {
+            return GetSelector(anchor as Selector, item as treeelement);
+        }
+        IElement[] IRecordPlugin.GetElementsWithSelector(object selector, IElement fromElement, int maxresults)
+        {
+            return GetElementsWithSelector(selector as Selector, fromElement, maxresults);
+        }
+        bool IRecordPlugin.Match(object item, IElement m)
+        {
+            return Match(item as SelectorItem, m);
+        }
+        IElement IRecordPlugin.LaunchBySelector(object selector, bool CheckRunning, TimeSpan timeout)
+        {
+            return LaunchBySelector(selector as Selector, CheckRunning, timeout);
+        }
+        void IRecordPlugin.CloseBySelector(object selector, TimeSpan timeout, bool Force)
+        {
+            CloseBySelector(selector as Selector, timeout, Force);
+        }
     }
     public class GetElementResult : IBodyActivity
     {
@@ -367,7 +392,7 @@ namespace OpenRPA.IE
         // public AutomationElement Element { get; set; }
         public UIElement UIElement { get; set; }
         public IElement Element { get; set; }
-        public Interfaces.Selector.Selector Selector { get; set; }
+        public Selector Selector { get; set; }
         public IBodyActivity a { get; set; }
         public bool SupportInput { get; set; }
         public bool SupportSelect { get; set; }
@@ -378,6 +403,8 @@ namespace OpenRPA.IE
         public bool ClickHandled { get; set; }
         public bool SupportVirtualClick { get; set; }
         public MouseButton Button { get; set; }
+        IUIElement IRecordEvent.UIElement { get => UIElement; set => UIElement = value as UIElement; }
+        object IRecordEvent.Selector { get => Selector; set => Selector = value as Selector; }
     }
 
 }

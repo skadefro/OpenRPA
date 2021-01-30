@@ -8,6 +8,7 @@ using System.Management.Automation;
 using Newtonsoft.Json.Linq;
 using System.Collections.ObjectModel;
 using OpenRPA.Interfaces.entity;
+using OpenRPA.Core.entity;
 
 namespace OpenRPA.PS
 {

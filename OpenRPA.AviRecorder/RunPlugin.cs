@@ -9,7 +9,7 @@ using System.Windows.Controls;
 
 namespace OpenRPA.AviRecorder
 {
-    class RunPlugin : ObservableObject, IRunPlugin
+    class RunPlugin : IRunPlugin
     {
         private Views.RunPluginView view;
         public UserControl editor
@@ -32,6 +32,11 @@ namespace OpenRPA.AviRecorder
         public string Name => PluginName;
         private Dictionary<string, Record> Records = new Dictionary<string, Record>();
         public IOpenRPAClient client;
+        public event PropertyChangedEventHandler PropertyChanged;
+        private void NotifyPropertyChanged(String propertyName)
+        {
+            PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(propertyName));
+        }
         public void Initialize(IOpenRPAClient client)
         {
             this.client = client;
@@ -60,7 +65,8 @@ namespace OpenRPA.AviRecorder
                     }
                     catch (Exception ex)
                     {
-                        Log.Error(ex.ToString());
+                        Console.WriteLine(ex.ToString());
+                        // Log.Error(ex.ToString());
                     }
                 }
             }
@@ -82,16 +88,26 @@ namespace OpenRPA.AviRecorder
             startRecording(e);
             return true;
         }
+        public static string MyVideos
+        {
+            get
+            {
+                var dir = Environment.GetFolderPath(Environment.SpecialFolder.MyVideos);
+                if (!System.IO.Directory.Exists(System.IO.Path.Combine(dir)))
+                    System.IO.Directory.CreateDirectory(dir);
+                return dir;
+            }
+        }
         public Record startRecording(IWorkflowInstance e)
         {
             var strcodec = PluginConfig.codec;
             var folder = PluginConfig.folder;
-            if(string.IsNullOrEmpty(folder)) folder = Interfaces.Extensions.MyVideos;
+            if(string.IsNullOrEmpty(folder)) folder = MyVideos;
             var quality = PluginConfig.quality;
 
             if (string.IsNullOrEmpty(folder))
             {
-                folder = Interfaces.Extensions.MyVideos;
+                folder = MyVideos;
             }
             if (quality < 10) quality = 10;
             if (quality > 100) quality = 100;

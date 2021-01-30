@@ -20,7 +20,9 @@ namespace OpenRPA.Forms.Activities
         {
             string form = ModelItem.GetValue<string>("Form");
             var f = new FormDesigner(form);
-            f.Owner = GenericTools.MainWindow;
+            System.Windows.Window mainForm = RunPlugin.client.Window as System.Windows.Window;
+            // f.Owner = GenericTools.MainWindow;
+            f.Owner = mainForm;
             f.ShowDialog();
             if(form != f.XmlString)
             {
@@ -37,7 +39,8 @@ namespace OpenRPA.Forms.Activities
                 // var definition = FormBuilder.Default.GetDefinition(xmlString, freeze: false);
 
                 // var firstNameElement = (DataFormField)definition.GetElements().FirstOrDefault(e => e is DataFormField d && d.Key == "FirstName");
-                var designer = GenericTools.Designer;
+                // var designer = GenericTools.Designer;
+                var designer = RunPlugin.client.Window.Designer;
                 foreach (DataFormField f in definition.GetElements().Where(x => x is DataFormField))
                 {
                     // Type t = Type.GetType(p.type);

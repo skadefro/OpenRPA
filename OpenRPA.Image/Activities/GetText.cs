@@ -1,4 +1,5 @@
-﻿using OpenRPA.Interfaces;
+﻿using OpenRPA.Core;
+using OpenRPA.Interfaces;
 using System;
 using System.Activities;
 using System.Activities.Presentation.PropertyEditing;
@@ -43,7 +44,7 @@ namespace OpenRPA.Image
             var casesensitive = model.GetValue<bool>("CaseSensitive");
             var lang = Config.local.ocrlanguage;
 
-            string basepath = Interfaces.Extensions.DataDirectory;
+            string basepath = Core.Extensions.DataDirectory;
             string path = System.IO.Path.Combine(basepath, "tessdata");
             ocr.TesseractDownloadLangFile(path, Config.local.ocrlanguage);
             ocr.TesseractDownloadLangFile(path, "osd");
@@ -61,7 +62,7 @@ namespace OpenRPA.Image
             }
             else
             {
-                sourceimg = Interfaces.Image.Util.Screenshot(ele.Rectangle.X, ele.Rectangle.Y, ele.Rectangle.Width, ele.Rectangle.Height);
+                sourceimg = Core.Image.Util.Screenshot(ele.Rectangle.X, ele.Rectangle.Y, ele.Rectangle.Width, ele.Rectangle.Height);
             }
             using (var img = new Emgu.CV.Image<Emgu.CV.Structure.Bgr, byte>(sourceimg))
             {
@@ -82,7 +83,7 @@ namespace OpenRPA.Image
             var wordlimit = WordLimit.Get(context);
             var lang = Config.local.ocrlanguage;
             var casesensitive = CaseSensitive.Get(context);
-            string basepath = Interfaces.Extensions.DataDirectory;
+            string basepath = Core.Extensions.DataDirectory;
             string path = System.IO.Path.Combine(basepath, "tessdata");
             ocr.TesseractDownloadLangFile(path, Config.local.ocrlanguage);
             ocr.TesseractDownloadLangFile(path, "osd");
@@ -104,7 +105,7 @@ namespace OpenRPA.Image
                 sourceimg = ((ImageElement)ele).element;
             } else
             {
-                sourceimg = Interfaces.Image.Util.Screenshot(ele.Rectangle.X, ele.Rectangle.Y, ele.Rectangle.Width, ele.Rectangle.Height);
+                sourceimg = Core.Image.Util.Screenshot(ele.Rectangle.X, ele.Rectangle.Y, ele.Rectangle.Width, ele.Rectangle.Height);
             }
             using (var img = new Emgu.CV.Image<Emgu.CV.Structure.Bgr, byte>(sourceimg))
             {
@@ -144,8 +145,8 @@ namespace OpenRPA.Image
         {
             metadata.AddDelegate(Body);
 
-            Interfaces.Extensions.AddCacheArgument(metadata, "Element", Element);
-            Interfaces.Extensions.AddCacheArgument(metadata, "Result", Result);
+            Core.Extensions.AddCacheArgument(metadata, "Element", Element);
+            Core.Extensions.AddCacheArgument(metadata, "Result", Result);
 
             metadata.AddImplementationVariable(_elements);
             base.CacheMetadata(metadata);

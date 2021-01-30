@@ -1,4 +1,5 @@
-﻿using Microsoft.VisualBasic.Activities;
+﻿using OpenRPA.Core;
+using Microsoft.VisualBasic.Activities;
 using OpenRPA.Interfaces;
 using OpenRPA.Interfaces.entity;
 using System;
@@ -13,6 +14,7 @@ using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Media;
 using System.Windows.Media.Imaging;
+using OpenRPA.Core.entity;
 
 namespace OpenRPA.OpenFlowDB
 {

@@ -12,6 +12,7 @@ using System.Threading;
 using Newtonsoft.Json.Linq;
 using System.Data;
 using Newtonsoft.Json;
+using OpenRPA.Core;
 
 namespace OpenRPA.OpenFlowDB
 {

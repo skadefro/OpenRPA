@@ -3,7 +3,6 @@ using System.Activities.Presentation.Model;
 using System.Windows;
 using System.Windows.Media;
 
-
 namespace OpenRPA.Office.Activities
 {
     public partial class AddParagraphDesigner

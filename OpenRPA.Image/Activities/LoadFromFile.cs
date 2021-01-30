@@ -46,7 +46,7 @@ namespace OpenRPA.Image
         protected override void CacheMetadata(NativeActivityMetadata metadata)
         {
             metadata.AddDelegate(Body);
-            Interfaces.Extensions.AddCacheArgument(metadata, "Filename", Filename);
+            Core.Extensions.AddCacheArgument(metadata, "Filename", Filename);
             metadata.AddImplementationVariable(elements);
             base.CacheMetadata(metadata);
         }

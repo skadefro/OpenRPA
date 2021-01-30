@@ -1,4 +1,5 @@
 ﻿using FlaUI.Core.AutomationElements.Infrastructure;
+using OpenRPA.Core.entity;
 using OpenRPA.Input;
 using OpenRPA.Interfaces;
 using OpenRPA.Interfaces.entity;
@@ -58,9 +59,9 @@ namespace OpenRPA.Java
         }
         public event DetectorDelegate OnDetector;
         public Javahook hook { get; set; } = new Javahook();
-        public void Initialize(IOpenRPAClient client, Detector InEntity)
+        public void Initialize(IOpenRPAClient client, IDetector InEntity)
         {
-            Entity = InEntity;
+            Entity = InEntity as Detector;
             hook.init();
             Start();
         }
@@ -121,9 +122,11 @@ namespace OpenRPA.Java
         public void Initialize(IOpenRPAClient client)
         {
         }
+        IDetector IDetectorPlugin.Entity { get => Entity; set => Entity = value as Detector; }
     }
     public class DetectorEvent : IDetectorEvent
     {
+        public ITokenUser user { get; set; }
         public IElement element { get; set; }
         public string host { get; set; }
         public string fqdn { get; set; }

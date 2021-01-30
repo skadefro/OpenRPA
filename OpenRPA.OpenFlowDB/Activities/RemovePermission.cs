@@ -45,8 +45,8 @@ namespace OpenRPA.OpenFlowDB
             var _id = EntityId.Get(context);
             var name = Name.Get(context);
             JArray _acl = (JArray)result.GetValue("_acl");
-            List<OpenRPA.Interfaces.entity.ace> acl = null;
-            if(_acl!=null) { acl =  _acl.ToObject<List<OpenRPA.Interfaces.entity.ace>>();  } else { acl = new List<OpenRPA.Interfaces.entity.ace>(); }
+            List<Core.entity.ace> acl = null;
+            if(_acl!=null) { acl =  _acl.ToObject<List<Core.entity.ace>>();  } else { acl = new List<Core.entity.ace>(); }
             
             var aces = acl.Where(x => x._id == _id).ToList();
             foreach(var ace in aces)

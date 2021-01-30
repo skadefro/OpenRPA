@@ -11,6 +11,7 @@ using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Media;
 using System.Windows.Media.Imaging;
+using OpenRPA.Core;
 
 namespace OpenRPA.OpenFlowDB
 {
@@ -25,7 +26,6 @@ namespace OpenRPA.OpenFlowDB
         {
             PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(propertyName));
         }
-
         private void Button_Click(object sender, RoutedEventArgs e)
         {
             var openFileDialog1 = new System.Windows.Forms.OpenFileDialog();

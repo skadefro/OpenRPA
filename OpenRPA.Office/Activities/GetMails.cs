@@ -133,9 +133,9 @@ namespace OpenRPA.Office.Activities
         protected override void CacheMetadata(NativeActivityMetadata metadata)
         {
             metadata.AddDelegate(Body);
-            Interfaces.Extensions.AddCacheArgument(metadata, "UnreadOnly", UnreadOnly);
-            Interfaces.Extensions.AddCacheArgument(metadata, "Folder", Folder);
-            Interfaces.Extensions.AddCacheArgument(metadata, "Emails", Emails);
+            Extensions.AddCacheArgument(metadata, "UnreadOnly", UnreadOnly);
+            Extensions.AddCacheArgument(metadata, "Folder", Folder);
+            Extensions.AddCacheArgument(metadata, "Emails", Emails);
 
             metadata.AddImplementationVariable(_elements);
             base.CacheMetadata(metadata);

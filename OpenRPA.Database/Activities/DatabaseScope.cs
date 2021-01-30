@@ -56,8 +56,8 @@ namespace OpenRPA.Database
         protected override void CacheMetadata(NativeActivityMetadata metadata)
         {
             metadata.AddDelegate(Body);
-            Interfaces.Extensions.AddCacheArgument(metadata, "ConnectionString", ConnectionString);
-            Interfaces.Extensions.AddCacheArgument(metadata, "Timeout", Timeout);
+            Extensions.AddCacheArgument(metadata, "ConnectionString", ConnectionString);
+            Extensions.AddCacheArgument(metadata, "Timeout", Timeout);
             metadata.AddImplementationVariable(Connection);
             base.CacheMetadata(metadata);
         }

@@ -1,5 +1,6 @@
 ﻿using OpenRPA.Interfaces;
-using OpenRPA.Interfaces.Selector;
+using OpenRPA.Core;
+using OpenRPA.Core.Selector;
 using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;

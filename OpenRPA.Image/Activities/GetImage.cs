@@ -1,4 +1,5 @@
-﻿using OpenRPA.Interfaces;
+﻿using OpenRPA.Core;
+using OpenRPA.Interfaces;
 using System;
 using System.Activities;
 using System.Activities.Presentation.PropertyEditing;
@@ -72,7 +73,7 @@ namespace OpenRPA.Image
                     }
                 }
             }
-            var b = Interfaces.Image.Util.Screenshot(match);
+            var b = Core.Image.Util.Screenshot(match);
             //Interfaces.Image.Util.SaveImageStamped(b, "c:\\temp", "GetImage-result");
             var v = new ImageElement(match, b);
             context.SetValue(Result, v);
